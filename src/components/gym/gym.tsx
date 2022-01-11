@@ -1,45 +1,32 @@
-import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Divider, Grid } from '@material-ui/core';
+import { Grid } from '@chakra-ui/react';
 
 import GymTile from '../gymTile';
 import GymHeader from '../gymHeader';
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            flexGrow: 1,
-        },
-        paper: {
-            height: 140,
-            width: 100,
-        },
-        control: {
-            padding: theme.spacing(3),
-        },
-    }),
-);
-
 export default function Gym() {
-    const classes = useStyles();
 
     return (
         <div>
-            <Grid container className={classes.root} spacing={2}>
-                <Grid container item xs={12} spacing={3}>
-                    <Grid container justifyContent="center">
-                        <GymHeader/>
+            <Grid>
+                <Grid >
+                    <Grid justifyContent="center"
+                    >
+                        <GymHeader />
                     </Grid>
                 </Grid>
-                
-                <Grid container item xs={12} spacing={3}>
-                    <Grid container justifyContent="center">
-                        <GymTile /> <GymTile /> <GymTile />
-                    </Grid>
-                </Grid>
-                <Grid container item xs={12} spacing={3}>
-                    <Grid container justifyContent="center">
-                        <GymTile /> <GymTile /> <GymTile />
+
+                <Grid>
+                    <Grid
+                    justifyContent='center'
+                    spacing={3}
+                    columns={3}
+                    >
+                        <GymTile datanumber='4' dataname='Active Fighters'/>
+                        <GymTile datanumber='32-26' dataname='Active Fight Record'/>
+                        <GymTile datanumber='1337' dataname='$TKO Tokens'/>
+                        <GymTile datanumber='2' dataname='Retired Fighters'/>
+                        <GymTile datanumber='59-42' dataname='Overall Fight Record'/>
+                        <GymTile datanumber='1' dataname='Championships Held' />
                     </Grid>
                 </Grid>
             </Grid>
