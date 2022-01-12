@@ -40,6 +40,13 @@ export const theme = extendTheme({
       500: '#2ABB75',
       700: '#1D8251',
       900: '#145D3A'
+    },
+    secondary: {
+      100: '#EB7391',
+      300: '#E44970',
+      500: '#DF2151',
+      700: '#B11B40',
+      900: '#851430'
     }
   },
   components: {
@@ -108,7 +115,16 @@ export const theme = extendTheme({
           fontWeight: 'light',
           _hover: { bg: 'primary.700' },
         },
-
+        secondary: {
+          borderRadius: 'none',
+          bg: 'secondary.500',
+          p: '8px 55px',
+          h: '38px',
+          color: 'white',
+          fontWeight: 'light',
+          _hover: { bg: 'secondary.700' },
+          _active: {border: 'none'}
+        },
       },
     },
   },

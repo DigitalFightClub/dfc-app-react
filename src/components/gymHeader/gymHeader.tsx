@@ -1,5 +1,5 @@
 
-import { Container, Heading, Text } from '@chakra-ui/react';
+import { Heading, HStack, Image } from '@chakra-ui/react';
 
 export default function GymHeader() {
 
@@ -7,10 +7,17 @@ export default function GymHeader() {
     const gymname = 'Red Dragon Gym';
 
     return (
-        <Container>
-                <Heading>
-                    {gymname}
-                </Heading>
-        </Container>
+        <HStack
+        align='center'
+        >
+        <Image
+          h='1.75rem'
+          w='1.75rem'
+          display='inline'
+          src='/red-dragon-gym.svg'/>
+            <Heading >
+            {gymname}
+            </Heading>
+        </HStack>
     );
 }

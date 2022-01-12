@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Button, Avatar} from '@chakra-ui/react';
+import {Text, useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar} from '@chakra-ui/react';
 
 
 export default function MenuAppBar() {

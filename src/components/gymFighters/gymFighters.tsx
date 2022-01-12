@@ -1,4 +1,4 @@
-import { Grid } from '@chakra-ui/react';
+import { Grid, VStack } from '@chakra-ui/react';
 
 import FighterSelection from '../fighterSelection';
 import FighterTile from '../fighterTile';
@@ -6,8 +6,8 @@ import FighterTile from '../fighterTile';
 export default function GymFighters() {
 
     return (
-        <Grid spacing={2}>
-            <Grid justifyContent="center">
+        <VStack w='100%'>
+            <Grid w='100%' justifyContent="center">
                 <FighterSelection/>
             </Grid>
             <Grid  spacing={2}>
@@ -26,6 +26,6 @@ export default function GymFighters() {
                     <FighterTile />
                 </Grid>
             </Grid>
-        </Grid>
+        </VStack>
     );
 }
