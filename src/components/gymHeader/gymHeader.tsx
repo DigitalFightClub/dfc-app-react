@@ -1,5 +1,5 @@
 
-import { Container, Text } from '@chakra-ui/react';
+import { Container, Heading, Text } from '@chakra-ui/react';
 
 export default function GymHeader() {
 
@@ -8,9 +8,9 @@ export default function GymHeader() {
 
     return (
         <Container>
-                <Text>
+                <Heading>
                     {gymname}
-                </Text>
+                </Heading>
         </Container>
     );
 }
