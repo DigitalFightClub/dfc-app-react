@@ -17,19 +17,18 @@ export default function FighterSelection() {
   };
 
     return (
-        <Flex w='100%'>
-            <Stack >
+        <Flex>
+            <Stack>
                 <Grid minW='100%' justifyContent="center">
 
                   <HStack minW='100%' gap='0' spacing='0'>
                     <Button w='100%' variant='primary'
-                    bg='none'
+                    bg={showActive ? 'primary.500' : 'none'}
                     border='1px gray solid'
-                    _focus={{bg: 'primary.500'}} onClick={handleToggle}>Active Fighters</Button>
+                    onClick={handleToggle}>Active Fighters</Button>
 
                     <Button w='100%' variant='secondary'
-                    bg='none'
-                    _focus={{bg: 'secondary.500'}}
+                    bg={showRetired ? 'secondary.500' : 'none'}
                     border='1px gray solid'
                     onClick={handleToggle}>Retired Fighters</Button>
                   </HStack>

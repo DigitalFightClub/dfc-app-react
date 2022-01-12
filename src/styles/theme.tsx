@@ -114,6 +114,7 @@ export const theme = extendTheme({
           color: 'white',
           fontWeight: 'light',
           _hover: { bg: 'primary.700' },
+          _focus: {boxShadow: 'none'}
         },
         secondary: {
           borderRadius: 'none',
@@ -123,7 +124,7 @@ export const theme = extendTheme({
           color: 'white',
           fontWeight: 'light',
           _hover: { bg: 'secondary.700' },
-          _active: {border: 'none'}
+          _focus: {boxShadow: 'none'}
         },
       },
     },

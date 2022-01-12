@@ -10,11 +10,11 @@ export default function Gym() {
             <Box>
               <Container
                maxW={{'xl': '100ch', lg: '80ch', md: '80ch', sm:'60ch'}}
-               my='1rem'>
+               my='1rem'
+               >
                 <Stack
                 justifyContent='flex-start'
                 my='40px'
-                minW='100%'
                 >
                     <GymHeader />
                 </Stack>
