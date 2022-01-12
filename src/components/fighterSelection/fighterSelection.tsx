@@ -17,9 +17,9 @@ export default function FighterSelection() {
   };
 
     return (
-        <Flex>
-            <Stack>
-                <Grid minW='100%' justifyContent="center">
+        <Flex minW='100%'>
+            <Stack minW='100%'>
+                <Grid minW='100%'>
 
                   <HStack minW='100%' gap='0' spacing='0'>
                     <Button w='100%' variant='primary'
