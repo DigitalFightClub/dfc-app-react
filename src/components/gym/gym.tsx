@@ -2,7 +2,7 @@ import { Grid, Container, Stack, VStack, Box} from '@chakra-ui/react';
 
 import GymTile from '../gymTile';
 import GymHeader from '../gymHeader';
-import GymFighters from '../gymFighters';
+import FighterSelection from '../fighterSelection';
 
 export default function Gym() {
 
@@ -20,7 +20,7 @@ export default function Gym() {
                 </Stack>
 
                 <VStack
-                gap='3rem'
+                spacing='3rem'
                 minW='100%'
                 >
                 <Grid
@@ -36,8 +36,9 @@ export default function Gym() {
                     <GymTile datanumber='1' dataname='Championships Held' />
                 </Grid>
 
-                <GymFighters />
+                <FighterSelection />
                 </VStack>
+
               </Container>
             </Box>
     );

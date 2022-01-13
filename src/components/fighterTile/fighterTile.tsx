@@ -85,15 +85,15 @@ export default function FighterTile() {
       bg="linear-gradient(95.1deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.05) 101.67%);"
       transition="ease-in-out 0.2s"
       _hover={{cursor: 'pointer', boxShadow: 'inset 0 -48px 38px -48px  #2ABB75'}}
-      h='327px'
-      w='510px'
+      h='minmax(327px, 163px)'
+      w='minmax(510px, 255px)'
       py="24px"
       px='32px'
       alignContent="center"
     >
-      <Flex templateColumns="1fr 4fr">
+      <Flex templateColumns="1fr 1fr">
 
-        <Box height='50%' width='50%' pos="relative" top='-90px' left='-70px'>
+        <Box height='minmax(150px, 75px)' width='minmax(150px, 75px)' pos="relative" top='-90px' left='-90px' filter='drop-shadow(0 0 0.75rem crimson)'>
           <Image src="/assets/neon-fighter.svg" />
         </Box>
 
