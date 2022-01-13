@@ -15,7 +15,7 @@ export default function GymHeader() {
           h='1.75rem'
           w='1.75rem'
           display='inline'
-          src='/red-dragon-gym.svg'/>
+          src='/assets/red-dragon-gym.svg'/>
             <Heading textTransform='uppercase'>
             {gymname}
             </Heading>

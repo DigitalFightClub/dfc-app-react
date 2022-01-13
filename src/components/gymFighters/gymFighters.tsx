@@ -1,7 +1,6 @@
-import { Box, Stack, VStack } from '@chakra-ui/react';
+import { Stack, VStack } from '@chakra-ui/react';
 
 import FighterSelection from '../fighterSelection';
-import FighterTile from '../fighterTile';
 
 export default function GymFighters() {
 
@@ -10,11 +9,6 @@ export default function GymFighters() {
             <Stack minW='100%'>
                 <FighterSelection/>
             </Stack>
-
-            <Stack>
-              <FighterTile />
-            </Stack>
-
         </VStack>
     );
 }

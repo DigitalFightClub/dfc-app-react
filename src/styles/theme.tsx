@@ -54,13 +54,13 @@ export const theme = extendTheme({
       variants: {
         micro: {
           fontSize: '0.75rem',
-          color: 'white',
-          fontWeight: '300',
+          color: 'gray.100',
+          fontWeight: 'light',
         },
         small: {
           fontSize: '0.85rem',
           color: 'white',
-          fontWeight: '400',
+          fontWeight: 'light',
         },
         body2: {
           fontSize: '1.15rem',
@@ -88,7 +88,7 @@ export const theme = extendTheme({
           color: '#A0A3B1',
         },
         header2: {
-          fontSize: '1.75rem',
+          fontSize: '1.5rem',
           fontWeight: '600',
           color: 'white',
         },

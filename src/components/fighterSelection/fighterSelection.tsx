@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import { Grid, Stack, HStack, Button, Collapse, Box, Flex } from '@chakra-ui/react';
+import FighterTile from '../fighterTile';
 
 
 export default function FighterSelection() {
@@ -18,7 +19,7 @@ export default function FighterSelection() {
 
     return (
         <Flex minW='100%'>
-            <Stack minW='100%'>
+            <Stack minW='100%' >
                 <Grid minW='100%'>
 
                   <HStack minW='100%' gap='0' spacing='0'>
@@ -34,27 +35,24 @@ export default function FighterSelection() {
                   </HStack>
 
                  <Collapse in={showActive} animateOpacity>
-                   <Box
-                     p='40px'
-                     color='white'
-                     mt='4'
-                     bg='teal.500'
-                     rounded='md'
-                     shadow='md'
+                   <Grid
+                    templateColumns={{xl: 'repeat(2, 518px)', lg: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', sm: '1fr', base: '1fr'}}
+                    justifyItems='center'
+                    gap='5rem 8rem'
                    >
-                   </Box>
+                      <FighterTile />
+                      <FighterTile />
+                      <FighterTile />
+                      <FighterTile />
+                      <FighterTile />
+                      <FighterTile />
+                   </Grid>
                  </Collapse>
 
                  <Collapse in={showRetired} animateOpacity>
-                   <Box
-                     p='40px'
-                     color='white'
-                     mt='4'
-                     bg='orange'
-                     rounded='md'
-                     shadow='md'
-                   >
-                   </Box>
+                   <Grid>
+                      <FighterTile />
+                   </Grid>
                  </Collapse>
 
                 </Grid>
