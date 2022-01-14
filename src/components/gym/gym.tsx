@@ -1,48 +1,45 @@
-import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Divider, Grid } from '@material-ui/core';
+import { Grid, Container, Stack, VStack, Box} from '@chakra-ui/react';
 
 import GymTile from '../gymTile';
 import GymHeader from '../gymHeader';
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            flexGrow: 1,
-        },
-        paper: {
-            height: 140,
-            width: 100,
-        },
-        control: {
-            padding: theme.spacing(3),
-        },
-    }),
-);
+import FighterSelection from '../fighterSelection';
 
 export default function Gym() {
-    const classes = useStyles();
 
     return (
-        <div>
-            <Grid container className={classes.root} spacing={2}>
-                <Grid container item xs={12} spacing={3}>
-                    <Grid container justifyContent="center">
-                        <GymHeader/>
-                    </Grid>
+            <Box>
+              <Container
+               maxW={{'xl': '100ch', lg: '80ch', md: '80ch', sm:'60ch'}}
+               my='1rem'
+               >
+                <Stack
+                justifyContent='flex-start'
+                my='40px'
+                >
+                    <GymHeader />
+                </Stack>
+
+                <VStack
+                spacing='3rem'
+                minW='100%'
+                >
+                <Grid
+                templateColumns={{xl: 'repeat(3, 370px)', lg: 'repeat(3, 1fr)', md: 'repeat(3, 1fr)', sm: 'repeat(2, 1fr)', base: '1fr'}}
+                gap='30px'
+                justifyContent='center'
+                >
+                    <GymTile datanumber='4' dataname='Active Fighters'/>
+                    <GymTile datanumber='32-26' dataname='Active Fight Record'/>
+                    <GymTile datanumber='1337' dataname='$TKO Tokens'/>
+                    <GymTile datanumber='2' dataname='Retired Fighters'/>
+                    <GymTile datanumber='59-42' dataname='Overall Fight Record'/>
+                    <GymTile datanumber='1' dataname='Championships Held' />
                 </Grid>
-                
-                <Grid container item xs={12} spacing={3}>
-                    <Grid container justifyContent="center">
-                        <GymTile /> <GymTile /> <GymTile />
-                    </Grid>
-                </Grid>
-                <Grid container item xs={12} spacing={3}>
-                    <Grid container justifyContent="center">
-                        <GymTile /> <GymTile /> <GymTile />
-                    </Grid>
-                </Grid>
-            </Grid>
-        </div>
+
+                <FighterSelection />
+                </VStack>
+
+              </Container>
+            </Box>
     );
 }

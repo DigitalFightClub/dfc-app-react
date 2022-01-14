@@ -1,31 +1,24 @@
-import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Card, CardContent, Typography } from '@material-ui/core';
 
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            flexGrow: 1,
-        },
-        paper: {
-            padding: theme.spacing(1),
-            textAlign: 'center',
-            color: theme.palette.text.secondary,
-        },
-    }),
-);
+import { Heading, HStack, Image } from '@chakra-ui/react';
 
 export default function GymHeader() {
-    const classes = useStyles();
+
+    //hardcoded as example
+    const gymname = 'Red Dragon Gym';
 
     return (
-        <Card className={classes.root}>
-            <CardContent>
-                <Typography variant="h2" component="h2">
-                    Red Dragon Gym
-                </Typography>
-            </CardContent>
-        </Card>
+        <HStack
+        align='center'
+        justify='left'
+        >
+        <Image
+          h='1.75rem'
+          w='1.75rem'
+          display='inline'
+          src='/assets/red-dragon-gym.svg'/>
+            <Heading textTransform='uppercase'>
+            {gymname}
+            </Heading>
+        </HStack>
     );
 }

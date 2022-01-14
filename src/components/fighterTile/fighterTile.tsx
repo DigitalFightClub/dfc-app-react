@@ -1,43 +1,104 @@
-import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Card, CardContent, Grid, Paper, Typography } from '@material-ui/core';
 
+import { Box, Flex, Image, Grid, Text, Heading } from "@chakra-ui/react";
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            flexGrow: 1,
-        },
-        fighter: {
-            padding: theme.spacing(1),
-            textAlign: 'center',
-            color: theme.palette.text.secondary,
-            height: '200px'
-        },
-        paper: {
-            padding: theme.spacing(1),
-            textAlign: 'center',
-            color: theme.palette.text.secondary,
-        },
-    }),
-);
+export default function FighterTile() {
+  type FighterInfo = {
+    name: string;
+    record: string;
+    age: string;
+    height: string;
+    weight: string;
+    org: string;
+    recruited: string;
+    status: string;
+  };
 
-export default function GymHeader() {
-    const classes = useStyles();
+  const activeFighterData = {
+    name: "Guy Hawkins",
+    record: "37-0",
+    age: "33",
+    height: "193cm",
+    weight: "89kg",
+    org: "Professional Fighting Circuit",
+    recruited: "19.10.2021",
+    status: "Active",
+  };
 
+  const FighterData = () => {
     return (
-        <Grid container className={classes.root} spacing={3}>
-            <Grid item xs={6}>
-                <Paper className={classes.fighter}>xs=6</Paper>
-            </Grid>
-            <Grid container xs={6} spacing={2}>
-                <Grid item xs={12}>
-                    <Paper className={classes.paper}>xs=12</Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.paper}>xs=12</Paper>
-                </Grid>
-            </Grid>
-        </Grid>
+      <Grid templateRows='repeat(6, 30px)' textAlign='left' gap='11px'>
+        <Box>
+          <Heading variant='header2'>
+            {activeFighterData.name}
+          </Heading>
+        </Box>
+
+        <Text variant="small">
+          AGE:{" "}
+          <Text display="inline" variant="micro">
+            {activeFighterData.age}
+          </Text>
+        </Text>
+
+        <Text variant="small">
+          HEIGHT:{" "}
+          <Text display="inline" variant="micro">
+            {activeFighterData.height}
+          </Text>
+        </Text>
+
+        <Text variant="small">
+          WEIGHT:{" "}
+          <Text display="inline" variant="micro">
+            {activeFighterData.weight}
+          </Text>
+        </Text>
+
+        <Text variant="small">
+          ORG:{" "}
+          <Text display="inline" variant="micro">
+            {activeFighterData.org}
+          </Text>
+        </Text>
+
+        <Text variant="small">
+          RECRUITER:{" "}
+          <Text display="inline" variant="micro" >
+            {activeFighterData.recruited}
+          </Text>
+        </Text>
+
+        <Text variant="small">
+          STATUS:{" "}
+          <Text display="inline" variant="micro"
+          fontWeight='100' color='green'>
+            {activeFighterData.status}
+          </Text>
+        </Text>
+      </Grid>
     );
+  };
+
+  return (
+    <Box
+      boxSizing="border-box"
+      bg="linear-gradient(95.1deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.05) 101.67%)"
+      transition="ease-in-out 0.2s"
+      _hover={{cursor: 'pointer', boxShadow: 'inset 0 -48px 38px -48px  #2ABB75'}}
+      h='minmax(327px, 163px)'
+      w='minmax(510px, 255px)'
+      py="24px"
+      px='32px'
+      alignContent="center"
+    >
+      <Grid templateColumns="1fr 1fr">
+
+        <Box height='300px' pos="relative" top='-90px' left='-90px'>
+          <Image src="/assets/neon-fighter.svg" />
+        </Box>
+
+        <FighterData />
+      </Grid>
+    </Box>
+  );
 }

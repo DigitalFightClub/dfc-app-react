@@ -1,33 +1,65 @@
-import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import {Grid, Typography } from '@material-ui/core';
+import {useState} from 'react';
+import { Grid, Stack, HStack, Button, Collapse } from '@chakra-ui/react';
+import FighterTile from '../fighterTile';
 
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            flexGrow: 1,
-        },
-        paper: {
-            padding: theme.spacing(1),
-            textAlign: 'center',
-            color: theme.palette.text.secondary,
-        },
-    }),
-);
 
 export default function FighterSelection() {
-    const classes = useStyles();
+  const [showActive, setShowActive] = useState(true);
+  const [showRetired, setShowRetired] = useState(false);
+
+  const handleToggle = () => {
+    if (showActive == false) {
+      setShowActive(true);
+      setShowRetired(false);
+    } else if (showActive == true) {
+      setShowRetired(true);
+      setShowActive(false);
+    }
+  };
 
     return (
-        <Grid container className={classes.root} spacing={2}>
-            <Grid container item xs={12} spacing={3}>
-                <Grid container justifyContent="center">
-                    <Typography variant="h2" component="h2">
-                        Active Fighters | Retired Fighters
-                    </Typography> 
-                </Grid>
+        <Stack minW='100%' >
+          <Grid gap='5rem'>
+              <HStack minW='100%' gap='0' spacing='0'>
+                <Button w='100%' variant='primary'
+                bg={showActive ? 'primary.500' : 'none'}
+                border='1px gray solid'
+                onClick={handleToggle}>Active Fighters</Button>
+
+                <Button w='100%' variant='secondary'
+                bg={showRetired ? 'secondary.500' : 'none'}
+                border='1px gray solid'
+                onClick={handleToggle}>Retired Fighters</Button>
+              </HStack>
+
+             <Collapse in={showActive} animateOpacity>
+               <Grid
+                templateColumns={{xl: 'repeat(2, 518px)', lg: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', sm: '1fr', base: '1fr'}}
+                w='100%'
+                justifyItems='center'
+                gap='5rem 4rem'
+                pl='50px'
+               >
+                  <FighterTile />
+                  <FighterTile />
+                  <FighterTile />
+                  <FighterTile />
+                  <FighterTile />
+                  <FighterTile />
+               </Grid>
+             </Collapse>
+
+             <Collapse in={showRetired} animateOpacity>
+               <Grid                 templateColumns={{xl: 'repeat(2, 518px)', lg: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', sm: '1fr', base: '1fr'}}
+                               w='100%'
+                               justifyItems='center'
+                               gap='5rem 4rem'
+                               pl='50px'>
+                  <FighterTile />
+               </Grid>
+             </Collapse>
+
             </Grid>
-        </Grid>
+        </Stack>
     );
 }

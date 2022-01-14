@@ -1,31 +1,31 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import {Heading, Stack} from '@chakra-ui/react';
 
-const useStyles = makeStyles({
-    root: {
-        minWidth: 275,
-    },
-    title: {
-        fontSize: 14,
-    }
-});
+type GymTileData = {
+  datanumber: string;
+  dataname: string;
+}
 
-export default function GymTile() {
-    const classes = useStyles();
+export default function GymTile({datanumber, dataname}:GymTileData) {
 
     return (
-        <Card className={classes.root}>
-            <CardContent>
-                <Typography variant="h2" component="h2">
-                    4
-                </Typography>
-                <Typography variant="body2" component="p">
-                    Active Fighters
-                </Typography>
-            </CardContent>
-        </Card>
+        <Stack
+        flexDirection='column'
+        bg='linear-gradient(95.1deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.05) 101.67%)'
+        _hover={{cursor: 'pointer', boxShadow: 'inset 0 -16px 28px -28px  #DBDBDC'}}
+        transition='ease-in-out 0.2s'
+        boxSizing='border-box'
+        px='72px'
+        py='24px'
+        alignContent='center'
+        >
+                <Heading
+                  variant='header2'
+                >
+                    {datanumber}
+                </Heading>
+                <Heading variant='header3' >
+                    {dataname}
+                </Heading>
+        </Stack>
     );
 }
