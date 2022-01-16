@@ -1,19 +1,35 @@
+import { Box,
+  useDisclosure,
+  Image, Grid, Text, Heading,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+} from "@chakra-ui/react";
 
-import { Box, Flex, Image, Grid, Text, Heading } from "@chakra-ui/react";
 
-export default function FighterTile() {
-  type FighterInfo = {
-    name: string;
-    record: string;
-    age: string;
-    height: string;
-    weight: string;
-    org: string;
-    recruited: string;
-    status: string;
-  };
 
-  const activeFighterData = {
+import FighterModal from '../modals/fighterModal';
+
+type FighterInfo = {
+  name: string;
+  country: string;
+  wins: string;
+  loses: string;
+  age: string;
+  height: string;
+  weight: string;
+  org: string;
+  recruited: string;
+  status: string;
+};
+
+type FighterType = {
+  fighterType: string;
+}
+
+export default function FighterTile({fighterType}: FighterType) {
+
+  const activeFighterData: FighterInfo = {
     name: "Guy Hawkins",
     country: "US",
     wins: "37",
@@ -26,17 +42,36 @@ export default function FighterTile() {
     status: "Active",
   };
 
-  const FighterData = () => {
+  const retiredFighterData: FighterInfo = {
+    name: "Theresa Webb",
+    country: "US",
+    wins: "11",
+    loses: "4",
+    age: "18",
+    height: "172cm",
+    weight: "59kg",
+    org: "Professional Fighting Circuit",
+    recruited: "19.10.2021",
+    status: "Retired",
+  };
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const FighterData = ({fighterType}: FighterType) => {
     return (
       <Grid templateRows='repeat(3, 30px)'
-      textAlign='left' gap='11px'>
+      textAlign='left' minH='180px' gap='11px'>
         <Heading textAlign={{xl: 'left', lg: 'left', md: 'left', sm: 'center', base:'center'}} variant='header3'>
-          {activeFighterData.name}
+          {fighterType === 'active' ? activeFighterData.name : retiredFighterData.name}
         </Heading>
 
         <Heading variant='header4' textAlign={{xl: 'left', lg: 'left', md: 'left', sm: 'center', base:'center'}}>Record:
-        <Text display='inline'  color='primary.500'>&nbsp;{activeFighterData.wins}</Text>{'-'}<Text
-        display='inline' color='secondary.500'>{activeFighterData.loses}</Text>
+        <Text display='inline'  color='primary.500'>&nbsp;{fighterType === 'active' ? activeFighterData.wins : retiredFighterData.wins}</Text>
+
+        {'-'}
+
+        <Text
+        display='inline' color='secondary.500'>{fighterType === 'active' ? activeFighterData.loses : retiredFighterData.loses}</Text>
         </Heading>
 
         <Grid       templateColumns={{xl: '1', lg: '1fr', md: '1fr', sm: 'repeat(2, 1fr)', base: 'repeat(2, 1fr)'}}
@@ -46,43 +81,43 @@ export default function FighterTile() {
           <Text variant="micro">
             AGE:&nbsp;&nbsp;
             <Text display="inline" variant="small">
-              {activeFighterData.age}
+                    {fighterType === 'active' ? activeFighterData.age : retiredFighterData.age}
             </Text>
           </Text>
 
           <Text variant="micro">
             HEIGHT:&nbsp;&nbsp;
             <Text display="inline" variant="small">
-              {activeFighterData.height}
+                  {fighterType === 'active' ? activeFighterData.height : retiredFighterData.height}
             </Text>
           </Text>
 
           <Text variant="micro">
             WEIGHT:&nbsp;&nbsp;
             <Text display="inline" variant="small">
-              {activeFighterData.weight}
+                {fighterType === 'active' ? activeFighterData.weight : retiredFighterData.weight}
             </Text>
           </Text>
 
           <Text variant="micro">
             ORG:&nbsp;&nbsp;
             <Text display="inline" variant="small">
-              {activeFighterData.org}
+                {fighterType === 'active' ? activeFighterData.org : retiredFighterData.org}
             </Text>
           </Text>
 
           <Text variant="micro">
             RECRUITER:&nbsp;&nbsp;
             <Text display="inline" variant="small" >
-              {activeFighterData.recruited}
+                {fighterType === 'active' ? activeFighterData.recruited : retiredFighterData.recruited}
             </Text>
           </Text>
 
           <Text variant="micro">
             STATUS:&nbsp;&nbsp;
             <Text display="inline" variant="small"
-            fontWeight='400' color='green'>
-              {activeFighterData.status}
+            fontWeight='400' color={fighterType === 'active' ? 'green' : 'red'}>
+                {fighterType === 'active' ? activeFighterData.status : retiredFighterData.status}
             </Text>
           </Text>
         </Grid>
@@ -91,28 +126,43 @@ export default function FighterTile() {
   };
 
   return (
+    <>
+    {isOpen &&
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <FighterModal fighterType={fighterType} onClose={onClose}/>
+        </ModalContent>
+      </Modal>
+    }
+
     <Box
+      as='link'
       boxSizing="border-box"
       bg="linear-gradient(95.1deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.05) 101.67%)"
       transition="ease-in-out 0.4s"
       _hover={{cursor: 'pointer', boxShadow: 'inset 0 -48px 38px -48px  #2ABB75'}}
-      h='fit-content'
+      h='max-content'
       w='fit-content'
       py="24px"
       px='32px'
       alignContent="center"
+      onClick={onOpen}
     >
-      <Grid direction='row' templateColumns={{xl: "1fr 1fr", lg: '200px 1fr', md: 'repeat(2, 1fr)', sm: '1fr'}}>
+      <Grid templateColumns={{xl: "1fr 2fr", lg: '1fr 2fr', md: 'repeat(2, 1fr)', sm: '1fr', base: '1fr'}}>
 
         <Box maxH='300px'
+        justifySelf='center'
         pos="relative"
         top={{"2xl": '-90px', xl: '-90px', lg: '-90px', md: '-90px', sm: '-100px', base: '-100px'}}
         left={{"2xl": '-90px', xl: '-90px', lg: '-90px', md: '-90px', sm: '0px', base: '0'}}>
-          <Image height='auto' src="/assets/neon-fighter.svg" />
+          <Image  height='auto' src="/assets/neon-fighter.svg" />
         </Box>
 
-        <FighterData />
+        <FighterData fighterType={fighterType} />
       </Grid>
     </Box>
+    </>
   );
 }

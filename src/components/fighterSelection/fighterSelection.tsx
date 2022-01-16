@@ -38,14 +38,12 @@ export default function FighterSelection() {
                 w='100%'
                 justifyItems='center'
                 gap='5rem 4rem'
-                pl='50px'
+                pl={{xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px'}}
                >
-                  <FighterTile />
-                  <FighterTile />
-                  <FighterTile />
-                  <FighterTile />
-                  <FighterTile />
-                  <FighterTile />
+                  <FighterTile fighterType='active'/>
+                  <FighterTile fighterType='active'/>
+                  <FighterTile fighterType='active'/>
+                  <FighterTile fighterType='active'/>
                </Grid>
              </Collapse>
 
@@ -55,9 +53,9 @@ export default function FighterSelection() {
               w='100%'
               justifyItems='center'
               gap='5rem 4rem'
-              pl='50px'
+              pl={{xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px'}}
              >
-                  <FighterTile />
+                  <FighterTile fighterType='inactive'/>
                </Grid>
              </Collapse>
 

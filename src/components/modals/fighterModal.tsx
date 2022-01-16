@@ -1,6 +1,11 @@
 import React from 'react'
 
-export default function FighterModal() {
+type ModalProps = {
+  fighterType: string;
+  onClose: () => void;
+}
+
+export default function FighterModal({fighterType, onClose}: ModalProps) {
   return (
     <div>MyComponent</div>
   )
