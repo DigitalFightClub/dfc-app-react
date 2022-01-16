@@ -19,11 +19,11 @@ export default function GymTile({datanumber, dataname}:GymTileData) {
         alignContent='center'
         >
                 <Heading
-                  variant='header2'
+                  variant='header1'
                 >
                     {datanumber}
                 </Heading>
-                <Heading variant='header3' >
+                <Heading variant='header4' >
                     {dataname}
                 </Heading>
         </Stack>

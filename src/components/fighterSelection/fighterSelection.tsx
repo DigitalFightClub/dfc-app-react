@@ -34,7 +34,7 @@ export default function FighterSelection() {
 
              <Collapse in={showActive} animateOpacity>
                <Grid
-                templateColumns={{xl: 'repeat(2, 518px)', lg: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', sm: '1fr', base: '1fr'}}
+                templateColumns={{xl: 'repeat(2, 518px)', lg: 'repeat(2, 450px)', md: '1fr', sm: '1fr', base: '1fr'}}
                 w='100%'
                 justifyItems='center'
                 gap='5rem 4rem'
@@ -50,11 +50,13 @@ export default function FighterSelection() {
              </Collapse>
 
              <Collapse in={showRetired} animateOpacity>
-               <Grid                 templateColumns={{xl: 'repeat(2, 518px)', lg: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', sm: '1fr', base: '1fr'}}
-                               w='100%'
-                               justifyItems='center'
-                               gap='5rem 4rem'
-                               pl='50px'>
+             <Grid
+              templateColumns={{xl: 'repeat(2, 518px)', lg: 'repeat(2, 2fr)', md: '1fr', sm: '1fr', base: '1fr'}}
+              w='100%'
+              justifyItems='center'
+              gap='5rem 4rem'
+              pl='50px'
+             >
                   <FighterTile />
                </Grid>
              </Collapse>

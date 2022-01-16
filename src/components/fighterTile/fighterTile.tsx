@@ -15,7 +15,9 @@ export default function FighterTile() {
 
   const activeFighterData = {
     name: "Guy Hawkins",
-    record: "37-0",
+    country: "US",
+    wins: "37",
+    loses: "0",
     age: "33",
     height: "193cm",
     weight: "89kg",
@@ -26,55 +28,64 @@ export default function FighterTile() {
 
   const FighterData = () => {
     return (
-      <Grid templateRows='repeat(6, 30px)' textAlign='left' gap='11px'>
-        <Box>
-          <Heading variant='header2'>
-            {activeFighterData.name}
-          </Heading>
-        </Box>
+      <Grid templateRows='repeat(3, 30px)'
+      textAlign='left' gap='11px'>
+        <Heading textAlign={{xl: 'left', lg: 'left', md: 'left', sm: 'center', base:'center'}} variant='header3'>
+          {activeFighterData.name}
+        </Heading>
 
-        <Text variant="small">
-          AGE:{" "}
-          <Text display="inline" variant="micro">
-            {activeFighterData.age}
-          </Text>
-        </Text>
+        <Heading variant='header4' textAlign={{xl: 'left', lg: 'left', md: 'left', sm: 'center', base:'center'}}>Record:
+        <Text display='inline'  color='primary.500'>&nbsp;{activeFighterData.wins}</Text>{'-'}<Text
+        display='inline' color='secondary.500'>{activeFighterData.loses}</Text>
+        </Heading>
 
-        <Text variant="small">
-          HEIGHT:{" "}
-          <Text display="inline" variant="micro">
-            {activeFighterData.height}
-          </Text>
-        </Text>
+        <Grid       templateColumns={{xl: '1', lg: '1fr', md: '1fr', sm: 'repeat(2, 1fr)', base: 'repeat(2, 1fr)'}}
+        gap='11px'
+        >
 
-        <Text variant="small">
-          WEIGHT:{" "}
-          <Text display="inline" variant="micro">
-            {activeFighterData.weight}
+          <Text variant="micro">
+            AGE:&nbsp;&nbsp;
+            <Text display="inline" variant="small">
+              {activeFighterData.age}
+            </Text>
           </Text>
-        </Text>
 
-        <Text variant="small">
-          ORG:{" "}
-          <Text display="inline" variant="micro">
-            {activeFighterData.org}
+          <Text variant="micro">
+            HEIGHT:&nbsp;&nbsp;
+            <Text display="inline" variant="small">
+              {activeFighterData.height}
+            </Text>
           </Text>
-        </Text>
 
-        <Text variant="small">
-          RECRUITER:{" "}
-          <Text display="inline" variant="micro" >
-            {activeFighterData.recruited}
+          <Text variant="micro">
+            WEIGHT:&nbsp;&nbsp;
+            <Text display="inline" variant="small">
+              {activeFighterData.weight}
+            </Text>
           </Text>
-        </Text>
 
-        <Text variant="small">
-          STATUS:{" "}
-          <Text display="inline" variant="micro"
-          fontWeight='100' color='green'>
-            {activeFighterData.status}
+          <Text variant="micro">
+            ORG:&nbsp;&nbsp;
+            <Text display="inline" variant="small">
+              {activeFighterData.org}
+            </Text>
           </Text>
-        </Text>
+
+          <Text variant="micro">
+            RECRUITER:&nbsp;&nbsp;
+            <Text display="inline" variant="small" >
+              {activeFighterData.recruited}
+            </Text>
+          </Text>
+
+          <Text variant="micro">
+            STATUS:&nbsp;&nbsp;
+            <Text display="inline" variant="small"
+            fontWeight='400' color='green'>
+              {activeFighterData.status}
+            </Text>
+          </Text>
+        </Grid>
       </Grid>
     );
   };
@@ -83,18 +94,21 @@ export default function FighterTile() {
     <Box
       boxSizing="border-box"
       bg="linear-gradient(95.1deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.05) 101.67%)"
-      transition="ease-in-out 0.2s"
+      transition="ease-in-out 0.4s"
       _hover={{cursor: 'pointer', boxShadow: 'inset 0 -48px 38px -48px  #2ABB75'}}
-      h='minmax(327px, 163px)'
-      w='minmax(510px, 255px)'
+      h='fit-content'
+      w='fit-content'
       py="24px"
       px='32px'
       alignContent="center"
     >
-      <Grid templateColumns="1fr 1fr">
+      <Grid direction='row' templateColumns={{xl: "1fr 1fr", lg: '200px 1fr', md: 'repeat(2, 1fr)', sm: '1fr'}}>
 
-        <Box height='300px' pos="relative" top='-90px' left='-90px'>
-          <Image src="/assets/neon-fighter.svg" />
+        <Box maxH='300px'
+        pos="relative"
+        top={{"2xl": '-90px', xl: '-90px', lg: '-90px', md: '-90px', sm: '-100px', base: '-100px'}}
+        left={{"2xl": '-90px', xl: '-90px', lg: '-90px', md: '-90px', sm: '0px', base: '0'}}>
+          <Image height='auto' src="/assets/neon-fighter.svg" />
         </Box>
 
         <FighterData />

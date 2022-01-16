@@ -24,7 +24,7 @@ export default function Gym() {
                 minW='100%'
                 >
                 <Grid
-                templateColumns={{xl: 'repeat(3, 370px)', lg: 'repeat(3, 1fr)', md: 'repeat(3, 1fr)', sm: 'repeat(2, 1fr)', base: '1fr'}}
+                templateColumns={{xl: 'repeat(3, 370px)', lg: 'repeat(3, 1fr)', md: 'repeat(auto-fit, 3, 1fr)', sm: 'repeat(2, 1fr)', base: '1fr'}}
                 gap='30px'
                 justifyContent='center'
                 >
