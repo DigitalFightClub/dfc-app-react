@@ -1,24 +1,40 @@
+import { useState } from "react";
+import { Heading, Button, HStack, Image, Input } from "@chakra-ui/react";
 
-import { Heading, HStack, Image } from '@chakra-ui/react';
+import { EditIcon, CheckIcon } from '@chakra-ui/icons'
 
 export default function GymHeader() {
+  const [changeGym, setChangeGym] = useState<boolean>(false);
 
-    //hardcoded as example
-    const gymname = 'Red Dragon Gym';
+  //hardcoded gym name
+  const [gymname, setGymname] = useState<
+    React.ChangeEvent<HTMLInputElement> | string | any
+  >("Red Dragon Gym");
 
-    return (
-        <HStack
-        align='center'
-        justify='left'
-        >
-        <Image
-          h='1.75rem'
-          w='1.75rem'
-          display='inline'
-          src='/assets/red-dragon-gym.svg'/>
-            <Heading textTransform='uppercase'>
-            {gymname}
-            </Heading>
-        </HStack>
-    );
+  const changeGymName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setGymname(event);
+  };
+
+  return (
+    <HStack align="center" justify="left">
+      <Image
+        h="1.75rem"
+        w="1.75rem"
+        display="inline"
+        src="/assets/red-dragon-gym.svg"
+      />
+      {changeGym ? (
+        <>
+          <Input textTransform="uppercase" value={gymname} onChange={(event) => changeGymName(event)} />
+          <Button display='inline' onClick={() => setChangeGym(false)}><CheckIcon/></Button>
+        </>
+      ) : (
+        <>
+          <Heading textTransform="uppercase">{gymname}</Heading>
+
+          <Button display='inline' onClick={() => setChangeGym(true)}><EditIcon/></Button>
+        </>
+      )}
+    </HStack>
+  );
 }

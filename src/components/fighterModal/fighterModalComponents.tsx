@@ -1,12 +1,6 @@
-import { Box,
-  useDisclosure,
-  Image, Grid, Text, Heading,
-  Modal,
-  ModalOverlay,
-  ModalContent
-} from "@chakra-ui/react";
+import {Box, Button, Flex, Text, Grid, Image, Heading, Icon, useColorModeValue} from '@chakra-ui/react';
 
-import FighterModal from '../fighterModal/fighterModal';
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
 
 type FighterInfo = {
   name: string;
@@ -21,41 +15,17 @@ type FighterInfo = {
   status: string;
 };
 
-type FighterType = {
+type FighterModalProps = {
   fighterType: string;
+  activeFighterData: FighterInfo;
+  retiredFighterData: FighterInfo;
 }
 
-export default function FighterTile({fighterType}: FighterType) {
+// This is where the fighter image and basic data appears
+export const FighterHeader = ({fighterType, activeFighterData,
+retiredFighterData}: FighterModalProps) => {
 
-  const activeFighterData: FighterInfo = {
-    name: "Guy Hawkins",
-    country: "US",
-    wins: "37",
-    loses: "0",
-    age: "33",
-    height: "193cm",
-    weight: "89kg",
-    org: "Professional Fighting Circuit",
-    recruited: "19.10.2021",
-    status: "Active",
-  };
-
-  const retiredFighterData: FighterInfo = {
-    name: "Theresa Webb",
-    country: "US",
-    wins: "11",
-    loses: "4",
-    age: "18",
-    height: "172cm",
-    weight: "59kg",
-    org: "Professional Fighting Circuit",
-    recruited: "19.10.2021",
-    status: "Retired",
-  };
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const FighterData = ({fighterType}: FighterType) => {
+  const FighterData = ({fighterType}: any) => {
     return (
       <Grid templateRows='repeat(3, 30px)'
       textAlign='left' minH='180px' gap='11px'>
@@ -124,22 +94,6 @@ export default function FighterTile({fighterType}: FighterType) {
   };
 
   return (
-    <>
-    {isOpen &&
-
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <FighterModal
-          fighterType={fighterType}
-          onClose={onClose}
-          activeFighterData={activeFighterData}
-          retiredFighterData={retiredFighterData}
-          />
-        </ModalContent>
-      </Modal>
-    }
-
     <Box
       boxSizing="border-box"
       bg="linear-gradient(95.1deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.05) 101.67%)"
@@ -150,7 +104,6 @@ export default function FighterTile({fighterType}: FighterType) {
       py="24px"
       px='32px'
       alignContent="center"
-      onClick={onOpen}
     >
       <Grid templateColumns={{xl: "1fr 2fr", lg: '1fr 2fr', md: 'repeat(2, 1fr)', sm: '1fr', base: '1fr'}}>
 
@@ -165,6 +118,77 @@ export default function FighterTile({fighterType}: FighterType) {
         <FighterData fighterType={fighterType} />
       </Grid>
     </Box>
+  )
+}
+
+//Here's the fighter stats (bars and values)
+export const FighterStats = () => {
+  return (
+    <>
+      YES
     </>
-  );
+  )
+}
+
+export function FighterHistory() {
+
+  const PagButton = (props: any) => {
+    const activeStyle = {
+      bg: useColorModeValue("#252A34", "#EEF0F1"),
+      color: useColorModeValue("white", "black"),
+    };
+
+    return (
+      <Button
+        mx={1}
+        px={4}
+        py={2}
+        rounded="md"
+        bg={useColorModeValue("white", "gray.800")}
+        color=''
+        opacity={props.disabled && 0.6}
+        _hover={!props.disabled && activeStyle}
+        cursor={props.disabled && "not-allowed"}
+        {...(props.active && activeStyle)}
+      >
+        {props.children}
+      </Button>
+    );
+  };
+
+  return (
+    <Box>
+      <Heading variant='header3'>
+        Fighter History
+      </Heading>
+
+      <Flex
+        bg={useColorModeValue("#F9FAFB", "gray.600")}
+        p={50}
+        w="full"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Flex>
+          <PagButton>
+            <Icon
+              as={ArrowBackIcon}
+              color='white'
+              boxSize={4}
+            />
+          </PagButton>
+          <PagButton active>1</PagButton>
+          <PagButton>2</PagButton>
+          <PagButton>3</PagButton>
+          <PagButton>
+            <Icon
+              as={ArrowForwardIcon}
+              color='white'
+              boxSize={4}
+            />
+          </PagButton>
+        </Flex>
+      </Flex>
+    </Box>
+  )
 }
