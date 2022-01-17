@@ -11,10 +11,6 @@ export default function GymHeader() {
     React.ChangeEvent<HTMLInputElement> | string | any
   >("Red Dragon Gym");
 
-  const changeGymName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setGymname(event);
-  };
-
   return (
     <HStack align="center" justify="left">
       <Image
@@ -25,7 +21,7 @@ export default function GymHeader() {
       />
       {changeGym ? (
         <>
-          <Input textTransform="uppercase" value={gymname} onChange={(event) => changeGymName(event)} />
+          <Input textTransform="uppercase" value={gymname} onChange={(event) =>   setGymname(event.target.value)} />
           <Button display='inline' onClick={() => setChangeGym(false)}><CheckIcon/></Button>
         </>
       ) : (
