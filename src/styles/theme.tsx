@@ -3,7 +3,7 @@ import { createBreakpoints } from '@chakra-ui/theme-tools';
 
 const breakpoints = createBreakpoints({
   base: '280px',
-  sm: '380px',
+  sm: '480px',
   md: '680px',
   lg: '980px',
   xl: '1280px',
@@ -20,8 +20,8 @@ export const theme = extendTheme({
   breakpoints,
   fonts: {
     heading:
-      'Sora, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-    body: 'Sora, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+      'SoraVariable, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+    body: 'SoraVariable, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
     code: '"Source Code Pro", Menlo, Monaco, Consolas, "Courier New", monospace',
   },
   styles: {
@@ -55,12 +55,12 @@ export const theme = extendTheme({
         micro: {
           fontSize: '0.75rem',
           color: 'gray.100',
-          fontWeight: 'light',
+          fontWeight: '500',
         },
         small: {
           fontSize: '0.85rem',
           color: 'white',
-          fontWeight: 'light',
+          fontWeight: '200',
         },
         body2: {
           fontSize: '1.15rem',
@@ -82,14 +82,19 @@ export const theme = extendTheme({
           fontSize: '1.5rem',
           letterSpacing: '4px',
         },
-        header3: {
+        header4: {
           fontSize: '1rem',
-          fontWeight: 'light',
+          fontWeight: '400',
           color: '#A0A3B1',
+        },
+        header3: {
+          fontSize: '1.25rem',
+          fontWeight: '500',
+          color: 'white',
         },
         header2: {
           fontSize: '1.5rem',
-          fontWeight: '600',
+          fontWeight: '400',
           color: 'white',
         },
         header1: {

@@ -17,6 +17,34 @@ export default function FighterSelection() {
     }
   };
 
+  const activeFighterData = {
+    name: "Guy Hawkins",
+    country: "US",
+    wins: "37",
+    loses: "0",
+    age: "33",
+    height: "193cm",
+    weight: "89kg",
+    org: "Professional Fighting Circuit",
+    recruited: "19.10.2021",
+    status: "Active",
+    image: "/assets/neon-fighter.svg",
+  };
+
+  const retiredFighterData = {
+    name: "Theresa Webb",
+    country: "US",
+    wins: "11",
+    loses: "4",
+    age: "18",
+    height: "172cm",
+    weight: "59kg",
+    org: "Professional Fighting Circuit",
+    recruited: "19.10.2021",
+    status: "Retired",
+    image: "/assets/theresa-webb.svg",
+  };
+
     return (
         <Stack minW='100%' >
           <Grid gap='5rem'>
@@ -34,28 +62,28 @@ export default function FighterSelection() {
 
              <Collapse in={showActive} animateOpacity>
                <Grid
-                templateColumns={{xl: 'repeat(2, 518px)', lg: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', sm: '1fr', base: '1fr'}}
+                templateColumns={{xl: 'repeat(2, 518px)', lg: 'repeat(2, 450px)', md: '1fr', sm: '1fr', base: '1fr'}}
                 w='100%'
                 justifyItems='center'
                 gap='5rem 4rem'
-                pl='50px'
+                pl={{xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px'}}
                >
-                  <FighterTile />
-                  <FighterTile />
-                  <FighterTile />
-                  <FighterTile />
-                  <FighterTile />
-                  <FighterTile />
+                  <FighterTile fighterType='active'/>
+                  <FighterTile fighterType='active'/>
+                  <FighterTile fighterType='active'/>
+                  <FighterTile fighterType='active'/>
                </Grid>
              </Collapse>
 
              <Collapse in={showRetired} animateOpacity>
-               <Grid                 templateColumns={{xl: 'repeat(2, 518px)', lg: 'repeat(2, 1fr)', md: 'repeat(2, 1fr)', sm: '1fr', base: '1fr'}}
-                               w='100%'
-                               justifyItems='center'
-                               gap='5rem 4rem'
-                               pl='50px'>
-                  <FighterTile />
+             <Grid
+              templateColumns={{xl: 'repeat(2, 518px)', lg: 'repeat(2, 2fr)', md: '1fr', sm: '1fr', base: '1fr'}}
+              w='100%'
+              justifyItems='center'
+              gap='5rem 4rem'
+              pl={{xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px'}}
+             >
+                  <FighterTile fighterType='inactive'/>
                </Grid>
              </Collapse>
 
