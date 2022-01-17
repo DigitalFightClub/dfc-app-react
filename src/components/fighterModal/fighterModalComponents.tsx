@@ -1,4 +1,4 @@
-import {Box, Button, Flex, Text, Grid, Image, Heading, Icon, useColorModeValue} from '@chakra-ui/react';
+import {Box, Button, Flex, Text, Grid, Image, Heading, Progress, useColorModeValue} from '@chakra-ui/react';
 
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
 
@@ -29,7 +29,7 @@ retiredFighterData}: FighterModalProps) => {
   const FighterData = ({fighterType}: any) => {
     return (
       <Grid templateRows='repeat(3, 30px)'
-      textAlign='left' minH='180px' gap='11px'>
+      textAlign='left' minH='180px' minW='300px' gap='11px'>
         <Heading textAlign='left'>
           {fighterType === 'active' ? activeFighterData.name : retiredFighterData.name}
         </Heading>
@@ -104,12 +104,14 @@ retiredFighterData}: FighterModalProps) => {
       px='32px'
       alignContent="center"
     >
-      <Grid templateColumns='1fr 2fr'>
+      <Grid templateColumns='1.5fr 2.5fr'>
 
         <Box maxH='300px'
+        maxW='185px'
         justifySelf='center'
         alignSelf='center'
         pos='relative'
+        pr='1.5rem'
         >
           <Image  height='auto' src={fighterType === 'active' ? activeFighterData.image : retiredFighterData.image} />
         </Box>
@@ -120,12 +122,32 @@ retiredFighterData}: FighterModalProps) => {
   )
 }
 
+type Stats = [string, number];
+
+type FighterStats = {
+  fighterStatistics: Stats[];
+}
+
 //Here's the fighter stats (bars and values)
-export const FighterStats = () => {
+export const FighterStats = ({fighterStatistics}: FighterStats) => {
   return (
-    <>
-      YES
-    </>
+    <Grid
+    mt='0px'
+    templateColumns='repeat(2, 1fr)'
+    templateRows='repeat(8, 55px)'
+    >
+    {fighterStatistics.map((stat: any) => (
+      <Box px='40px'>
+        <Heading pt='12px' pb='5px' variant='header4'>{stat[0]}</Heading>
+
+        <Progress colorScheme={(stat[1] >= 75) ? 'green' : (stat[1] <= 50) ? 'red' :  'gray'} size='xs' value={stat[1]} />
+
+      </Box>
+    ))
+
+    }
+
+    </Grid>
   )
 }
 
@@ -140,9 +162,11 @@ export function FighterHistory() {
     return (
       <Button
         mx={1}
-        px={4}
-        py={2}
+        px={1}
+        py={1}
         rounded="md"
+        border='1px solid #4C5058'
+        color='#4C5058'
         bg={useColorModeValue("white", "gray.800")}
         opacity={props.disabled && 0.6}
         _hover={!props.disabled && activeStyle}
@@ -157,9 +181,11 @@ export function FighterHistory() {
   return (
     <Box
      bg='rgba(0, 0, 0, 0.3)'
+     py='24px'
+     px='40px'
      >
-      <Heading variant='header3'>
-        Fighter History
+      <Heading textAlign='center' variant='header3'>
+        Fight History
       </Heading>
 
       <Flex
@@ -171,23 +197,13 @@ export function FighterHistory() {
       >
         <Flex>
           <PagButton>
-            <Icon
-              as={ArrowBackIcon}
-              color='white'
-              _hover={{color: 'black'}}
-              boxSize='full'
-            />
+            <ArrowBackIcon/>
           </PagButton>
           <PagButton active>1</PagButton>
           <PagButton>2</PagButton>
           <PagButton>3</PagButton>
           <PagButton>
-            <Icon
-              as={ArrowForwardIcon}
-              color='white'
-              _hover={{color: 'black'}}
-              boxSize={4}
-            />
+            <ArrowForwardIcon/>
           </PagButton>
         </Flex>
       </Flex>

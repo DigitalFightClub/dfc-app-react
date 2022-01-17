@@ -195,7 +195,7 @@ export default function FighterTile({ fighterType }: FighterType) {
   return (
     <>
       {isOpen && (
-        <Modal size='4xl' isOpen={isOpen} onClose={onClose}>
+        <Modal size='5xl' isCentered isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
             <FighterModal

@@ -17,6 +17,34 @@ export default function FighterSelection() {
     }
   };
 
+  const activeFighterData = {
+    name: "Guy Hawkins",
+    country: "US",
+    wins: "37",
+    loses: "0",
+    age: "33",
+    height: "193cm",
+    weight: "89kg",
+    org: "Professional Fighting Circuit",
+    recruited: "19.10.2021",
+    status: "Active",
+    image: "/assets/neon-fighter.svg",
+  };
+
+  const retiredFighterData = {
+    name: "Theresa Webb",
+    country: "US",
+    wins: "11",
+    loses: "4",
+    age: "18",
+    height: "172cm",
+    weight: "59kg",
+    org: "Professional Fighting Circuit",
+    recruited: "19.10.2021",
+    status: "Retired",
+    image: "/assets/theresa-webb.svg",
+  };
+
     return (
         <Stack minW='100%' >
           <Grid gap='5rem'>
