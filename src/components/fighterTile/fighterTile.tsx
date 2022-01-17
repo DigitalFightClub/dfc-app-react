@@ -123,6 +123,10 @@ export default function FighterTile({fighterType}: FighterType) {
     );
   };
 
+  const activeHover = {cursor: 'pointer', boxShadow: 'inset 0 -48px 38px -48px  #2ABB75'}
+
+  const retiredHover = {cursor: 'pointer', boxShadow: 'inset 0 -48px 38px -48px  #DF2151'}
+
   return (
     <>
     {isOpen &&
@@ -144,7 +148,7 @@ export default function FighterTile({fighterType}: FighterType) {
       boxSizing="border-box"
       bg="linear-gradient(95.1deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.05) 101.67%)"
       transition="ease-in-out 0.4s"
-      _hover={{cursor: 'pointer', boxShadow: 'inset 0 -48px 38px -48px  #2ABB75'}}
+      _hover={fighterType === 'active' ? activeHover : retiredHover}
       h='max-content'
       w='fit-content'
       py="24px"
