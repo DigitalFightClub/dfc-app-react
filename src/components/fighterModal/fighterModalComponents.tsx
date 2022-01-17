@@ -13,6 +13,7 @@ type FighterInfo = {
   org: string;
   recruited: string;
   status: string;
+  image: string;
 };
 
 type FighterModalProps = {
@@ -29,11 +30,11 @@ retiredFighterData}: FighterModalProps) => {
     return (
       <Grid templateRows='repeat(3, 30px)'
       textAlign='left' minH='180px' gap='11px'>
-        <Heading textAlign={{xl: 'left', lg: 'left', md: 'left', sm: 'center', base:'center'}} variant='header3'>
+        <Heading textAlign='left'>
           {fighterType === 'active' ? activeFighterData.name : retiredFighterData.name}
         </Heading>
 
-        <Heading variant='header4' textAlign={{xl: 'left', lg: 'left', md: 'left', sm: 'center', base:'center'}}>Record:
+        <Heading variant='header4' textAlign='left'>Record:
         <Text display='inline'  color='primary.500'>&nbsp;{fighterType === 'active' ? activeFighterData.wins : retiredFighterData.wins}</Text>
 
         {'-'}
@@ -42,7 +43,7 @@ retiredFighterData}: FighterModalProps) => {
         display='inline' color='secondary.500'>{fighterType === 'active' ? activeFighterData.loses : retiredFighterData.loses}</Text>
         </Heading>
 
-        <Grid       templateColumns={{xl: '1', lg: '1fr', md: '1fr', sm: 'repeat(2, 1fr)', base: 'repeat(2, 1fr)'}}
+        <Grid       templateColumns='1fr'
         gap='11px'
         >
 
@@ -96,23 +97,21 @@ retiredFighterData}: FighterModalProps) => {
   return (
     <Box
       boxSizing="border-box"
-      bg="linear-gradient(95.1deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.05) 101.67%)"
       transition="ease-in-out 0.4s"
-      _hover={{cursor: 'pointer', boxShadow: 'inset 0 -48px 38px -48px  #2ABB75'}}
       h='max-content'
       w='fit-content'
       py="24px"
       px='32px'
       alignContent="center"
     >
-      <Grid templateColumns={{xl: "1fr 2fr", lg: '1fr 2fr', md: 'repeat(2, 1fr)', sm: '1fr', base: '1fr'}}>
+      <Grid templateColumns='1fr 2fr'>
 
         <Box maxH='300px'
         justifySelf='center'
-        pos="relative"
-        top={{"2xl": '-90px', xl: '-90px', lg: '-90px', md: '-90px', sm: '-100px', base: '-100px'}}
-        left={{"2xl": '-90px', xl: '-90px', lg: '-90px', md: '-90px', sm: '0px', base: '0'}}>
-          <Image  height='auto' src="/assets/neon-fighter.svg" />
+        alignSelf='center'
+        pos='relative'
+        >
+          <Image  height='auto' src={fighterType === 'active' ? activeFighterData.image : retiredFighterData.image} />
         </Box>
 
         <FighterData fighterType={fighterType} />
@@ -145,7 +144,6 @@ export function FighterHistory() {
         py={2}
         rounded="md"
         bg={useColorModeValue("white", "gray.800")}
-        color=''
         opacity={props.disabled && 0.6}
         _hover={!props.disabled && activeStyle}
         cursor={props.disabled && "not-allowed"}
@@ -157,13 +155,15 @@ export function FighterHistory() {
   };
 
   return (
-    <Box>
+    <Box
+     bg='rgba(0, 0, 0, 0.3)'
+     >
       <Heading variant='header3'>
         Fighter History
       </Heading>
 
       <Flex
-        bg={useColorModeValue("#F9FAFB", "gray.600")}
+        opacity='none'
         p={50}
         w="full"
         alignItems="center"
@@ -174,7 +174,8 @@ export function FighterHistory() {
             <Icon
               as={ArrowBackIcon}
               color='white'
-              boxSize={4}
+              _hover={{color: 'black'}}
+              boxSize='full'
             />
           </PagButton>
           <PagButton active>1</PagButton>
@@ -184,6 +185,7 @@ export function FighterHistory() {
             <Icon
               as={ArrowForwardIcon}
               color='white'
+              _hover={{color: 'black'}}
               boxSize={4}
             />
           </PagButton>
