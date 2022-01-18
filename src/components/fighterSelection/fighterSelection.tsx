@@ -8,15 +8,16 @@ export default function FighterSelection() {
   const [showRetired, setShowRetired] = useState(false);
 
   const handleToggle = () => {
-    if (showActive == false) {
+    if (showActive === false) {
       setShowActive(true);
       setShowRetired(false);
-    } else if (showActive == true) {
+    } else if (showActive === true) {
       setShowRetired(true);
       setShowActive(false);
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const activeFighterData = {
     name: "Guy Hawkins",
     country: "US",
@@ -31,6 +32,7 @@ export default function FighterSelection() {
     image: "/assets/neon-fighter.svg",
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const retiredFighterData = {
     name: "Theresa Webb",
     country: "US",

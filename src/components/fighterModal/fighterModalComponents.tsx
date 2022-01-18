@@ -129,6 +129,7 @@ type FighterStats = {
 }
 
 //Here's the fighter stats (bars and values)
+// eslint-disable-next-line
 export const FighterStats = ({fighterStatistics}: FighterStats) => {
   return (
     <Grid
