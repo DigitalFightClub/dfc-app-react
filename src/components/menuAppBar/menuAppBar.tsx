@@ -5,10 +5,12 @@ import {Text, useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Av
 export default function MenuAppBar() {
     const [auth, setAuth] = React.useState(true);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAuth(event.target.checked);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (
