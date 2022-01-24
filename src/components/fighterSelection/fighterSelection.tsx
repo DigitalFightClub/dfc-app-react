@@ -5,14 +5,11 @@ import FighterTile from '../fighterTile';
 
 export default function FighterSelection() {
   const [showActive, setShowActive] = useState(true);
-  const [showRetired, setShowRetired] = useState(false);
 
   const handleToggle = () => {
     if (showActive === false) {
       setShowActive(true);
-      setShowRetired(false);
-    } else if (showActive === true) {
-      setShowRetired(true);
+    } else {
       setShowActive(false);
     }
   };
@@ -57,7 +54,7 @@ export default function FighterSelection() {
             onClick={handleToggle}>Active Fighters</Button>
 
           <Button w='100%' variant='secondary'
-            bg={showRetired ? 'secondary.500' : 'none'}
+            bg={!showActive ? 'secondary.500' : 'none'}
             border='1px gray solid'
             onClick={handleToggle}>Retired Fighters</Button>
         </HStack>
@@ -77,7 +74,7 @@ export default function FighterSelection() {
           </Grid>
         </Collapse>
 
-        <Collapse in={showRetired} animateOpacity>
+        <Collapse in={!showActive} animateOpacity>
           <Grid
             templateColumns={{xl: 'repeat(2, 518px)', lg: 'repeat(2, 2fr)', md: '1fr', sm: '1fr', base: '1fr'}}
             w='100%'
