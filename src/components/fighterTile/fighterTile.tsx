@@ -1,5 +1,6 @@
 import {
   Box,
+  chakra,
   useDisclosure,
   Image,
   Grid,
@@ -30,35 +31,35 @@ type FighterType = {
   fighterType: string;
 };
 
+const activeFighterData: FighterInfo = {
+  name: 'Guy Hawkins',
+  country: 'US',
+  wins: '37',
+  loses: '0',
+  age: '33',
+  height: '193cm',
+  weight: '89kg',
+  org: 'Professional Fighting Circuit',
+  recruited: '19.10.2021',
+  status: 'Active',
+  image: '/assets/neon-fighter.svg',
+};
+
+const retiredFighterData: FighterInfo = {
+  name: 'Theresa Webb',
+  country: 'US',
+  wins: '11',
+  loses: '4',
+  age: '18',
+  height: '172cm',
+  weight: '59kg',
+  org: 'Professional Fighting Circuit',
+  recruited: '19.10.2021',
+  status: 'Retired',
+  image: '/assets/theresa-webb.svg',
+};
+
 export default function FighterTile({ fighterType }: FighterType) {
-  const activeFighterData: FighterInfo = {
-    name: 'Guy Hawkins',
-    country: 'US',
-    wins: '37',
-    loses: '0',
-    age: '33',
-    height: '193cm',
-    weight: '89kg',
-    org: 'Professional Fighting Circuit',
-    recruited: '19.10.2021',
-    status: 'Active',
-    image: '/assets/neon-fighter.svg',
-  };
-
-  const retiredFighterData: FighterInfo = {
-    name: 'Theresa Webb',
-    country: 'US',
-    wins: '11',
-    loses: '4',
-    age: '18',
-    height: '172cm',
-    weight: '59kg',
-    org: 'Professional Fighting Circuit',
-    recruited: '19.10.2021',
-    status: 'Retired',
-    image: '/assets/theresa-webb.svg',
-  };
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const FighterData = ({ fighterType }: FighterType) => {
@@ -102,11 +103,11 @@ export default function FighterTile({ fighterType }: FighterType) {
               : retiredFighterData.wins}
           </Text>
           {'-'}
-          <Text display="inline" color="secondary.500">
+          <chakra.span display="inline" color="secondary.500">
             {fighterType === 'active'
               ? activeFighterData.loses
               : retiredFighterData.loses}
-          </Text>
+          </chakra.span>
         </Heading>
 
         <Grid
@@ -121,52 +122,52 @@ export default function FighterTile({ fighterType }: FighterType) {
         >
           <Text variant="micro">
             AGE:&nbsp;&nbsp;
-            <Text display="inline" variant="small">
+            <chakra.span display="inline" variant="small">
               {fighterType === 'active'
                 ? activeFighterData.age
                 : retiredFighterData.age}
-            </Text>
+            </chakra.span>
           </Text>
 
           <Text variant="micro">
             HEIGHT:&nbsp;&nbsp;
-            <Text display="inline" variant="small">
+            <chakra.span display="inline" variant="small">
               {fighterType === 'active'
                 ? activeFighterData.height
                 : retiredFighterData.height}
-            </Text>
+            </chakra.span>
           </Text>
 
           <Text variant="micro">
             WEIGHT:&nbsp;&nbsp;
-            <Text display="inline" variant="small">
+            <chakra.span display="inline" variant="small">
               {fighterType === 'active'
                 ? activeFighterData.weight
                 : retiredFighterData.weight}
-            </Text>
+            </chakra.span>
           </Text>
 
           <Text variant="micro">
             ORG:&nbsp;&nbsp;
-            <Text display="inline" variant="small">
+            <chakra.span display="inline" variant="small">
               {fighterType === 'active'
                 ? activeFighterData.org
                 : retiredFighterData.org}
-            </Text>
+            </chakra.span>
           </Text>
 
           <Text variant="micro">
             RECRUITER:&nbsp;&nbsp;
-            <Text display="inline" variant="small">
+            <chakra.span display="inline" variant="small">
               {fighterType === 'active'
                 ? activeFighterData.recruited
                 : retiredFighterData.recruited}
-            </Text>
+            </chakra.span>
           </Text>
 
           <Text variant="micro">
             STATUS:&nbsp;&nbsp;
-            <Text
+            <chakra.span
               display="inline"
               variant="small"
               fontWeight="400"
@@ -175,7 +176,7 @@ export default function FighterTile({ fighterType }: FighterType) {
               {fighterType === 'active'
                 ? activeFighterData.status
                 : retiredFighterData.status}
-            </Text>
+            </chakra.span>
           </Text>
         </Grid>
       </Grid>
