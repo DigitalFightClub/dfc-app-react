@@ -1,18 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useEthers } from '@usedapp/core';
 import {useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar, Button} from '@chakra-ui/react';
+import { verifyNetwork } from '../../utils/web3/connect';
+
 
 
 export default function MenuAppBar() {
-  const { activateBrowserWallet, account, chainId, deactivate } = useEthers();
-  const [auth, setAuth] = React.useState(true);
+  const [auth, setAuth] = useState(true);
+  const { activateBrowserWallet, account, chainId } = useEthers();
+  // const [activateError, setActivateError] = useState('');
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAuth(event.target.checked);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const connectWallet = () => {
+    // setActivateError('')
+    // console.log('activateError: ', activateError)
+    activateBrowserWallet();
+    if (account) {
+      verifyNetwork(chainId);
+    }
+  };
+
+  // const disconnectWallet = () => {
+  //   setActivateError('');
+  //   deactivate();
+  // };
 
   return (
     <div>
@@ -33,26 +51,24 @@ export default function MenuAppBar() {
           h="14"
         >
           <Button>
-                      Home
+            Home
           </Button>
           <Button >
-                      My Gym
+            My Gym
           </Button>
           <Button>
-                      Organizations
+            Organizations
           </Button>
           <Button>
-                      Challenges
+            Challenges
           </Button>
-          <Button>
-                    Connect Wallet
+          <Button onClick={() => connectWallet()}>
+            Connect Wallet
           </Button>
           {auth && (
             <div>
               <Menu>
-                <MenuButton
-                  onClick={onOpen}
-                >
+                <MenuButton onClick={onOpen}>
                   <Avatar h='10' w='10' />
                 </MenuButton>
 
