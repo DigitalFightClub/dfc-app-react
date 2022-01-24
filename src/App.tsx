@@ -3,12 +3,12 @@ import Gym from './components/gym';
 import './App.css';
 
 function App() {
-    return (
-        <div className="App">
-            <MenuAppBar />
-            <Gym/>
-        </div>
-    );
+  return (
+    <div className="App">
+      <MenuAppBar />
+      <Gym/>
+    </div>
+  );
 }
 
 export default App;

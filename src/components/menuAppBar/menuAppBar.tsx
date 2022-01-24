@@ -1,73 +1,71 @@
 import React from 'react';
-import {Text, useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar, Button} from '@chakra-ui/react';
+import {useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar, Button} from '@chakra-ui/react';
 
 
 export default function MenuAppBar() {
-    const [auth, setAuth] = React.useState(true);
+  const { activateBrowserWallet, account, chainId, deactivate } = useEthers();
+  const [auth, setAuth] = React.useState(true);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAuth(event.target.checked);
-    };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAuth(event.target.checked);
+  };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { isOpen, onOpen, onClose } = useDisclosure();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-    return (
-        <div>
-            {/* <FormGroup>
+  return (
+    <div>
+      {/* <FormGroup>
               <FormControlLabel
                   control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}
                   label={auth ? 'Logout' : 'Login'}
               />
           </FormGroup> */}
-            <Box>
-                <Flex
-                    as="header"
-                    align="center"
-                    justify="space-between"
-                    px="5"
-                    borderBottomWidth="1px"
-                    borderColor="gray.200"
-                    h="14"
-                >
-                    <Text >
+      <Box>
+        <Flex
+          as="header"
+          align="center"
+          justify="space-between"
+          px="5"
+          borderBottomWidth="1px"
+          borderColor="gray.200"
+          h="14"
+        >
+          <Button>
                       Home
-                    </Text>
-                    <Text >
+          </Button>
+          <Button >
                       My Gym
-                    </Text>
-                    <Text>
+          </Button>
+          <Button>
                       Organizations
-                    </Text>
-                    <Text>
+          </Button>
+          <Button>
                       Challenges
-                    </Text>
-                    <Text>
-                      TKO Tokens
-                    </Text>
-                    <Button>
+          </Button>
+          <Button>
                     Connect Wallet
-                    </Button>
-                    {auth && (
-                        <div>
-                            <Menu>
-                                <MenuButton
-                                    onClick={onOpen}
-                                >
-                                    <Avatar h='10' w='10' />
-                                </MenuButton>
+          </Button>
+          {auth && (
+            <div>
+              <Menu>
+                <MenuButton
+                  onClick={onOpen}
+                >
+                  <Avatar h='10' w='10' />
+                </MenuButton>
 
-                                <MenuList>
-                                    <MenuItem onClick={onClose}>My Profile</MenuItem>
-                                    <MenuItem onClick={onClose}>Settings</MenuItem>
-                                    <MenuItem onClick={onClose}>Log Out</MenuItem>
-                                </MenuList>
-                            </Menu>
-                        </div>
-                    )}
-                </Flex>
-            </Box>
-        </div>
-    );
+                <MenuList>
+                  <MenuItem onClick={onClose}>My Profile</MenuItem>
+                  <MenuItem onClick={onClose}>Settings</MenuItem>
+                  <MenuItem onClick={onClose}>Log Out</MenuItem>
+                </MenuList>
+              </Menu>
+            </div>
+          )}
+        </Flex>
+      </Box>
+    </div>
+  );
 }
