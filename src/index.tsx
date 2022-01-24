@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 // import ReactDOM from 'react-dom';
 // import configureStore from './configureStore';
 import { Provider } from 'react-redux';
@@ -11,7 +12,6 @@ import { theme } from './styles/theme';
 import './index.css';
 import '@fontsource/sora/variable.css';
 import '@fontsource/sora/400.css';
-import { render } from '@testing-library/react';
 
 const ENV = ENV_CONFG();
 // const store = configureStore();
@@ -30,26 +30,8 @@ const config = {
   },
 };
 
-const renderApp = () => {
-  render(
-    <DAppProvider config={config}>
-      <Provider store={store}>
-        <ChakraProvider theme={theme}>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <App />
-        </ChakraProvider>
-      </Provider>
-    </DAppProvider>
-  );
-
-  // if (process.env.NODE_ENV !== 'production' && module.hot) {
-  //   module.hot.accept('./components', renderApp);
-  // }
-};
-
-renderApp();
-// ReactDOM.render(
-//   <React.StrictMode>
+// const renderApp = () => {
+//   render(
 //     <DAppProvider config={config}>
 //       <Provider store={store}>
 //         <ChakraProvider theme={theme}>
@@ -58,6 +40,24 @@ renderApp();
 //         </ChakraProvider>
 //       </Provider>
 //     </DAppProvider>
-//   </React.StrictMode>,
-//   document.getElementById('root')
-// );
+//   );
+
+//   // if (process.env.NODE_ENV !== 'production' && module.hot) {
+//   //   module.hot.accept('./components', renderApp);
+//   // }
+// };
+// renderApp();
+
+ReactDOM.render(
+  <React.StrictMode>
+    <DAppProvider config={config}>
+      <Provider store={store}>
+        <ChakraProvider theme={theme}>
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+          <App />
+        </ChakraProvider>
+      </Provider>
+    </DAppProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
