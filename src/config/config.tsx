@@ -1,9 +1,9 @@
-import { ChainId } from '@usedapp/core';
+import { Polygon, Mumbai } from '@usedapp/core';
 import { ethers } from 'ethers';
 
 // Set net target here
-export const MAINNET = ChainId.Polygon;
-export const TESTNET = ChainId.Mumbai;
+export const MAINNET = Polygon;
+export const TESTNET = Mumbai;
 // export const TARGET_NET = MAINNET
 export const TARGET_NET = TESTNET;
 
@@ -28,7 +28,8 @@ const DEFAULT_OBJ = {
   'FOURTH_MSG': FOURTH_MSG,
   'FINAL_MSG': FINAL_MSG,
   'NFT_TRANSFER_ABI': NFT_TRANSFER_ABI,
-  'WETH_TRANSFER_ABI': WETH_TRANSFER_ABI
+  'WETH_TRANSFER_ABI': WETH_TRANSFER_ABI,
+  'INFURA_KEY': '454b1c54f86d4974b60feec0c680c133'
 };
 
 // Mainnet
@@ -83,10 +84,9 @@ const TESTNET_OBJ = {
 };
 
 export const ENV_CONFG = () => {
-  switch (TARGET_NET.toString()) {
-  case MAINNET.toString():
+  switch (TARGET_NET) {
+  case MAINNET:
     return {
-      'NET_NAME': 'polygon',
       'TARGET_NET': MAINNET,
       'FIGHTER_IMAGE_URL': FIGHTER_IMAGE_URL,
       ...DEFAULT_OBJ,
@@ -94,7 +94,6 @@ export const ENV_CONFG = () => {
     };
   default:
     return {
-      'NET_NAME': 'mumbai',
       'TARGET_NET': TESTNET,
       'FIGHTER_IMAGE_URL': TEST_FIGHTER_IMAGE_URL,
       ...DEFAULT_OBJ,

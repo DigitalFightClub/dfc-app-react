@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useEthers } from '@usedapp/core';
-import {useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar, Button} from '@chakra-ui/react';
+import {useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar, Button, Text} from '@chakra-ui/react';
 import { verifyNetwork } from '../../utils/web3/connect';
-
 
 
 export default function MenuAppBar() {
@@ -22,6 +21,7 @@ export default function MenuAppBar() {
     // setActivateError('')
     // console.log('activateError: ', activateError)
     activateBrowserWallet();
+    console.log(account);
     if (account) {
       verifyNetwork(chainId);
     }
@@ -62,9 +62,12 @@ export default function MenuAppBar() {
           <Button>
             Challenges
           </Button>
-          <Button onClick={() => connectWallet()}>
+          { !account ? <Button onClick={() => connectWallet()}>
             Connect Wallet
-          </Button>
+          </Button> : null }
+          <Text>
+            {account}
+          </Text>
           {auth && (
             <div>
               <Menu>
