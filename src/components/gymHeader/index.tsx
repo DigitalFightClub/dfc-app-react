@@ -1,3 +1,3 @@
-import GymHeader from "./gymHeader";
+import GymHeader from './gymHeader';
 
-export default GymHeader
+export default GymHeader;

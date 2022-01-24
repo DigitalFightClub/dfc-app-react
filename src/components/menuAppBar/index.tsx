@@ -1,3 +1,3 @@
-import MenuAppBar from "./menuAppBar";
+import MenuAppBar from './menuAppBar';
 
-export default MenuAppBar
+export default MenuAppBar;

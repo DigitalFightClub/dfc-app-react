@@ -1,3 +1,3 @@
-import FighterSelection from "./fighterSelection";
+import FighterSelection from './fighterSelection';
 
-export default FighterSelection
+export default FighterSelection;

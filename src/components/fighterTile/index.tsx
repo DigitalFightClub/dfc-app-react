@@ -1,3 +1,3 @@
-import FighterTile from "./fighterTile";
+import FighterTile from './fighterTile';
 
-export default FighterTile
+export default FighterTile;
