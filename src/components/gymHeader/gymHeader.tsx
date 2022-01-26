@@ -1,15 +1,16 @@
-import { useState } from "react";
-import { Heading, Button, HStack, Image, Input } from "@chakra-ui/react";
+import { useState } from 'react';
+import { Heading, Button, HStack, Image, Input } from '@chakra-ui/react';
 
-import { EditIcon, CheckIcon } from '@chakra-ui/icons'
+import { EditIcon, CheckIcon } from '@chakra-ui/icons';
 
 export default function GymHeader() {
   const [changeGym, setChangeGym] = useState<boolean>(false);
 
   //hardcoded gym name
   const [gymname, setGymname] = useState<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     React.ChangeEvent<HTMLInputElement> | string | any
-  >("Red Dragon Gym");
+  >('Red Dragon Gym');
 
   return (
     <HStack align="center" justify="left">

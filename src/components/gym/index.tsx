@@ -1,3 +1,3 @@
-import Gym from "./gym";
+import Gym from './gym';
 
-export default Gym
+export default Gym;

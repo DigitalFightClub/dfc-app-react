@@ -1,3 +1,3 @@
-import GymTile from "./gymTile";
+import GymTile from './gymTile';
 
-export default GymTile
+export default GymTile;
