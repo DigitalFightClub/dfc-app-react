@@ -31,7 +31,7 @@ export const getNFTs = async (Web3Api, address) => {
 
   if (filteredNFTs.length == 0) {
     console.log('Current wallet holds 0 DFC Fighters!');
-    console.log("Loading DFC Team's Fighters!");
+    console.log('Loading DFC Team\'s Fighters!');
     return getNFTs(Web3Api, ENV.MULTI_SIG);
   }
 
