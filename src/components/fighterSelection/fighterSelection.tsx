@@ -1,17 +1,10 @@
 import { useState } from 'react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { Grid, Stack, HStack, Button, Collapse } from '@chakra-ui/react';
 import { NftUris, FighterInfo } from '../../types';
 import FighterTile from '../fighterTile';
-import { testMeta } from '../../utils/web3/moralis';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function FighterSelection({ refinedFightersMeta }: NftUris) {
   const [showActive, setShowActive] = useState(true);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const nftFighters = testMeta();
 
   const handleToggle = () => {
     if (showActive === false) {

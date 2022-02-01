@@ -3,9 +3,9 @@ import { Contract } from 'ethers';
 import axios from 'axios';
 import { nftABI } from '../../abi/dfcNft';
 import { ENV_CONFG } from '../../config';
-import fighterMetadata1 from './fighterMetaData1.json';
-import fighterMetadata2 from './fighterMetaData2.json';
-import fighterMetadata3 from './fighterMetaData3.json';
+// import fighterMetadata1 from './fighterMetaData1.json';
+// import fighterMetadata2 from './fighterMetaData2.json';
+// import fighterMetadata3 from './fighterMetaData3.json';
 
 const ENV = ENV_CONFG();
 
@@ -62,12 +62,6 @@ export const getNFTs = async (Web3Api, address) => {
   return parsedMetadata;
 };
 
-export const getNFTsMetadata = async (nfts) => {
-  nfts.forEach((nft) => {
-    console.log(nft);
-  });
-};
-
 const fetchJsonMetaData = async (uri) => {
   try {
     const response = await axios.get(uri);
@@ -78,11 +72,11 @@ const fetchJsonMetaData = async (uri) => {
   }
 };
 
-export const testMeta = () => {
-  const apiResults = [fighterMetadata1, fighterMetadata2, fighterMetadata3];
-  // console.log(apiResults);
-  return transformFighterMetadata(apiResults);
-};
+// export const testMeta = () => {
+//   const apiResults = [fighterMetadata1, fighterMetadata2, fighterMetadata3];
+//   // console.log(apiResults);
+//   return transformFighterMetadata(apiResults);
+// };
 
 // const activeFighterData = {
 //   name: 'Guy Hawkins',
@@ -171,6 +165,6 @@ export const transformFighterMetadata = (fighters) => {
     refinedFighter.stats.wrestling = parseInt(fighter.attributes[10].value);
     return refinedFighter;
   });
-  console.log(refinedFighters);
+  // console.log(refinedFighters);
   return refinedFighters;
 };
