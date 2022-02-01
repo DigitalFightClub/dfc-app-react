@@ -31,8 +31,7 @@ export const getNFTs = async (Web3Api, address) => {
 
   // eslint-disable-next-line max-len
   const filteredNFTs = polygonNFTs.result.filter(
-    (nft) => nft.token_address === '0x9dc20f1aace8e2fc93e5e8b15281d583e9521945'
-  ); //ENV.NFT_ADDY);
+    (nft) => nft.token_address === ENV.NFT_ADDY);
   console.log(filteredNFTs);
 
   const sortedFilteredNFTs = filteredNFTs.sort((a, b) => {
