@@ -3,6 +3,7 @@ import React from 'react';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { useMoralisWeb3Api, useMoralisWeb3ApiCall, useMoralis, useNFTBalances } from 'react-moralis';
 import { Contract } from 'ethers';
+import axios from 'axios';
 import { nftABI } from '../../abi/dfcNft';
 import ENV_CONFG from '../../config';
 import fighterMetadata1 from './fighterMetaData1.json';
@@ -34,7 +35,10 @@ export const getNFTs = async (Web3Api, address) => {
   console.log(sortedFilteredNFTs);
 
   const parsedMetadata = sortedFilteredNFTs.map((nft) => {
-    return nft.token_uri;
+    if (!nft.metadata) {
+      return fetchJsonMetaData(nft.token_uri);
+    }
+    return nft.metadata;
   });
   console.log(parsedMetadata);
 
@@ -47,8 +51,14 @@ export const getNFTsMetadata = async (nfts) => {
   });
 };
 
-const fetchJsonMetaData = (url) => {
-  const { isLoading, error, data } = useQuery('repoData', () => fetch(url).then((res) => console.log(res.json())));
+const fetchJsonMetaData = async (uri) => {
+  try {
+    const response = await axios.get(uri, {headers: { Accept: '*/*' }});
+    console.log(response);
+    //return response;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const testMeta = () => {
