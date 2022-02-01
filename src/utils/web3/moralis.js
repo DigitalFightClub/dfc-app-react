@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
-import { useMoralisWeb3Api, useMoralisWeb3ApiCall, useMoralis, useNFTBalances } from 'react-moralis';
 import { Contract } from 'ethers';
 import axios from 'axios';
 import { nftABI } from '../../abi/dfcNft';
@@ -11,7 +8,6 @@ import fighterMetadata2 from './fighterMetaData2.json';
 import fighterMetadata3 from './fighterMetaData3.json';
 
 const ENV = ENV_CONFG();
-const queryClient = new QueryClient();
 
 export const getNFTContract = (provider) => {
   const nftContract = new Contract(ENV.NFT_CONTRACT_ADDRESS, nftABI, provider);
@@ -27,12 +23,18 @@ export const getNFTs = async (Web3Api, address) => {
     address: address ? address : ENV.MULTI_SIG,
   };
   const polygonNFTs = await Web3Api.account.getNFTs(options);
-  console.log(polygonNFTs);
+  // console.log(polygonNFTs);
 
   // eslint-disable-next-line max-len
   const filteredNFTs = polygonNFTs.result.filter(
     (nft) => nft.token_address === ENV.NFT_ADDY);
   console.log(filteredNFTs);
+
+  if (filteredNFTs.length == 0) {
+    console.log('Current wallet holds 0 DFC Fighters!');
+    console.log('Loading DFC Team\'s Fighters!');
+    return getNFTs(Web3Api, ENV.MULTI_SIG);
+  }
 
   const sortedFilteredNFTs = filteredNFTs.sort((a, b) => {
     return parseInt(a.token_id) > parseInt(b.token_id) ? 1 : -1;
@@ -139,14 +141,37 @@ export const transformFighterMetadata = (fighters) => {
     refinedFighter.wins = '0';
     refinedFighter.loses = '0';
     refinedFighter.status = fighter.attributes[0].value;
-    refinedFighter.recruited = fighter.attributes[2].value;
+    refinedFighter.recruited = new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(parseInt(fighter.attributes[2].value) * 1000);
     refinedFighter.gender = fighter.attributes[16].value;
     refinedFighter.height = fighter.attributes[17].value;
     refinedFighter.country = fighter.attributes[18].value;
     refinedFighter.weight = fighter.attributes[22].value;
 
+    refinedFighter.stats = {};
+    refinedFighter.stats.power = fighter.attributes[19].value;
+    refinedFighter.stats.speed = fighter.attributes[20].value;
+    refinedFighter.stats.strength = fighter.attributes[21].value;
+
+    refinedFighter.stats.balance = fighter.attributes[11].value;
+    refinedFighter.stats.conditioning = fighter.attributes[12].value;
+    refinedFighter.stats.flexibility = fighter.attributes[13].value;
+    refinedFighter.stats.reflex = fighter.attributes[14].value;
+    refinedFighter.stats.footwork = fighter.attributes[15].value;
+
+    refinedFighter.stats.bjj = fighter.attributes[3].value;
+    refinedFighter.stats.judo = fighter.attributes[4].value;
+    refinedFighter.stats.karate = fighter.attributes[5].value;
+    refinedFighter.stats.kickboxing = fighter.attributes[6].value;
+    refinedFighter.stats.mauiTahi = fighter.attributes[7].value;
+    refinedFighter.stats.sambo = fighter.attributes[8].value;
+    refinedFighter.stats.taekwondo = fighter.attributes[9].value;
+    refinedFighter.stats.wrestling = fighter.attributes[10].value;
     return refinedFighter;
   });
-  // console.log(refinedFighters);
+  console.log(refinedFighters);
   return refinedFighters;
 };

@@ -84,11 +84,7 @@ const FighterData = ({ fighterData, fighterType }: FighterType) => {
         <Text variant="micro">
           RECRUITED:&nbsp;&nbsp;
           <chakra.span display="inline" variant="small">
-            {new Intl.DateTimeFormat('en-US', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-            }).format(parseInt(fighterData.recruited) * 1000)}
+            {fighterData.recruited}
           </chakra.span>
         </Text>
 
