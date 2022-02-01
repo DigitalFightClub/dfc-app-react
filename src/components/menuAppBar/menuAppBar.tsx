@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useEthers } from '@usedapp/core';
+import { useEthers, shortenIfAddress } from '@usedapp/core';
 import { useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar, Button, Text } from '@chakra-ui/react';
 import { verifyNetwork } from '../../utils/web3/connect';
 
 export default function MenuAppBar() {
   const [auth, setAuth] = useState(false);
-  const { activateBrowserWallet, account, chainId } = useEthers();
+  const { activateBrowserWallet, account, chainId, deactivate} = useEthers();
   // const [activateError, setActivateError] = useState('');
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -26,10 +26,9 @@ export default function MenuAppBar() {
     }
   };
 
-  // const disconnectWallet = () => {
-  //   setActivateError('');
-  //   deactivate();
-  // };
+  const disconnectWallet = () => {
+    deactivate();
+  };
 
   return (
     <div>
@@ -54,18 +53,18 @@ export default function MenuAppBar() {
           <Button>Organizations</Button>
           <Button>Challenges</Button>
           {!account ? <Button onClick={() => connectWallet()}>Connect Wallet</Button> : null}
-          <Text>{account}</Text>
-          {auth && (
+          {/* <Button isDisabled>Wallet: {shortenIfAddress(account ? account : '')}</Button> */}
+          {account && (
             <div>
               <Menu>
                 <MenuButton onClick={onOpen}>
-                  <Avatar h="10" w="10" />
+                  <Button>Wallet: {shortenIfAddress(account ? account : '')}</Button>
                 </MenuButton>
 
                 <MenuList>
-                  <MenuItem onClick={onClose}>My Profile</MenuItem>
-                  <MenuItem onClick={onClose}>Settings</MenuItem>
-                  <MenuItem onClick={onClose}>Log Out</MenuItem>
+                  {/* <MenuItem onClick={onClose}>My Profile</MenuItem>
+                  <MenuItem onClick={onClose}>Settings</MenuItem> */}
+                  <MenuItem onClick={disconnectWallet}>Disconnect Wallet</MenuItem>
                 </MenuList>
               </Menu>
             </div>
