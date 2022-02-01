@@ -31,6 +31,7 @@ export default function FighterSelection({ refinedFightersMeta }: NftUris) {
             bg={showActive ? 'primary.500' : 'none'}
             border="1px gray solid"
             onClick={handleToggle}
+            isDisabled
           >
             Active Fighters
           </Button>
@@ -41,6 +42,7 @@ export default function FighterSelection({ refinedFightersMeta }: NftUris) {
             bg={!showActive ? 'secondary.500' : 'none'}
             border="1px gray solid"
             onClick={handleToggle}
+            isDisabled
           >
             Retired Fighters
           </Button>
@@ -66,7 +68,7 @@ export default function FighterSelection({ refinedFightersMeta }: NftUris) {
           </Grid>
         </Collapse>
 
-        <Collapse in={!showActive} animateOpacity>
+        {/* <Collapse in={!showActive} animateOpacity>
           <Grid
             templateColumns={{
               xl: 'repeat(2, 518px)',
@@ -81,10 +83,10 @@ export default function FighterSelection({ refinedFightersMeta }: NftUris) {
             pl={{ xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px' }}
           >
             {refinedFightersMeta.map((fighterData: FighterInfo) => (
-              <FighterTile key={fighterData.name} fighterData={fighterData} fighterType="inactive" />
+              <FighterTile key={fighterData.name} fighterData={null} fighterType="inactive" />
             ))}
           </Grid>
-        </Collapse>
+        </Collapse> */}
       </Grid>
     </Stack>
   );

@@ -26,13 +26,12 @@ export const getNFTs = async (Web3Api, address) => {
   // console.log(polygonNFTs);
 
   // eslint-disable-next-line max-len
-  const filteredNFTs = polygonNFTs.result.filter(
-    (nft) => nft.token_address === ENV.NFT_ADDY);
+  const filteredNFTs = polygonNFTs.result.filter((nft) => nft.token_address === ENV.NFT_ADDY);
   console.log(filteredNFTs);
 
   if (filteredNFTs.length == 0) {
     console.log('Current wallet holds 0 DFC Fighters!');
-    console.log('Loading DFC Team\'s Fighters!');
+    console.log("Loading DFC Team's Fighters!");
     return getNFTs(Web3Api, ENV.MULTI_SIG);
   }
 
@@ -152,24 +151,24 @@ export const transformFighterMetadata = (fighters) => {
     refinedFighter.weight = fighter.attributes[22].value;
 
     refinedFighter.stats = {};
-    refinedFighter.stats.power = fighter.attributes[19].value;
-    refinedFighter.stats.speed = fighter.attributes[20].value;
-    refinedFighter.stats.strength = fighter.attributes[21].value;
+    refinedFighter.stats.power = parseInt(fighter.attributes[19].value);
+    refinedFighter.stats.speed = parseInt(fighter.attributes[20].value);
+    refinedFighter.stats.strength = parseInt(fighter.attributes[21].value);
 
-    refinedFighter.stats.balance = fighter.attributes[11].value;
-    refinedFighter.stats.conditioning = fighter.attributes[12].value;
-    refinedFighter.stats.flexibility = fighter.attributes[13].value;
-    refinedFighter.stats.reflex = fighter.attributes[14].value;
-    refinedFighter.stats.footwork = fighter.attributes[15].value;
+    refinedFighter.stats.balance = parseInt(fighter.attributes[11].value);
+    refinedFighter.stats.conditioning = parseInt(fighter.attributes[12].value);
+    refinedFighter.stats.flexibility = parseInt(fighter.attributes[13].value);
+    refinedFighter.stats.reflex = parseInt(fighter.attributes[14].value);
+    refinedFighter.stats.footwork = parseInt(fighter.attributes[15].value);
 
-    refinedFighter.stats.bjj = fighter.attributes[3].value;
-    refinedFighter.stats.judo = fighter.attributes[4].value;
-    refinedFighter.stats.karate = fighter.attributes[5].value;
-    refinedFighter.stats.kickboxing = fighter.attributes[6].value;
-    refinedFighter.stats.mauiTahi = fighter.attributes[7].value;
-    refinedFighter.stats.sambo = fighter.attributes[8].value;
-    refinedFighter.stats.taekwondo = fighter.attributes[9].value;
-    refinedFighter.stats.wrestling = fighter.attributes[10].value;
+    refinedFighter.stats.bjj = parseInt(fighter.attributes[3].value);
+    refinedFighter.stats.judo = parseInt(fighter.attributes[4].value);
+    refinedFighter.stats.karate = parseInt(fighter.attributes[5].value);
+    refinedFighter.stats.kickboxing = parseInt(fighter.attributes[6].value);
+    refinedFighter.stats.mauiTahi = parseInt(fighter.attributes[7].value);
+    refinedFighter.stats.sambo = parseInt(fighter.attributes[8].value);
+    refinedFighter.stats.taekwondo = parseInt(fighter.attributes[9].value);
+    refinedFighter.stats.wrestling = parseInt(fighter.attributes[10].value);
     return refinedFighter;
   });
   console.log(refinedFighters);

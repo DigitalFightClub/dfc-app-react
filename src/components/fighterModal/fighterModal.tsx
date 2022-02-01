@@ -5,22 +5,22 @@ import { CloseIcon } from '@chakra-ui/icons';
 
 export default function FighterModal({ fighterType, onClose, fighterData }: FighterModalProps) {
   const fighterStatistics: FighterStatistics = [
-    ['Power', 44],
-    ['Kickboxing', 37],
-    ['Speed', 66],
-    ['BJJ', 88],
-    ['Strenght', 67],
-    ['Karate', 55],
-    ['Flexibility', 86],
-    ['Wrestling', 89],
-    ['Conditioning', 95],
-    ['Judo', 86],
-    ['Balance', 46],
-    ['Muay Thai', 94],
-    ['Reflex', 41],
-    ['Taekwondo', 73],
-    ['Footwork', 75],
-    ['Sambo', 49],
+    ['Power', fighterData.stats.power],
+    ['Kickboxing', fighterData.stats.kickboxing],
+    ['Speed', fighterData.stats.speed],
+    ['BJJ', fighterData.stats.bjj],
+    ['Strength', fighterData.stats.strength],
+    ['Karate', fighterData.stats.karate],
+    ['Flexibility', fighterData.stats.flexibility],
+    ['Wrestling', fighterData.stats.wrestling],
+    ['Conditioning', fighterData.stats.conditioning],
+    ['Judo', fighterData.stats.judo],
+    ['Balance', fighterData.stats.balance],
+    ['Muay Thai', fighterData.stats.mauyThai],
+    ['Reflex', fighterData.stats.reflex],
+    ['Taekwondo', fighterData.stats.taekwondo],
+    ['Footwork', fighterData.stats.footwork],
+    ['Sambo', fighterData.stats.sambo],
   ];
 
   return (

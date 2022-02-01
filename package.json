@@ -42,6 +42,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "clean": "npm run lint-fix && npm run pretty",
     "start": "react-scripts start",
     "dev": "react-scripts dev",
     "build": "react-scripts build",
