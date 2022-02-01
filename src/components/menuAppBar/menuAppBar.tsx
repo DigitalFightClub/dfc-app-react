@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import { useEthers } from '@usedapp/core';
+import { useEthers, shortenIfAddress } from '@usedapp/core';
 import { useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar, Button, Text } from '@chakra-ui/react';
 import { verifyNetwork } from '../../utils/web3/connect';
 
 export default function MenuAppBar() {
-  const [auth, setAuth] = useState(true);
-  const { activateBrowserWallet, account, chainId } = useEthers();
+  const [auth, setAuth] = useState(false);
+  const { activateBrowserWallet, account, chainId, deactivate } = useEthers();
   // const [activateError, setActivateError] = useState('');
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -22,14 +23,14 @@ export default function MenuAppBar() {
     activateBrowserWallet();
     console.log(account);
     if (account) {
+      console.log(account);
       verifyNetwork(chainId);
     }
   };
 
-  // const disconnectWallet = () => {
-  //   setActivateError('');
-  //   deactivate();
-  // };
+  const disconnectWallet = () => {
+    deactivate();
+  };
 
   return (
     <div>
@@ -49,23 +50,23 @@ export default function MenuAppBar() {
           borderColor="gray.200"
           h="14"
         >
-          <Button>Home</Button>
-          <Button>My Gym</Button>
-          <Button>Organizations</Button>
-          <Button>Challenges</Button>
+          <Button isDisabled>Home</Button>
+          <Button isDisabled>My Gym</Button>
+          <Button isDisabled>Organizations</Button>
+          <Button isDisabled>Challenges</Button>
           {!account ? <Button onClick={() => connectWallet()}>Connect Wallet</Button> : null}
-          <Text>{account}</Text>
-          {auth && (
+          {/* <Button isDisabled>Wallet: {shortenIfAddress(account ? account : '')}</Button> */}
+          {account && (
             <div>
               <Menu>
                 <MenuButton onClick={onOpen}>
-                  <Avatar h="10" w="10" />
+                  <Text>Wallet: {shortenIfAddress(account ? account : '')}</Text>
                 </MenuButton>
 
                 <MenuList>
-                  <MenuItem onClick={onClose}>My Profile</MenuItem>
-                  <MenuItem onClick={onClose}>Settings</MenuItem>
-                  <MenuItem onClick={onClose}>Log Out</MenuItem>
+                  {/* <MenuItem onClick={onClose}>My Profile</MenuItem>
+                  <MenuItem onClick={onClose}>Settings</MenuItem> */}
+                  <MenuItem onClick={disconnectWallet}>Disconnect Wallet</MenuItem>
                 </MenuList>
               </Menu>
             </div>

@@ -5,7 +5,7 @@ import { useMoralisWeb3Api, useMoralisWeb3ApiCall, useMoralis, useNFTBalances } 
 import { Contract } from 'ethers';
 import axios from 'axios';
 import { nftABI } from '../../abi/dfcNft';
-import ENV_CONFG from '../../config';
+import { ENV_CONFG } from '../../config';
 import fighterMetadata1 from './fighterMetaData1.json';
 import fighterMetadata2 from './fighterMetaData2.json';
 import fighterMetadata3 from './fighterMetaData3.json';
@@ -19,15 +19,21 @@ export const getNFTContract = (provider) => {
 };
 
 export const getNFTs = async (Web3Api, address) => {
+  if (!address) {
+    console.log('Wallet not connected!');
+  }
   const options = {
-    chain: 'matic',
-    address: address ? address : '0x514477244dBE49632930155c405af3B4b7987bA8',
+    chain: ENV.NET_NAME,
+    address: address ? address : ENV.MULTI_SIG,
   };
   const polygonNFTs = await Web3Api.account.getNFTs(options);
+  console.log(polygonNFTs);
+
+  // eslint-disable-next-line max-len
   const filteredNFTs = polygonNFTs.result.filter(
-    (nft) => nft.token_address === '0x62ea8080b2fc7dc4c7337920866afd242a1443cb'
-  );
-  // console.log(filteredNFTs);
+    (nft) => nft.token_address === '0x9dc20f1aace8e2fc93e5e8b15281d583e9521945'
+  ); //ENV.NFT_ADDY);
+  console.log(filteredNFTs);
 
   const sortedFilteredNFTs = filteredNFTs.sort((a, b) => {
     return parseInt(a.token_id) > parseInt(b.token_id) ? 1 : -1;
