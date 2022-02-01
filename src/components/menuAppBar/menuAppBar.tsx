@@ -4,7 +4,7 @@ import { useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar,
 import { verifyNetwork } from '../../utils/web3/connect';
 
 export default function MenuAppBar() {
-  const [auth, setAuth] = useState(true);
+  const [auth, setAuth] = useState(false);
   const { activateBrowserWallet, account, chainId } = useEthers();
   // const [activateError, setActivateError] = useState('');
 

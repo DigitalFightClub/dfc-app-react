@@ -20,7 +20,7 @@ const ENV = ENV_CONFG();
 const config = {
   readOnlyChainId: ENV.TARGET_NET.chainId,
   readOnlyUrls: {
-    [ENV.TARGET_NET.chainId]: `https://polygon-${ENV.TARGET_NET.chainName}.infura.io/v3/${ENV.INFURA_KEY}`,
+    [ENV.TARGET_NET.chainId]: `https://polygon-${ENV.INFURA_NET_NAME}.infura.io/v3/${ENV.INFURA_KEY}`,
   },
   networks: [ENV.TARGET_NET],
   notifications: {
