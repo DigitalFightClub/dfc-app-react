@@ -32,6 +32,7 @@ export default function FighterSelection({ refinedFightersMeta }: NftUris) {
   //   })
   // )
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const nftFighters = testMeta();
 
   const handleToggle = () => {
