@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 // import configureStore from './configureStore';
 import { Provider } from 'react-redux';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import { MoralisProvider } from 'react-moralis';
 import { DAppProvider } from '@usedapp/core';
 import ENV_CONFG from './config';
 import App from './App';
@@ -51,12 +52,14 @@ const config = {
 ReactDOM.render(
   <React.StrictMode>
     <DAppProvider config={config}>
-      <Provider store={store}>
-        <ChakraProvider theme={theme}>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <App />
-        </ChakraProvider>
-      </Provider>
+      <MoralisProvider appId={ENV.MORALIS_APP_ID} serverUrl={ENV.MORALIS_URL} initializeOnMount={true}>
+        <Provider store={store}>
+          <ChakraProvider theme={theme}>
+            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+            <App />
+          </ChakraProvider>
+        </Provider>
+      </MoralisProvider>
     </DAppProvider>
   </React.StrictMode>,
   document.getElementById('root')
