@@ -1,47 +1,46 @@
-import {useState} from 'react';
+import { useState } from 'react'; 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { Grid, Stack, HStack, Button, Collapse } from '@chakra-ui/react';
+import { useMoralis } from 'react-moralis';
+import { NftUris, FighterInfo } from '../../types';
 import FighterTile from '../fighterTile';
+import { testMeta } from '../../utils/web3/moralis';
 
 
-export default function FighterSelection() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function FighterSelection({ nftUris }: NftUris) {
   const [showActive, setShowActive] = useState(true);
 
+  console.log(`selection: ${nftUris}`);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { Moralis, isInitialized, isInitializing } = useMoralis();
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const { isLoading, error, data } = useQueries('repoData', () =>
+  //   fetch(url).then(res =>
+  //     console.log(res.json())
+  //   )
+  // );
+
+  // useQueries(
+  //   fighterUris.map(uri => {
+  //     return {
+  //       queryKey: ['user', user.id],
+  //       queryFn: () => fetchUserById(uri),
+  //     }
+  //   })
+  // )
+
+  const nftFighters = testMeta();
+  
   const handleToggle = () => {
     if (showActive === false) {
       setShowActive(true);
     } else {
       setShowActive(false);
     }
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const activeFighterData = {
-    name: 'Guy Hawkins',
-    country: 'US',
-    wins: '37',
-    loses: '0',
-    age: '33',
-    height: '193cm',
-    weight: '89kg',
-    org: 'Professional Fighting Circuit',
-    recruited: '19.10.2021',
-    status: 'Active',
-    image: '/assets/neon-fighter.svg',
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const retiredFighterData = {
-    name: 'Theresa Webb',
-    country: 'US',
-    wins: '11',
-    loses: '4',
-    age: '18',
-    height: '172cm',
-    weight: '59kg',
-    org: 'Professional Fighting Circuit',
-    recruited: '19.10.2021',
-    status: 'Retired',
-    image: '/assets/theresa-webb.svg',
   };
 
   return (
@@ -67,10 +66,11 @@ export default function FighterSelection() {
             gap='5rem 4rem'
             pl={{xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px'}}
           >
-            <FighterTile fighterType='active'/>
-            <FighterTile fighterType='active'/>
-            <FighterTile fighterType='active'/>
-            <FighterTile fighterType='active'/>
+
+            {nftFighters.map((fighterData: FighterInfo) =>
+              <FighterTile key={fighterData.name} fighterData={fighterData} fighterType='active'/>
+            )}
+
           </Grid>
         </Collapse>
 
@@ -82,7 +82,10 @@ export default function FighterSelection() {
             gap='5rem 4rem'
             pl={{xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px'}}
           >
-            <FighterTile fighterType='inactive'/>
+
+            {nftFighters.map((fighterData: FighterInfo) =>
+              <FighterTile key={fighterData.name} fighterData={fighterData} fighterType='inactive' />
+            )}
           </Grid>
         </Collapse>
 

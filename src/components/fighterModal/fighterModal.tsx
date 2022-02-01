@@ -1,37 +1,7 @@
 import { Flex, Button, Grid } from '@chakra-ui/react';
-
-import {
-  FighterHeader,
-  FighterStats,
-  FighterHistory,
-} from './fighterModalComponents';
-
-import {CloseIcon} from '@chakra-ui/icons';
-
-type FighterInfo = {
-  name: string;
-  country: string;
-  wins: string;
-  loses: string;
-  age: string;
-  height: string;
-  weight: string;
-  org: string;
-  recruited: string;
-  status: string;
-  image: string;
-};
-
-type FighterModalProps = {
-  fighterType: string;
-  onClose: () => void;
-  activeFighterData: FighterInfo;
-  retiredFighterData: FighterInfo;
-};
-
-type Stats = [string, number];
-
-type FighterStatistics = Stats[];
+import { FighterModalProps, FighterStatistics } from '../../types';
+import { FighterHeader, FighterStats, FighterHistory } from './fighterModalComponents';
+import { CloseIcon } from '@chakra-ui/icons';
 
 export default function FighterModal({
   fighterType,

@@ -1,4 +1,4 @@
-const wethABI = [
+export const wethABI = [
   {
     'inputs': [
       {
@@ -727,7 +727,3 @@ const wethABI = [
     'type': 'function'
   }
 ];
-
-export default {
-  wethABI
-};

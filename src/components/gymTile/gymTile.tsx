@@ -1,9 +1,5 @@
 import {Heading, Stack} from '@chakra-ui/react';
-
-type GymTileData = {
-  datanumber: string;
-  dataname: string;
-}
+import { GymTileData } from '../../types';
 
 export default function GymTile({datanumber, dataname}:GymTileData) {
 

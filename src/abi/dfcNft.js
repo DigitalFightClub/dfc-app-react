@@ -1,4 +1,4 @@
-const nftABI = [
+export const nftABI = [
   {
     'inputs': [],
     'stateMutability': 'nonpayable',
@@ -911,7 +911,3 @@ const nftABI = [
     'type': 'function'
   }
 ];
-
-export default {
-  nftABI
-};

@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // import ReactDOM from 'react-dom';
 // import configureStore from './configureStore';
-import { Provider } from 'react-redux';
+// import { Provider } from 'react-redux';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import { MoralisProvider } from 'react-moralis';
 import { DAppProvider } from '@usedapp/core';
 import ENV_CONFG from './config';
 import App from './App';
-import { store } from './store';
+// import { store } from './store';
 import { theme } from './styles/theme';
 import './index.css';
 import '@fontsource/sora/variable.css';
@@ -53,12 +53,10 @@ ReactDOM.render(
   <React.StrictMode>
     <DAppProvider config={config}>
       <MoralisProvider appId={ENV.MORALIS_APP_ID} serverUrl={ENV.MORALIS_URL} initializeOnMount={true}>
-        <Provider store={store}>
-          <ChakraProvider theme={theme}>
-            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-            <App />
-          </ChakraProvider>
-        </Provider>
+        <ChakraProvider theme={theme}>
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+          <App />
+        </ChakraProvider>
       </MoralisProvider>
     </DAppProvider>
   </React.StrictMode>,

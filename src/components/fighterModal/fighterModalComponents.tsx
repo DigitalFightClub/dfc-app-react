@@ -1,27 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {Box, Button, Flex, Text, Grid, Image, Heading, Progress, useColorModeValue} from '@chakra-ui/react';
-
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-
-type FighterInfo = {
-  name: string;
-  country: string;
-  wins: string;
-  loses: string;
-  age: string;
-  height: string;
-  weight: string;
-  org: string;
-  recruited: string;
-  status: string;
-  image: string;
-};
-
-type FighterModalProps = {
-  fighterType: string;
-  activeFighterData: FighterInfo;
-  retiredFighterData: FighterInfo;
-}
+import { FighterModalProps2 as FighterModalProps, Stats} from '../../types';
 
 // This is where the fighter image and basic data appears
 export const FighterHeader = ({fighterType, activeFighterData,
@@ -50,13 +30,6 @@ export const FighterHeader = ({fighterType, activeFighterData,
         >
 
           <Text variant="micro">
-            AGE:&nbsp;&nbsp;
-            <Text display="inline" variant="small">
-              {fighterType === 'active' ? activeFighterData.age : retiredFighterData.age}
-            </Text>
-          </Text>
-
-          <Text variant="micro">
             HEIGHT:&nbsp;&nbsp;
             <Text display="inline" variant="small">
               {fighterType === 'active' ? activeFighterData.height : retiredFighterData.height}
@@ -71,9 +44,9 @@ export const FighterHeader = ({fighterType, activeFighterData,
           </Text>
 
           <Text variant="micro">
-            ORG:&nbsp;&nbsp;
+            GENDER:&nbsp;&nbsp;
             <Text display="inline" variant="small">
-              {fighterType === 'active' ? activeFighterData.org : retiredFighterData.org}
+              {fighterType === 'active' ? activeFighterData.gender : retiredFighterData.gender}
             </Text>
           </Text>
 
@@ -123,8 +96,6 @@ export const FighterHeader = ({fighterType, activeFighterData,
     </Box>
   );
 };
-
-type Stats = [string, number];
 
 type FighterStats = {
   fighterStatistics: Stats[];

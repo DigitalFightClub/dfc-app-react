@@ -1,10 +1,28 @@
-import { Grid, Container, Stack, VStack, Box} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { Grid, Container, Stack, VStack, Box } from '@chakra-ui/react';
+import { useMoralisWeb3Api, useMoralis } from 'react-moralis';
+
+import { getNFTs } from '../../utils/web3/moralis';
 
 import GymTile from '../gymTile';
 import GymHeader from '../gymHeader';
 import FighterSelection from '../fighterSelection';
 
 export default function Gym() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { Moralis, isInitialized, isInitializing } = useMoralis();
+  const Web3Api = useMoralisWeb3Api();
+
+  const [nftUris, setNftUris] = useState({});
+
+  useEffect(() => {
+    (async function () {
+      if (isInitialized) {
+        const nfts = await getNFTs(Web3Api);
+        setNftUris(nfts);
+      }
+    })();
+  }, [isInitialized]);
 
   return (
     <Box>
@@ -36,7 +54,8 @@ export default function Gym() {
             <GymTile datanumber='1' dataname='Championships Held' />
           </Grid>
 
-          <FighterSelection />
+          {/* Pass in URLS to fetch */}
+          {nftUris ? <FighterSelection nftUris={nftUris}/> : null}
         </VStack>
 
       </Container>
