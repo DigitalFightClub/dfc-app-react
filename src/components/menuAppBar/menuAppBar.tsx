@@ -6,7 +6,7 @@ import { verifyNetwork } from '../../utils/web3/connect';
 
 export default function MenuAppBar() {
   const [auth, setAuth] = useState(false);
-  const { activateBrowserWallet, account, chainId, deactivate} = useEthers();
+  const { activateBrowserWallet, account, chainId, deactivate } = useEthers();
   // const [activateError, setActivateError] = useState('');
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -23,6 +23,7 @@ export default function MenuAppBar() {
     activateBrowserWallet();
     console.log(account);
     if (account) {
+      console.log(account);
       verifyNetwork(chainId);
     }
   };
@@ -49,17 +50,17 @@ export default function MenuAppBar() {
           borderColor="gray.200"
           h="14"
         >
-          <Button>Home</Button>
-          <Button>My Gym</Button>
-          <Button>Organizations</Button>
-          <Button>Challenges</Button>
+          <Button isDisabled>Home</Button>
+          <Button isDisabled>My Gym</Button>
+          <Button isDisabled>Organizations</Button>
+          <Button isDisabled>Challenges</Button>
           {!account ? <Button onClick={() => connectWallet()}>Connect Wallet</Button> : null}
           {/* <Button isDisabled>Wallet: {shortenIfAddress(account ? account : '')}</Button> */}
           {account && (
             <div>
               <Menu>
                 <MenuButton onClick={onOpen}>
-                  <Button>Wallet: {shortenIfAddress(account ? account : '')}</Button>
+                  <Text>Wallet: {shortenIfAddress(account ? account : '')}</Text>
                 </MenuButton>
 
                 <MenuList>

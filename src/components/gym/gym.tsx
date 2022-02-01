@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Grid, Container, Stack, VStack, Box } from '@chakra-ui/react';
 import { useMoralisWeb3Api, useMoralis } from 'react-moralis';
+import { useEthers } from '@usedapp/core';
 
 import { getNFTs, transformFighterMetadata } from '../../utils/web3/moralis';
 
@@ -11,6 +12,7 @@ import FighterSelection from '../fighterSelection';
 
 export default function Gym() {
   const { Moralis, isInitialized, isInitializing } = useMoralis();
+  const { account } = useEthers();
   const Web3Api = useMoralisWeb3Api();
 
   const [nftUris, setNftUris] = useState({});
@@ -26,15 +28,15 @@ export default function Gym() {
 
   useEffect(() => {
     (async function () {
-      if (isInitialized) {
-        const nfts = await getNFTs(Web3Api);
+      if (isInitialized && account) {
+        const nfts = await getNFTs(Web3Api, account);
         setRawFightersMeta(nfts);
         // console.log(nfts);
         setNftCount(nfts.length);
         // setNftUris(nfts);
       }
     })();
-  }, [isInitialized]);
+  }, [isInitialized, account]);
 
   useEffect(() => {
     if (rawFightersMeta.length > 0) {

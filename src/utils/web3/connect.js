@@ -1,4 +1,4 @@
-import ENV_CONFG from '../../config';
+import { ENV_CONFG, MAINNET } from '../../config';
 
 const ENV = ENV_CONFG();
 
@@ -45,7 +45,7 @@ export const addTestnet = () => {
 };
 
 export const isRightNetwork = (chainId) => {
-  if (ENV.TARGET_NET === chainId) {
+  if (ENV.TARGET_NET.chainId === chainId) {
     // setActivateError('')
     return true;
   }
@@ -55,7 +55,7 @@ export const isRightNetwork = (chainId) => {
 
 export const addNetwork = () => {
   switch (ENV.TARGET_NET) {
-    case ENV.MAINNET:
+    case MAINNET:
       console.log('attempting to add mainnet');
       addMainnet();
       break;

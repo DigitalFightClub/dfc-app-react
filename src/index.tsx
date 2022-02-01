@@ -5,8 +5,8 @@ import ReactDOM from 'react-dom';
 // import { Provider } from 'react-redux';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import { MoralisProvider } from 'react-moralis';
-import { DAppProvider } from '@usedapp/core';
-import ENV_CONFG from './config';
+import { DAppProvider, Mumbai, Polygon, Mainnet } from '@usedapp/core';
+import { ENV_CONFG } from './config';
 import App from './App';
 // import { store } from './store';
 import { theme } from './styles/theme';
@@ -20,32 +20,16 @@ const ENV = ENV_CONFG();
 const config = {
   readOnlyChainId: ENV.TARGET_NET.chainId,
   readOnlyUrls: {
-    [ENV.TARGET_NET.chainId]: `https://polygon-${ENV.INFURA_NET_NAME}.infura.io/v3/${ENV.INFURA_KEY}`,
+    [Mumbai.chainId]: `https://polygon-mumbai.infura.io/v3/${ENV.INFURA_KEY}`,
+    [Polygon.chainId]: `https://polygon-mainnet.infura.io/v3/${ENV.INFURA_KEY}`,
+    [Mainnet.chainId]: `https://mainnet.infura.io/v3/${ENV.INFURA_KEY}`,
   },
-  networks: [ENV.TARGET_NET],
+  networks: [Mumbai, Polygon, Mainnet],
   notifications: {
-    checkInterval: 3000,
+    checkInterval: 20000,
     expirationPeriod: 750,
   },
 };
-
-// const renderApp = () => {
-//   render(
-//     <DAppProvider config={config}>
-//       <Provider store={store}>
-//         <ChakraProvider theme={theme}>
-//           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-//           <App />
-//         </ChakraProvider>
-//       </Provider>
-//     </DAppProvider>
-//   );
-
-//   // if (process.env.NODE_ENV !== 'production' && module.hot) {
-//   //   module.hot.accept('./components', renderApp);
-//   // }
-// };
-// renderApp();
 
 ReactDOM.render(
   <React.StrictMode>
