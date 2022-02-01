@@ -26,7 +26,8 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'indent': [
       'error',
-      2
+      2,
+      { 'SwitchCase': 1 }
     ],
     'linebreak-style': [
       'error',
@@ -42,6 +43,15 @@ module.exports = {
     ],
     'react/jsx-uses-react': 'error',
     'react/jsx-uses-vars': 'error',
+    'max-len': [
+      'error',
+      {
+        'code': 120,
+        'tabWidth': 2,
+        'ignoreUrls': true
+      }
+    ],
+    'no-tabs': ['error', { 'allowIndentationTabs': true }],
   },
   'settings': {
     'react': {

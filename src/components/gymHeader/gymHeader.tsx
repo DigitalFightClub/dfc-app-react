@@ -14,22 +14,21 @@ export default function GymHeader() {
 
   return (
     <HStack align="center" justify="left">
-      <Image
-        h="1.75rem"
-        w="1.75rem"
-        display="inline"
-        src="/assets/red-dragon-gym.svg"
-      />
+      <Image h="1.75rem" w="1.75rem" display="inline" src="/assets/red-dragon-gym.svg" />
       {changeGym ? (
         <>
-          <Input textTransform="uppercase" value={gymname} onChange={(event) =>   setGymname(event.target.value)} />
-          <Button display='inline' onClick={() => setChangeGym(false)}><CheckIcon/></Button>
+          <Input textTransform="uppercase" value={gymname} onChange={(event) => setGymname(event.target.value)} />
+          <Button display="inline" onClick={() => setChangeGym(false)}>
+            <CheckIcon />
+          </Button>
         </>
       ) : (
         <>
           <Heading textTransform="uppercase">{gymname}</Heading>
 
-          <Button display='inline' onClick={() => setChangeGym(true)}><EditIcon/></Button>
+          <Button display="inline" onClick={() => setChangeGym(true)}>
+            <EditIcon />
+          </Button>
         </>
       )}
     </HStack>

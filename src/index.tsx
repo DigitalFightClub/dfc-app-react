@@ -22,12 +22,10 @@ const config = {
   readOnlyUrls: {
     [ENV.TARGET_NET.chainId]: `https://polygon-${ENV.TARGET_NET.chainName}.infura.io/v3/${ENV.INFURA_KEY}`,
   },
-  networks: [
-    ENV.TARGET_NET
-  ],
+  networks: [ENV.TARGET_NET],
   notifications: {
     checkInterval: 3000,
-    expirationPeriod: 750
+    expirationPeriod: 750,
   },
 };
 

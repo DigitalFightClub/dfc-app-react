@@ -9,7 +9,7 @@ export default function configureAppStore(preloadedState) {
     reducer: rootReducer,
     middleware: [loggerMiddleware, ...getDefaultMiddleware()],
     preloadedState,
-    enhancers: [monitorReducersEnhancer]
+    enhancers: [monitorReducersEnhancer],
   });
 
   // eslint-disable-next-line no-undef

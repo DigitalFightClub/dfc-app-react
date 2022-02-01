@@ -41,12 +41,7 @@ const retiredFighterData: FighterInfo = {
 
 const FighterData = ({ fighterData, fighterType }: FighterType) => {
   return (
-    <Grid
-      templateRows="repeat(3, 30px)"
-      textAlign="left"
-      minH="180px"
-      gap="11px"
-    >
+    <Grid templateRows="repeat(3, 30px)" textAlign="left" minH="180px" gap="11px">
       <Heading
         textAlign={{
           xl: 'left',
@@ -115,7 +110,11 @@ const FighterData = ({ fighterData, fighterType }: FighterType) => {
         <Text variant="micro">
           RECRUITED:&nbsp;&nbsp;
           <chakra.span display="inline" variant="small">
-            {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(parseInt(fighterData.recruited) * 1000)}
+            {new Intl.DateTimeFormat('en-US', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+            }).format(parseInt(fighterData.recruited) * 1000)}
           </chakra.span>
         </Text>
 
@@ -151,7 +150,7 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
   return (
     <>
       {isOpen && (
-        <Modal size='5xl' isCentered isOpen={isOpen} onClose={onClose}>
+        <Modal size="5xl" isCentered isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
             <FighterModal
@@ -207,10 +206,7 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
             }}
             transition="0.5s"
           >
-            <Image
-              boxSize='250px'
-              src={fighterData.image}
-            />
+            <Image boxSize="250px" src={fighterData.image} />
           </Box>
 
           <FighterData fighterData={fighterData} fighterType={fighterType} />

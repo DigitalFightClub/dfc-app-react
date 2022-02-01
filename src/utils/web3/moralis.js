@@ -18,17 +18,22 @@ export const getNFTContract = (provider) => {
 };
 
 export const getNFTs = async (Web3Api, address) => {
-  const options = { chain: 'matic', address: address ? address : '0x514477244dBE49632930155c405af3B4b7987bA8' };
+  const options = {
+    chain: 'matic',
+    address: address ? address : '0x514477244dBE49632930155c405af3B4b7987bA8',
+  };
   const polygonNFTs = await Web3Api.account.getNFTs(options);
-  const filteredNFTs = polygonNFTs.result.filter(nft => nft.token_address === '0x62ea8080b2fc7dc4c7337920866afd242a1443cb');
+  const filteredNFTs = polygonNFTs.result.filter(
+    (nft) => nft.token_address === '0x62ea8080b2fc7dc4c7337920866afd242a1443cb'
+  );
   console.log(filteredNFTs);
 
   const sortedFilteredNFTs = filteredNFTs.sort((a, b) => {
-    return (parseInt(a.token_id) > parseInt(b.token_id)) ? 1 : -1;
+    return parseInt(a.token_id) > parseInt(b.token_id) ? 1 : -1;
   });
   console.log(sortedFilteredNFTs);
 
-  const parsedMetadata = sortedFilteredNFTs.map(nft => {
+  const parsedMetadata = sortedFilteredNFTs.map((nft) => {
     return nft.token_uri;
   });
   console.log(parsedMetadata);
@@ -37,22 +42,18 @@ export const getNFTs = async (Web3Api, address) => {
 };
 
 export const getNFTsMetadata = async (nfts) => {
-  nfts.forEach(nft => {
+  nfts.forEach((nft) => {
     console.log(nft);
   });
 };
 
 const fetchJsonMetaData = (url) => {
-  const { isLoading, error, data } = useQuery('repoData', () =>
-    fetch(url).then(res =>
-      console.log(res.json())
-    )
-  );
+  const { isLoading, error, data } = useQuery('repoData', () => fetch(url).then((res) => console.log(res.json())));
 };
 
 export const testMeta = () => {
   const apiResults = [fighterMetadata1, fighterMetadata2, fighterMetadata3];
-  console.log(apiResults); 
+  console.log(apiResults);
   return transformFighterMetadata(apiResults);
 };
 

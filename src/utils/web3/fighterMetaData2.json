@@ -1,150 +1,150 @@
 {
-    "name": "Bastian Bender",
-    "image": "https://mainnet.api.digitalfightclub.io/renderedFighter/2.png",
-    "external_url": "https://digitalfightclub.io/?token_id=2",
-    "attributes": [
-        {
-            "trait_type": "Active/Retired",
-            "value": "Active"
-        },
-        {
-            "display_type": "number",
-            "trait_type": "Generation",
-            "value": 0,
-            "max_value": 100
-        },
-        {
-            "display_type": "date",
-            "trait_type": "Recruited",
-            "value": 1638320400
-        },
-        {
-            "trait_type": "BJJ",
-            "value": 56,
-            "max_value": 100
-        },
-        {
-            "trait_type": "judo",
-            "value": 63,
-            "max_value": 100
-        },
-        {
-            "trait_type": "karate",
-            "value": 72,
-            "max_value": 100
-        },
-        {
-            "trait_type": "kickboxing",
-            "value": 67,
-            "max_value": 100
-        },
-        {
-            "trait_type": "muayThai",
-            "value": 24,
-            "max_value": 100
-        },
-        {
-            "trait_type": "sambo",
-            "value": 35,
-            "max_value": 100
-        },
-        {
-            "trait_type": "taekwondo",
-            "value": 54,
-            "max_value": 100
-        },
-        {
-            "trait_type": "wrestling",
-            "value": 48,
-            "max_value": 100
-        },
-        {
-            "display_type": "boost_number",
-            "trait_type": "Balance",
-            "value": 34,
-            "max_value": 100
-        },
-        {
-            "display_type": "boost_number",
-            "trait_type": "Conditioning",
-            "value": 30,
-            "max_value": 100
-        },
-        {
-            "display_type": "boost_number",
-            "trait_type": "Flexibility",
-            "value": 52,
-            "max_value": 100
-        },
-        {
-            "display_type": "boost_number",
-            "trait_type": "Reflex",
-            "value": 66,
-            "max_value": 100
-        },
-        {
-            "display_type": "boost_number",
-            "trait_type": "Footwork",
-            "value": 44,
-            "max_value": 100
-        },
-        {
-            "trait_type": "Gender",
-            "value": "male"
-        },
-        {
-            "trait_type": "Height",
-            "value": "5'6\""
-        },
-        {
-            "trait_type": "Origin",
-            "value": "Germany"
-        },
-        {
-            "display_type": "boost_number",
-            "trait_type": "Power",
-            "value": 37,
-            "max_value": 100
-        },
-        {
-            "display_type": "boost_number",
-            "trait_type": "Speed",
-            "value": 14,
-            "max_value": 100
-        },
-        {
-            "display_type": "boost_number",
-            "trait_type": "Strength",
-            "value": 57,
-            "max_value": 100
-        },
-        {
-            "trait_type": "Weight",
-            "value": "136 lbs"
-        },
-        {
-            "trait_type": "Eyes",
-            "value": "Bloodshot"
-        },
-        {
-            "trait_type": "Shoes",
-            "value": "Blue Grappling Shoes"
-        },
-        {
-            "trait_type": "Legs",
-            "value": "Purple Briefs"
-        },
-        {
-            "trait_type": "Chest",
-            "value": "White Gi Top"
-        },
-        {
-            "trait_type": "Hair",
-            "value": "Blonde Buzz"
-        },
-        {
-            "trait_type": "Gloves",
-            "value": "Yellow Grappling Gloves"
-        }
-    ]
+  "name": "Bastian Bender",
+  "image": "https://mainnet.api.digitalfightclub.io/renderedFighter/2.png",
+  "external_url": "https://digitalfightclub.io/?token_id=2",
+  "attributes": [
+    {
+      "trait_type": "Active/Retired",
+      "value": "Active"
+    },
+    {
+      "display_type": "number",
+      "trait_type": "Generation",
+      "value": 0,
+      "max_value": 100
+    },
+    {
+      "display_type": "date",
+      "trait_type": "Recruited",
+      "value": 1638320400
+    },
+    {
+      "trait_type": "BJJ",
+      "value": 56,
+      "max_value": 100
+    },
+    {
+      "trait_type": "judo",
+      "value": 63,
+      "max_value": 100
+    },
+    {
+      "trait_type": "karate",
+      "value": 72,
+      "max_value": 100
+    },
+    {
+      "trait_type": "kickboxing",
+      "value": 67,
+      "max_value": 100
+    },
+    {
+      "trait_type": "muayThai",
+      "value": 24,
+      "max_value": 100
+    },
+    {
+      "trait_type": "sambo",
+      "value": 35,
+      "max_value": 100
+    },
+    {
+      "trait_type": "taekwondo",
+      "value": 54,
+      "max_value": 100
+    },
+    {
+      "trait_type": "wrestling",
+      "value": 48,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Balance",
+      "value": 34,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Conditioning",
+      "value": 30,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Flexibility",
+      "value": 52,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Reflex",
+      "value": 66,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Footwork",
+      "value": 44,
+      "max_value": 100
+    },
+    {
+      "trait_type": "Gender",
+      "value": "male"
+    },
+    {
+      "trait_type": "Height",
+      "value": "5'6\""
+    },
+    {
+      "trait_type": "Origin",
+      "value": "Germany"
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Power",
+      "value": 37,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Speed",
+      "value": 14,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Strength",
+      "value": 57,
+      "max_value": 100
+    },
+    {
+      "trait_type": "Weight",
+      "value": "136 lbs"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Bloodshot"
+    },
+    {
+      "trait_type": "Shoes",
+      "value": "Blue Grappling Shoes"
+    },
+    {
+      "trait_type": "Legs",
+      "value": "Purple Briefs"
+    },
+    {
+      "trait_type": "Chest",
+      "value": "White Gi Top"
+    },
+    {
+      "trait_type": "Hair",
+      "value": "Blonde Buzz"
+    },
+    {
+      "trait_type": "Gloves",
+      "value": "Yellow Grappling Gloves"
+    }
+  ]
 }

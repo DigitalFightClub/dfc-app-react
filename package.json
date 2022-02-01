@@ -48,6 +48,7 @@
     "test": "react-scripts test",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx src",
     "lint-fix": "eslint --fix --ignore-path .eslintignore --ext .js,.ts,.tsx ./src",
+    "pretty": "prettier --write src/",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
@@ -96,6 +97,7 @@
     "@typescript-eslint/parser": "^5.10.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "prettier": "2.5.1",
     "react-error-overlay": "6.0.9",
     "redux-devtools-extension": "^2.13.9"
   }
