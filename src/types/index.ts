@@ -36,7 +36,7 @@ export type FighterType = {
 };
 
 export type GymTileData = {
-  datanumber: string;
+  datanumber: string | number;
   dataname: string;
 };
 

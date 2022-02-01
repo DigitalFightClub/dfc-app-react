@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Grid, Container, Stack, VStack, Box } from '@chakra-ui/react';
 import { useMoralisWeb3Api, useMoralis } from 'react-moralis';
@@ -9,16 +10,23 @@ import GymHeader from '../gymHeader';
 import FighterSelection from '../fighterSelection';
 
 export default function Gym() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { Moralis, isInitialized, isInitializing } = useMoralis();
   const Web3Api = useMoralisWeb3Api();
 
   const [nftUris, setNftUris] = useState({});
+  const [nftCount, setNftCount] = useState(0);
+  const [activeFighters, setActiveFighters] = useState(0);
+  const [retiredFighters, setRetiredFighters] = useState(0);
+  const [activeFightRecord, setActiveFightRecord] = useState('0-0');
+  const [overallFightRecord, setOverallFightRecord] = useState('0-0');
+  const [tkoTotal, setTkoTotal] = useState(0);
+  const [championshipsHeld, setChampionshipsHeld] = useState(0);
 
   useEffect(() => {
     (async function () {
       if (isInitialized) {
         const nfts = await getNFTs(Web3Api);
+        setNftCount(nfts.length);
         setNftUris(nfts);
       }
     })();
@@ -43,12 +51,12 @@ export default function Gym() {
             gap="30px"
             justifyContent="center"
           >
-            <GymTile datanumber="4" dataname="Active Fighters" />
-            <GymTile datanumber="32-26" dataname="Active Fight Record" />
-            <GymTile datanumber="1337" dataname="$TKO Tokens" />
-            <GymTile datanumber="2" dataname="Retired Fighters" />
-            <GymTile datanumber="59-42" dataname="Overall Fight Record" />
-            <GymTile datanumber="1" dataname="Championships Held" />
+            <GymTile datanumber={nftCount} dataname="Active Fighters" />
+            <GymTile datanumber={activeFightRecord} dataname="Active Fight Record" />
+            <GymTile datanumber={tkoTotal} dataname="$TKO Tokens" />
+            <GymTile datanumber={retiredFighters} dataname="Retired Fighters" />
+            <GymTile datanumber={overallFightRecord} dataname="Overall Fight Record" />
+            <GymTile datanumber={championshipsHeld} dataname="Championships Held" />
           </Grid>
 
           {/* Pass in URLS to fetch */}

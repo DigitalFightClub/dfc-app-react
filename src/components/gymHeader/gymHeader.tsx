@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Heading, Button, HStack, Image, Input } from '@chakra-ui/react';
-
 import { EditIcon, CheckIcon } from '@chakra-ui/icons';
 
 export default function GymHeader() {
@@ -15,7 +14,6 @@ export default function GymHeader() {
     return gymName;
   };
 
-  //hardcoded gym name
   const [gymname, setGymname] = useState<
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     React.ChangeEvent<HTMLInputElement> | string | any
@@ -24,10 +22,6 @@ export default function GymHeader() {
   useEffect(() => {
     window.localStorage.setItem('gym_name', gymname);
   }, [gymname]);
-
-  // const [tokenIds] = useState(JSON.parse(window.localStorage.getItem("fighter_ids")))
-  // const [fighterCount, setFighterCount] = useState(window.localStorage.getItem("fighter_count"))
-  // await window.localStorage.setItem("fighter_ids", JSON.stringify(tokenIds))
 
   return (
     <HStack align="center" justify="left">
