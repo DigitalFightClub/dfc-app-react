@@ -1,64 +1,67 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Button, Flex, Text, Grid, Image, Heading, Progress, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, Grid, Image, Heading, Progress, useColorModeValue, chakra } from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { FighterModalProps2 as FighterModalProps, Stats } from '../../types';
 
 // This is where the fighter image and basic data appears
-export const FighterHeader = ({ fighterType, activeFighterData, retiredFighterData }: FighterModalProps) => {
+export const FighterHeader = ({ fighterType, fighterData }: FighterModalProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const FighterData = ({ fighterType }: any) => {
     return (
       <Grid templateRows="repeat(3, 30px)" textAlign="left" minH="180px" minW="300px" gap="11px">
-        <Heading textAlign="left">
-          {fighterType === 'active' ? activeFighterData.name : retiredFighterData.name}
-        </Heading>
+        <Heading textAlign="left">{fighterData.name}</Heading>
 
         <Heading variant="header4" textAlign="left">
           Record:
           <Text display="inline" color="primary.500">
             &nbsp;
-            {fighterType === 'active' ? activeFighterData.wins : retiredFighterData.wins}
+            {fighterData.wins}
           </Text>
           {'-'}
           <Text display="inline" color="secondary.500">
-            {fighterType === 'active' ? activeFighterData.loses : retiredFighterData.loses}
+            {fighterData.loses}
           </Text>
         </Heading>
 
         <Grid templateColumns="1fr" gap="11px">
           <Text variant="micro">
             HEIGHT:&nbsp;&nbsp;
-            <Text display="inline" variant="small">
-              {fighterType === 'active' ? activeFighterData.height : retiredFighterData.height}
-            </Text>
+            <chakra.span display="inline" variant="small">
+              {fighterData.height}
+            </chakra.span>
           </Text>
 
           <Text variant="micro">
             WEIGHT:&nbsp;&nbsp;
-            <Text display="inline" variant="small">
-              {fighterType === 'active' ? activeFighterData.weight : retiredFighterData.weight}
-            </Text>
+            <chakra.span display="inline" variant="small">
+              {fighterData.weight}
+            </chakra.span>
           </Text>
 
           <Text variant="micro">
             GENDER:&nbsp;&nbsp;
-            <Text display="inline" variant="small">
-              {fighterType === 'active' ? activeFighterData.gender : retiredFighterData.gender}
-            </Text>
+            <chakra.span display="inline" variant="small">
+              {fighterData.gender}
+            </chakra.span>
           </Text>
 
           <Text variant="micro">
             RECRUITER:&nbsp;&nbsp;
-            <Text display="inline" variant="small">
-              {fighterType === 'active' ? activeFighterData.recruited : retiredFighterData.recruited}
-            </Text>
+            <chakra.span display="inline" variant="small">
+              {fighterData.recruited}
+            </chakra.span>
           </Text>
 
           <Text variant="micro">
             STATUS:&nbsp;&nbsp;
-            <Text display="inline" variant="small" fontWeight="400" color={fighterType === 'active' ? 'green' : 'red'}>
-              {fighterType === 'active' ? activeFighterData.status : retiredFighterData.status}
-            </Text>
+            <chakra.span
+              display="inline"
+              variant="small"
+              fontWeight="400"
+              color={fighterType === 'active' ? 'green' : 'red'}
+            >
+              {fighterData.status}
+            </chakra.span>
           </Text>
         </Grid>
       </Grid>
@@ -76,8 +79,8 @@ export const FighterHeader = ({ fighterType, activeFighterData, retiredFighterDa
       alignContent="center"
     >
       <Grid templateColumns="1.5fr 2.5fr">
-        <Box maxH="300px" maxW="185px" justifySelf="center" alignSelf="center" pos="relative" pr="1.5rem">
-          <Image height="auto" src={fighterType === 'active' ? activeFighterData.image : retiredFighterData.image} />
+        <Box maxH="300px" justifySelf="center" alignSelf="center" pos="relative" pr="1.5rem">
+          <Image height="200px" src={fighterData.image} />
         </Box>
 
         <FighterData fighterType={fighterType} />

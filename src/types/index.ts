@@ -14,14 +14,12 @@ export type FighterInfo = {
 export type FighterModalProps = {
   fighterType: string;
   onClose: () => void;
-  activeFighterData: FighterInfo;
-  retiredFighterData: FighterInfo;
+  fighterData: FighterInfo;
 };
 
 export type FighterModalProps2 = {
   fighterType: string;
-  activeFighterData: FighterInfo;
-  retiredFighterData: FighterInfo;
+  fighterData: FighterInfo;
 };
 
 export type FighterStats = {

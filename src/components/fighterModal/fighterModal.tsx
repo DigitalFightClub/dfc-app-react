@@ -3,12 +3,7 @@ import { FighterModalProps, FighterStatistics } from '../../types';
 import { FighterHeader, FighterStats, FighterHistory } from './fighterModalComponents';
 import { CloseIcon } from '@chakra-ui/icons';
 
-export default function FighterModal({
-  fighterType,
-  onClose,
-  activeFighterData,
-  retiredFighterData,
-}: FighterModalProps) {
+export default function FighterModal({ fighterType, onClose, fighterData }: FighterModalProps) {
   const fighterStatistics: FighterStatistics = [
     ['Power', 44],
     ['Kickboxing', 37],
@@ -50,11 +45,7 @@ export default function FighterModal({
 
       <Grid templateColumns="2fr 1fr">
         <Grid direction="columns" templateRows="1fr 1.5fr">
-          <FighterHeader
-            fighterType={fighterType}
-            activeFighterData={activeFighterData}
-            retiredFighterData={retiredFighterData}
-          />
+          <FighterHeader fighterType={fighterType} fighterData={fighterData} />
           <FighterStats fighterStatistics={fighterStatistics} />
         </Grid>
 

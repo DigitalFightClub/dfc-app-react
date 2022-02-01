@@ -2,7 +2,6 @@ import { useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { Grid, Stack, HStack, Button, Collapse } from '@chakra-ui/react';
-import { useMoralis } from 'react-moralis';
 import { NftUris, FighterInfo } from '../../types';
 import FighterTile from '../fighterTile';
 import { testMeta } from '../../utils/web3/moralis';
@@ -10,27 +9,6 @@ import { testMeta } from '../../utils/web3/moralis';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function FighterSelection({ refinedFightersMeta }: NftUris) {
   const [showActive, setShowActive] = useState(true);
-
-  // console.log(`selection: ${nftUris}`);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { Moralis, isInitialized, isInitializing } = useMoralis();
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const { isLoading, error, data } = useQueries('repoData', () =>
-  //   fetch(url).then(res =>
-  //     console.log(res.json())
-  //   )
-  // );
-
-  // useQueries(
-  //   fighterUris.map(uri => {
-  //     return {
-  //       queryKey: ['user', user.id],
-  //       queryFn: () => fetchUserById(uri),
-  //     }
-  //   })
-  // )
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const nftFighters = testMeta();

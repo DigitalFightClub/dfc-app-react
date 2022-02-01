@@ -10,34 +10,8 @@ import {
   ModalOverlay,
   ModalContent,
 } from '@chakra-ui/react';
-import { FighterType, FighterInfo } from '../../types';
+import { FighterType } from '../../types';
 import FighterModal from '../fighterModal/fighterModal';
-
-const activeFighterData: FighterInfo = {
-  name: 'Guy Hawkins',
-  country: 'US',
-  wins: '37',
-  loses: '0',
-  height: '193cm',
-  weight: '89kg',
-  gender: 'male',
-  recruited: '19.10.2021',
-  status: 'Active',
-  image: '/assets/neon-fighter.svg',
-};
-
-const retiredFighterData: FighterInfo = {
-  name: 'Theresa Webb',
-  country: 'US',
-  wins: '11',
-  loses: '4',
-  gender: 'female',
-  height: '172cm',
-  weight: '59kg',
-  recruited: '19.10.2021',
-  status: 'Retired',
-  image: '/assets/theresa-webb.svg',
-};
 
 const FighterData = ({ fighterData, fighterType }: FighterType) => {
   return (
@@ -153,12 +127,7 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
         <Modal size="5xl" isCentered isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <FighterModal
-              fighterType={fighterType}
-              onClose={onClose}
-              activeFighterData={activeFighterData}
-              retiredFighterData={retiredFighterData}
-            />
+            <FighterModal fighterType={fighterType} onClose={onClose} fighterData={fighterData} />
           </ModalContent>
         </Modal>
       )}
