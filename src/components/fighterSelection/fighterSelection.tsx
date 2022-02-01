@@ -8,10 +8,10 @@ import FighterTile from '../fighterTile';
 import { testMeta } from '../../utils/web3/moralis';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function FighterSelection({ nftUris }: NftUris) {
+export default function FighterSelection({ refinedFightersMeta }: NftUris) {
   const [showActive, setShowActive] = useState(true);
 
-  console.log(`selection: ${nftUris}`);
+  // console.log(`selection: ${nftUris}`);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { Moralis, isInitialized, isInitializing } = useMoralis();
@@ -81,7 +81,7 @@ export default function FighterSelection({ nftUris }: NftUris) {
             gap="5rem 4rem"
             pl={{ xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px' }}
           >
-            {nftFighters.map((fighterData: FighterInfo) => (
+            {refinedFightersMeta.map((fighterData: FighterInfo) => (
               <FighterTile key={fighterData.name} fighterData={fighterData} fighterType="active" />
             ))}
           </Grid>
@@ -101,7 +101,7 @@ export default function FighterSelection({ nftUris }: NftUris) {
             gap="5rem 4rem"
             pl={{ xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px' }}
           >
-            {nftFighters.map((fighterData: FighterInfo) => (
+            {refinedFightersMeta.map((fighterData: FighterInfo) => (
               <FighterTile key={fighterData.name} fighterData={fighterData} fighterType="inactive" />
             ))}
           </Grid>

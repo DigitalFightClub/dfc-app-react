@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Grid, Container, Stack, VStack, Box } from '@chakra-ui/react';
 import { useMoralisWeb3Api, useMoralis } from 'react-moralis';
 
-import { getNFTs } from '../../utils/web3/moralis';
+import { getNFTs, transformFighterMetadata } from '../../utils/web3/moralis';
 
 import GymTile from '../gymTile';
 import GymHeader from '../gymHeader';
@@ -14,6 +14,8 @@ export default function Gym() {
   const Web3Api = useMoralisWeb3Api();
 
   const [nftUris, setNftUris] = useState({});
+  const [rawFightersMeta, setRawFightersMeta] = useState([]);
+  const [refinedFightersMeta, setRefinedFightersMeta] = useState([]);
   const [nftCount, setNftCount] = useState(0);
   const [activeFighters, setActiveFighters] = useState(0);
   const [retiredFighters, setRetiredFighters] = useState(0);
@@ -26,11 +28,22 @@ export default function Gym() {
     (async function () {
       if (isInitialized) {
         const nfts = await getNFTs(Web3Api);
+        setRawFightersMeta(nfts);
+        // console.log(nfts);
         setNftCount(nfts.length);
-        setNftUris(nfts);
+        // setNftUris(nfts);
       }
     })();
   }, [isInitialized]);
+
+  useEffect(() => {
+    if (rawFightersMeta.length > 0) {
+      // console.log(rawFightersMeta);
+      const result = transformFighterMetadata(rawFightersMeta);
+      setRefinedFightersMeta(result);
+      // console.log(result);
+    }
+  }, [rawFightersMeta]);
 
   return (
     <Box>
@@ -59,8 +72,8 @@ export default function Gym() {
             <GymTile datanumber={championshipsHeld} dataname="Championships Held" />
           </Grid>
 
-          {/* Pass in URLS to fetch */}
-          {nftUris ? <FighterSelection nftUris={nftUris} /> : null}
+          {/* Pass in refined fighter metadata */}
+          {refinedFightersMeta.length > 0 ? <FighterSelection refinedFightersMeta={refinedFightersMeta} /> : null}
         </VStack>
       </Container>
     </Box>

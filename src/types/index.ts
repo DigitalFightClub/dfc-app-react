@@ -42,7 +42,7 @@ export type GymTileData = {
 
 export type NftUris = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  nftUris: any;
+  refinedFightersMeta: any;
 };
 
 export type Stats = [string, number];

@@ -27,20 +27,31 @@ export const getNFTs = async (Web3Api, address) => {
   const filteredNFTs = polygonNFTs.result.filter(
     (nft) => nft.token_address === '0x62ea8080b2fc7dc4c7337920866afd242a1443cb'
   );
-  console.log(filteredNFTs);
+  // console.log(filteredNFTs);
 
   const sortedFilteredNFTs = filteredNFTs.sort((a, b) => {
     return parseInt(a.token_id) > parseInt(b.token_id) ? 1 : -1;
   });
-  console.log(sortedFilteredNFTs);
+  // console.log(sortedFilteredNFTs);
 
-  const parsedMetadata = sortedFilteredNFTs.map((nft) => {
+  const promises = [];
+  let parsedMetadata = sortedFilteredNFTs.map((nft) => {
     if (!nft.metadata) {
-      return fetchJsonMetaData(nft.token_uri);
+      const metadata = fetchJsonMetaData(nft.token_uri);
+      promises.push(metadata);
+      return null;
+    } else {
+      return JSON.parse(nft.metadata);
     }
-    return nft.metadata;
   });
-  console.log(parsedMetadata);
+
+  parsedMetadata = parsedMetadata.filter((nft) => nft != null);
+
+  parsedMetadata = await Promise.allSettled(promises)
+    .then((results) => results.forEach((result) => parsedMetadata.push(result.value)))
+    .then(() => {
+      return parsedMetadata;
+    });
 
   return parsedMetadata;
 };
@@ -53,9 +64,9 @@ export const getNFTsMetadata = async (nfts) => {
 
 const fetchJsonMetaData = async (uri) => {
   try {
-    const response = await axios.get(uri, {headers: { Accept: '*/*' }});
-    console.log(response);
-    //return response;
+    const response = await axios.get(uri);
+    // console.log(response.data);
+    return response.data;
   } catch (error) {
     console.error(error);
   }
@@ -63,7 +74,7 @@ const fetchJsonMetaData = async (uri) => {
 
 export const testMeta = () => {
   const apiResults = [fighterMetadata1, fighterMetadata2, fighterMetadata3];
-  console.log(apiResults);
+  // console.log(apiResults);
   return transformFighterMetadata(apiResults);
 };
 
@@ -112,10 +123,11 @@ export const testMeta = () => {
 // 27: { trait_type: 'Hair', value: 'Red Shag' }
 // 28: { trait_type: 'Gloves', value: 'Yellow Hybrid Gloves' }
 
-const transformFighterMetadata = (fighters) => {
+export const transformFighterMetadata = (fighters) => {
   const refinedFighters = fighters.map((fighter) => {
     const refinedFighter = {};
 
+    // console.log(fighter.name);
     refinedFighter.name = fighter.name;
     refinedFighter.image = fighter.image;
 
@@ -130,7 +142,6 @@ const transformFighterMetadata = (fighters) => {
 
     return refinedFighter;
   });
-
-  console.log(refinedFighters);
+  // console.log(refinedFighters);
   return refinedFighters;
 };
