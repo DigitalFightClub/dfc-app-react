@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { useEthers } from '@usedapp/core';
-import {useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar, Button, Text} from '@chakra-ui/react';
+import { useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar, Button, Text } from '@chakra-ui/react';
 import { verifyNetwork } from '../../utils/web3/connect';
-
 
 export default function MenuAppBar() {
   const [auth, setAuth] = useState(true);
   const { activateBrowserWallet, account, chainId } = useEthers();
   // const [activateError, setActivateError] = useState('');
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAuth(event.target.checked);
   };
@@ -50,29 +49,17 @@ export default function MenuAppBar() {
           borderColor="gray.200"
           h="14"
         >
-          <Button>
-            Home
-          </Button>
-          <Button >
-            My Gym
-          </Button>
-          <Button>
-            Organizations
-          </Button>
-          <Button>
-            Challenges
-          </Button>
-          { !account ? <Button onClick={() => connectWallet()}>
-            Connect Wallet
-          </Button> : null }
-          <Text>
-            {account}
-          </Text>
+          <Button>Home</Button>
+          <Button>My Gym</Button>
+          <Button>Organizations</Button>
+          <Button>Challenges</Button>
+          {!account ? <Button onClick={() => connectWallet()}>Connect Wallet</Button> : null}
+          <Text>{account}</Text>
           {auth && (
             <div>
               <Menu>
                 <MenuButton onClick={onOpen}>
-                  <Avatar h='10' w='10' />
+                  <Avatar h="10" w="10" />
                 </MenuButton>
 
                 <MenuList>

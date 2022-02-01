@@ -1,0 +1,150 @@
+{
+  "name": "Mila Gillet",
+  "image": "https://mainnet.api.digitalfightclub.io/renderedFighter/1.png",
+  "external_url": "https://digitalfightclub.io/?token_id=1",
+  "attributes": [
+    {
+      "trait_type": "Active/Retired",
+      "value": "Active"
+    },
+    {
+      "display_type": "number",
+      "trait_type": "Generation",
+      "value": 0,
+      "max_value": 100
+    },
+    {
+      "display_type": "date",
+      "trait_type": "Recruited",
+      "value": 1638320400
+    },
+    {
+      "trait_type": "BJJ",
+      "value": 59,
+      "max_value": 100
+    },
+    {
+      "trait_type": "judo",
+      "value": 59,
+      "max_value": 100
+    },
+    {
+      "trait_type": "karate",
+      "value": 48,
+      "max_value": 100
+    },
+    {
+      "trait_type": "kickboxing",
+      "value": 57,
+      "max_value": 100
+    },
+    {
+      "trait_type": "muayThai",
+      "value": 41,
+      "max_value": 100
+    },
+    {
+      "trait_type": "sambo",
+      "value": 33,
+      "max_value": 100
+    },
+    {
+      "trait_type": "taekwondo",
+      "value": 59,
+      "max_value": 100
+    },
+    {
+      "trait_type": "wrestling",
+      "value": 44,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Balance",
+      "value": 43,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Conditioning",
+      "value": 72,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Flexibility",
+      "value": 70,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Reflex",
+      "value": 48,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Footwork",
+      "value": 56,
+      "max_value": 100
+    },
+    {
+      "trait_type": "Gender",
+      "value": "female"
+    },
+    {
+      "trait_type": "Height",
+      "value": "5'7\""
+    },
+    {
+      "trait_type": "Origin",
+      "value": "France"
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Power",
+      "value": 57,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Speed",
+      "value": 36,
+      "max_value": 100
+    },
+    {
+      "display_type": "boost_number",
+      "trait_type": "Strength",
+      "value": 35,
+      "max_value": 100
+    },
+    {
+      "trait_type": "Weight",
+      "value": "168 lbs"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Green"
+    },
+    {
+      "trait_type": "Shoes",
+      "value": "Lime Sandals"
+    },
+    {
+      "trait_type": "Legs",
+      "value": "Yellow Aqua Compression Shorts"
+    },
+    {
+      "trait_type": "Chest",
+      "value": "Gold Sports Bra"
+    },
+    {
+      "trait_type": "Hair",
+      "value": "Red Shag"
+    },
+    {
+      "trait_type": "Gloves",
+      "value": "Yellow Hybrid Gloves"
+    }
+  ]
+}

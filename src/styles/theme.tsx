@@ -19,8 +19,7 @@ export const theme = extendTheme({
   config,
   breakpoints,
   fonts: {
-    heading:
-      'SoraVariable, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+    heading: 'SoraVariable, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
     body: 'SoraVariable, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
     code: '"Source Code Pro", Menlo, Monaco, Consolas, "Courier New", monospace',
   },
@@ -39,15 +38,15 @@ export const theme = extendTheme({
       300: '#4BC88C',
       500: '#2ABB75',
       700: '#1D8251',
-      900: '#145D3A'
+      900: '#145D3A',
     },
     secondary: {
       100: '#EB7391',
       300: '#E44970',
       500: '#DF2151',
       700: '#B11B40',
-      900: '#851430'
-    }
+      900: '#851430',
+    },
   },
   components: {
     Text: {
@@ -119,7 +118,7 @@ export const theme = extendTheme({
           color: 'white',
           fontWeight: 'light',
           _hover: { bg: 'primary.700' },
-          _focus: {boxShadow: 'none'}
+          _focus: { boxShadow: 'none' },
         },
         secondary: {
           borderRadius: 'none',
@@ -129,7 +128,7 @@ export const theme = extendTheme({
           color: 'white',
           fontWeight: 'light',
           _hover: { bg: 'secondary.700' },
-          _focus: {boxShadow: 'none'}
+          _focus: { boxShadow: 'none' },
         },
       },
     },

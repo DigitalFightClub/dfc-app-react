@@ -1,45 +1,9 @@
 import { Flex, Button, Grid } from '@chakra-ui/react';
+import { FighterModalProps, FighterStatistics } from '../../types';
+import { FighterHeader, FighterStats, FighterHistory } from './fighterModalComponents';
+import { CloseIcon } from '@chakra-ui/icons';
 
-import {
-  FighterHeader,
-  FighterStats,
-  FighterHistory,
-} from './fighterModalComponents';
-
-import {CloseIcon} from '@chakra-ui/icons';
-
-type FighterInfo = {
-  name: string;
-  country: string;
-  wins: string;
-  loses: string;
-  age: string;
-  height: string;
-  weight: string;
-  org: string;
-  recruited: string;
-  status: string;
-  image: string;
-};
-
-type FighterModalProps = {
-  fighterType: string;
-  onClose: () => void;
-  activeFighterData: FighterInfo;
-  retiredFighterData: FighterInfo;
-};
-
-type Stats = [string, number];
-
-type FighterStatistics = Stats[];
-
-export default function FighterModal({
-  fighterType,
-  onClose,
-  activeFighterData,
-  retiredFighterData,
-}: FighterModalProps) {
-
+export default function FighterModal({ fighterType, onClose, fighterData }: FighterModalProps) {
   const fighterStatistics: FighterStatistics = [
     ['Power', 44],
     ['Kickboxing', 37],
@@ -56,35 +20,32 @@ export default function FighterModal({
     ['Reflex', 41],
     ['Taekwondo', 73],
     ['Footwork', 75],
-    ['Sambo', 49]
+    ['Sambo', 49],
   ];
 
   return (
-    <Flex bgImage="/assets/background.svg" bgRepeat='repeat-x' h='fit-content' w='fit-content' minW="550px"
-    >
-
+    <Flex bgImage="/assets/background.svg" bgRepeat="repeat-x" h="fit-content" w="fit-content" minW="550px">
       <Button
-        w='0px'
-        justifySelf='end'
-        bg='white'
-        color='black'
-        borderRadius='18px'
-        _hover={{color: 'white', bg: 'gray'}}
-        transition='0.5s'
-        position='absolute'
-        top='-10px'
-        right='-10px'
-        size='sm'
-        p='0px'
-        onClick={onClose}><CloseIcon/></Button>
+        w="0px"
+        justifySelf="end"
+        bg="white"
+        color="black"
+        borderRadius="18px"
+        _hover={{ color: 'white', bg: 'gray' }}
+        transition="0.5s"
+        position="absolute"
+        top="-10px"
+        right="-10px"
+        size="sm"
+        p="0px"
+        onClick={onClose}
+      >
+        <CloseIcon />
+      </Button>
 
       <Grid templateColumns="2fr 1fr">
-        <Grid  direction="columns" templateRows="1fr 1.5fr">
-          <FighterHeader
-            fighterType={fighterType}
-            activeFighterData={activeFighterData}
-            retiredFighterData={retiredFighterData}
-          />
+        <Grid direction="columns" templateRows="1fr 1.5fr">
+          <FighterHeader fighterType={fighterType} fighterData={fighterData} />
           <FighterStats fighterStatistics={fighterStatistics} />
         </Grid>
 

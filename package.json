@@ -8,6 +8,7 @@
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@fontsource/sora": "^4.5.0",
+    "@metamask/detect-provider": "^1.2.0",
     "@reduxjs/toolkit": "^1.7.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -17,16 +18,28 @@
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "@types/react-redux": "^7.1.22",
+    "@typescript-eslint/parser": "^4.33.0",
     "@usedapp/core": "^0.9.1",
-    "framer-motion": "^5.5.7",
+    "@walletconnect/web3-provider": "^1.6.6",
+    "axios": "^0.25.0",
+    "framer-motion": "^4.1.17",
+    "magic-sdk": "7.0.0",
+    "moralis": "^1.2.4",
+    "patch-package": "^6.4.7",
     "react": "^17.0.2",
+    "react-blockies": "^1.4.1",
     "react-dom": "^17.0.2",
+    "react-moralis": "^1.2.1",
+    "react-query": "^3.34.12",
     "react-redux": "^7.2.6",
-    "react-scripts": "5.0.0",
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.3.0",
+    "react-scripts": "4.0.3",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
+    "stream-browserify": "^3.0.0",
     "typescript": "^4.5.4",
-    "web-vitals": "^2.1.2"
+    "web-vitals": "^1.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,9 +48,11 @@
     "test": "react-scripts test",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx src",
     "lint-fix": "eslint --fix --ignore-path .eslintignore --ext .js,.ts,.tsx ./src",
+    "pretty": "prettier --write src/",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "postinstall": "patch-package"
   },
   "eslintConfig": {
     "extends": [
@@ -55,6 +70,16 @@
       }
     ]
   },
+  "browser": {
+    "os": false,
+    "https": false,
+    "http": false,
+    "stream": false,
+    "util": "./node_modules/util",
+    "url": "./node_modules/url",
+    "assert": false,
+    "crypto": false
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -68,19 +93,12 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.4.9",
-    "@storybook/addon-essentials": "^6.4.14",
-    "@storybook/addon-links": "^6.4.9",
-    "@storybook/builder-webpack5": "^6.4.14",
-    "@storybook/manager-webpack5": "^6.4.9",
-    "@storybook/node-logger": "^6.4.9",
-    "@storybook/preset-create-react-app": "^4.0.0",
-    "@storybook/react": "^6.4.14",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
-    "eslint": "^8.7.0",
     "eslint-plugin-react": "^7.28.0",
-    "redux-devtools-extension": "^2.13.9",
-    "webpack": "^5.65.0"
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "prettier": "2.5.1",
+    "react-error-overlay": "6.0.9",
+    "redux-devtools-extension": "^2.13.9"
   }
 }
