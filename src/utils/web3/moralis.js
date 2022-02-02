@@ -28,7 +28,7 @@ export const getNFTs = async (Web3Api, address) => {
   const filteredNFTs = polygonNFTs.result.filter((nft) => nft.token_address === ENV.NFT_ADDY);
   // eslint-disable-next-line max-len
   // const filteredNFTs = polygonNFTs.result.filter((nft) => nft.token_address === '0x9dc20f1aace8e2fc93e5e8b15281d583e9521945');
-  // console.log(filteredNFTs);
+  console.log(filteredNFTs);
 
   if (filteredNFTs.length == 0) {
     console.log('Current wallet holds 0 DFC Fighters!');
@@ -44,13 +44,13 @@ export const getNFTs = async (Web3Api, address) => {
 
   const promises = [];
   let parsedMetadata = sortedFilteredNFTs.map((nft) => {
-    if (!nft.metadata) {
-      const metadata = fetchJsonMetaData(nft.token_uri);
-      promises.push(metadata);
-      return null;
-    } else {
-      return JSON.parse(nft.metadata);
-    }
+    // if (!nft.metadata) {
+    const metadata = fetchJsonMetaData(nft.token_uri);
+    promises.push(metadata);
+    return null;
+    // } else {
+    //   return JSON.parse(nft.metadata);
+    // }
   });
 
   parsedMetadata = parsedMetadata.filter((nft) => nft != null);
