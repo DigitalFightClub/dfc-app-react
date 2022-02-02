@@ -1,13 +1,33 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useEthers, shortenIfAddress } from '@usedapp/core';
 import { useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar, Button, Text } from '@chakra-ui/react';
 import { verifyNetwork } from '../../utils/web3/connect';
+import detectEthereumProvider from '@metamask/detect-provider';
 
 export default function MenuAppBar() {
   const [auth, setAuth] = useState(false);
-  const { activateBrowserWallet, account, chainId, deactivate } = useEthers();
-  // const [activateError, setActivateError] = useState('');
+  const { activateBrowserWallet, deactivate, account, chainId, error } = useEthers();
+  const [activateError, setActivateError] = useState('');
+
+  // useEffect(() => {
+  //   window.addEventListener('load', function () {
+  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //     //@ts-ignore
+  //     if (typeof web3 !== 'undefined') {
+  //       console.log('web3 is enabled');
+  //       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //       //@ts-ignore
+  //       if (window.ethereum === true) {
+  //         console.log('MetaMask is active');
+  //       } else {
+  //         console.log('MetaMask is not available');
+  //       }
+  //     } else {
+  //       alert('Please install MetaMask!');
+  //     }
+  //   });
+  // }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +51,38 @@ export default function MenuAppBar() {
   const disconnectWallet = () => {
     deactivate();
   };
+
+  useEffect(() => {
+    if (error) {
+      // setActivateError(error.message)
+      if (error.message.includes('rejected')) {
+        // alert('You have to accept the MetaMask PopUp! \n Try again & click "Next" then "Connect".')
+        setActivateError('User did not accept MetaMask Connection!');
+      }
+
+      if (error.message.includes('Unsupported chain')) {
+        // alert('Going to switch (and add) the proper Polygon Network')
+        // console.log(chainId)
+        // setActivateError(`Wrong blockchain active: ${getChainName(chainId)}`)
+        // addNetwork()
+      }
+
+      if (error.name == 'UnsupportedChainIdError') {
+        setActivateError('Please add Polygon network!');
+        // addNetwork();
+      }
+
+      if (error.name == 'NoEthereumProviderError') {
+        setActivateError('Please install MetaMask!');
+      }
+
+      if (error.message.includes('Unsupported')) {
+        // addNetwork();
+      }
+
+      console.log(JSON.stringify(error.message));
+    }
+  }, [error]);
 
   return (
     <div>

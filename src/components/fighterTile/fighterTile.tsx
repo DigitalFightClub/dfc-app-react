@@ -84,11 +84,7 @@ const FighterData = ({ fighterData, fighterType }: FighterType) => {
         <Text variant="micro">
           RECRUITED:&nbsp;&nbsp;
           <chakra.span display="inline" variant="small">
-            {new Intl.DateTimeFormat('en-US', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-            }).format(parseInt(fighterData.recruited) * 1000)}
+            {fighterData.recruited}
           </chakra.span>
         </Text>
 
@@ -158,12 +154,12 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
             justifySelf="center"
             pos="relative"
             top={{
-              '2xl': '-50px',
-              xl: '-50px',
-              lg: '-50px',
-              md: '-50px',
-              sm: '-50px',
-              base: '-100px',
+              '2xl': '-20px',
+              xl: '-20px',
+              lg: '-20px',
+              md: '-20px',
+              sm: '-20px',
+              base: '-20px',
             }}
             left={{
               '2xl': '-50px',

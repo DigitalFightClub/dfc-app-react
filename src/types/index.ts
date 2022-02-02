@@ -9,6 +9,7 @@ export type FighterInfo = {
   recruited: string;
   status: string;
   image: string;
+  stats: Record<string, number>;
 };
 
 export type FighterModalProps = {

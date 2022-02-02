@@ -1,17 +1,10 @@
 import { useState } from 'react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { Grid, Stack, HStack, Button, Collapse } from '@chakra-ui/react';
 import { NftUris, FighterInfo } from '../../types';
 import FighterTile from '../fighterTile';
-import { testMeta } from '../../utils/web3/moralis';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function FighterSelection({ refinedFightersMeta }: NftUris) {
   const [showActive, setShowActive] = useState(true);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const nftFighters = testMeta();
 
   const handleToggle = () => {
     if (showActive === false) {
@@ -31,6 +24,7 @@ export default function FighterSelection({ refinedFightersMeta }: NftUris) {
             bg={showActive ? 'primary.500' : 'none'}
             border="1px gray solid"
             onClick={handleToggle}
+            isDisabled
           >
             Active Fighters
           </Button>
@@ -41,6 +35,7 @@ export default function FighterSelection({ refinedFightersMeta }: NftUris) {
             bg={!showActive ? 'secondary.500' : 'none'}
             border="1px gray solid"
             onClick={handleToggle}
+            isDisabled
           >
             Retired Fighters
           </Button>
@@ -66,7 +61,7 @@ export default function FighterSelection({ refinedFightersMeta }: NftUris) {
           </Grid>
         </Collapse>
 
-        <Collapse in={!showActive} animateOpacity>
+        {/* <Collapse in={!showActive} animateOpacity>
           <Grid
             templateColumns={{
               xl: 'repeat(2, 518px)',
@@ -81,10 +76,10 @@ export default function FighterSelection({ refinedFightersMeta }: NftUris) {
             pl={{ xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px' }}
           >
             {refinedFightersMeta.map((fighterData: FighterInfo) => (
-              <FighterTile key={fighterData.name} fighterData={fighterData} fighterType="inactive" />
+              <FighterTile key={fighterData.name} fighterData={null} fighterType="inactive" />
             ))}
           </Grid>
-        </Collapse>
+        </Collapse> */}
       </Grid>
     </Stack>
   );
