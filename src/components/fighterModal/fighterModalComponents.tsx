@@ -46,7 +46,7 @@ export const FighterHeader = ({ fighterType, fighterData }: FighterModalProps) =
           </Text>
 
           <Text variant="micro">
-            RECRUITER:&nbsp;&nbsp;
+            RECRUITED:&nbsp;&nbsp;
             <chakra.span display="inline" variant="small">
               {fighterData.recruited}
             </chakra.span>
