@@ -161,7 +161,7 @@ export const transformFighterMetadata = (fighters) => {
     refinedFighter.stats.judo = parseInt(fighter.attributes[4].value);
     refinedFighter.stats.karate = parseInt(fighter.attributes[5].value);
     refinedFighter.stats.kickboxing = parseInt(fighter.attributes[6].value);
-    refinedFighter.stats.mauiTahi = parseInt(fighter.attributes[7].value);
+    refinedFighter.stats.mauyThai = parseInt(fighter.attributes[7].value);
     refinedFighter.stats.sambo = parseInt(fighter.attributes[8].value);
     refinedFighter.stats.taekwondo = parseInt(fighter.attributes[9].value);
     refinedFighter.stats.wrestling = parseInt(fighter.attributes[10].value);
