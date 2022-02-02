@@ -154,12 +154,12 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
             justifySelf="center"
             pos="relative"
             top={{
-              '2xl': '-50px',
-              xl: '-50px',
-              lg: '-50px',
-              md: '-50px',
-              sm: '-50px',
-              base: '-100px',
+              '2xl': '-20px',
+              xl: '-20px',
+              lg: '-20px',
+              md: '-20px',
+              sm: '-20px',
+              base: '-20px',
             }}
             left={{
               '2xl': '-50px',

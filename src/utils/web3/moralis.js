@@ -25,13 +25,15 @@ export const getNFTs = async (Web3Api, address) => {
   const polygonNFTs = await Web3Api.account.getNFTs(options);
   // console.log(polygonNFTs);
 
-  // eslint-disable-next-line max-len
   const filteredNFTs = polygonNFTs.result.filter((nft) => nft.token_address === ENV.NFT_ADDY);
-  console.log(filteredNFTs);
+  // eslint-disable-next-line max-len
+  // const filteredNFTs = polygonNFTs.result.filter((nft) => nft.token_address === '0x9dc20f1aace8e2fc93e5e8b15281d583e9521945');
+  // console.log(filteredNFTs);
 
   if (filteredNFTs.length == 0) {
     console.log('Current wallet holds 0 DFC Fighters!');
     console.log('Loading DFC Team\'s Fighters!');
+    alert('You have no fighters, loading defaults...');
     return getNFTs(Web3Api, ENV.MULTI_SIG);
   }
 
