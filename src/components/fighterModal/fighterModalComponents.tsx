@@ -8,10 +8,10 @@ export const FighterHeader = ({ fighterType, fighterData }: FighterModalProps) =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const FighterData = ({ fighterType }: any) => {
     return (
-      <Grid templateRows="repeat(3, 30px)" textAlign="left" minH="180px" minW="300px" gap="11px">
-        <Heading textAlign="left">{fighterData.name}</Heading>
+      <Grid templateRows="repeat(3, 30px)" textAlign="center" minH="180px" minW="300px" gap="11px">
+        <Heading textAlign="center">{fighterData.name}</Heading>
 
-        <Heading variant="header4" textAlign="left">
+        <Heading variant="header3" textAlign="center">
           Record:
           <Text display="inline" color="primary.500">
             &nbsp;
@@ -24,35 +24,35 @@ export const FighterHeader = ({ fighterType, fighterData }: FighterModalProps) =
         </Heading>
 
         <Grid templateColumns="1fr" gap="11px">
-          <Text variant="micro">
+          <Text variant="small">
             HEIGHT:&nbsp;&nbsp;
             <chakra.span display="inline" variant="small">
               {fighterData.height}
             </chakra.span>
           </Text>
 
-          <Text variant="micro">
+          <Text variant="small">
             WEIGHT:&nbsp;&nbsp;
             <chakra.span display="inline" variant="small">
               {fighterData.weight}
             </chakra.span>
           </Text>
 
-          <Text variant="micro">
+          <Text variant="small">
             GENDER:&nbsp;&nbsp;
             <chakra.span display="inline" variant="small">
               {fighterData.gender}
             </chakra.span>
           </Text>
 
-          <Text variant="micro">
+          <Text variant="small">
             RECRUITED:&nbsp;&nbsp;
             <chakra.span display="inline" variant="small">
               {fighterData.recruited}
             </chakra.span>
           </Text>
 
-          <Text variant="micro">
+          <Text variant="small">
             STATUS:&nbsp;&nbsp;
             <chakra.span
               display="inline"
@@ -78,9 +78,9 @@ export const FighterHeader = ({ fighterType, fighterData }: FighterModalProps) =
       px="32px"
       alignContent="center"
     >
-      <Grid templateColumns="1.5fr 2.5fr">
-        <Box maxH="300px" justifySelf="center" alignSelf="center" pos="relative" pr="1.5rem">
-          <Image height="200px" src={fighterData.image} />
+      <Grid templateColumns="1.75fr 2.5fr">
+        <Box maxH="225px" justifySelf="center" alignSelf="center" pos="relative" pr="1rem">
+          <Image boxSize="225px" src={fighterData.image} />
         </Box>
 
         <FighterData fighterType={fighterType} />
@@ -100,8 +100,9 @@ export const FighterStats = ({ fighterStatistics }: FighterStats) => {
     <Grid mt="0px" templateColumns="repeat(2, 1fr)" templateRows="repeat(8, 55px)">
       {fighterStatistics.map((stat: any) => (
         <Box key={stat[0]} px="40px">
-          <Heading pt="12px" pb="5px" variant="header4">
+          <Heading pt="8px" pb="8px" variant="header3">
             {stat[0]}
+            <Text display="inline" float="right">{stat[1]}/100</Text>
           </Heading>
           <Progress colorScheme={stat[1] >= 75 ? 'green' : stat[1] <= 50 ? 'red' : 'gray'} size="xs" value={stat[1]} />
         </Box>
