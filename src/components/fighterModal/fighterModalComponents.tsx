@@ -104,7 +104,7 @@ export const FighterStats = ({ fighterStatistics }: FighterStats) => {
             {stat[0]}
             <Text display="inline" float="right">{stat[1]}/100</Text>
           </Heading>
-          <Progress colorScheme={stat[1] >= 75 ? 'green' : stat[1] <= 50 ? 'red' : 'gray'} size="xs" value={stat[1]} />
+          <Progress colorScheme={stat[1] >= 66 ? 'green' : stat[1] <= 33 ? 'red' : 'gray'} size="xs" value={stat[1]} />
         </Box>
       ))}
     </Grid>
