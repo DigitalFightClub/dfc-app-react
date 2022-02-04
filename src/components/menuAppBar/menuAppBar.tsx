@@ -1,7 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useEthers, shortenIfAddress } from '@usedapp/core';
-import { useDisclosure, Menu, MenuItem, MenuButton, MenuList, Flex, Box, Avatar, Button, Text } from '@chakra-ui/react';
+import {
+  useDisclosure,
+  Menu,
+  MenuItem,
+  MenuButton,
+  MenuList,
+  Flex,
+  Box,
+  Avatar,
+  Button,
+  Text,
+  Center,
+  Image,
+} from '@chakra-ui/react';
+import { BellIcon } from '@chakra-ui/icons';
 import { verifyNetwork } from '../../utils/web3/connect';
 import detectEthereumProvider from '@metamask/detect-provider';
 
@@ -102,19 +117,27 @@ export default function MenuAppBar() {
           borderColor="gray.200"
           h="14"
         >
-          <Button isDisabled>Home</Button>
-          <Button isDisabled>My Gym</Button>
-          <Button isDisabled>Organizations</Button>
-          <Button isDisabled>Challenges</Button>
+          <Image h="3rem" display="inline" src="/assets/logo.svg"></Image>
+          <NavLink to="/">
+            <Button>Home</Button>
+          </NavLink>
+          <NavLink to="/gym">
+            <Button>My Gym</Button>
+          </NavLink>
+          <NavLink to="/organizaions">
+            <Button>Organizations</Button>
+          </NavLink>
+
           {!account ? <Button onClick={() => connectWallet()}>Connect Wallet</Button> : null}
           {/* <Button isDisabled>Wallet: {shortenIfAddress(account ? account : '')}</Button> */}
           {account && (
             <div>
               <Menu>
+                <BellIcon w={8} h={8}></BellIcon>
+
                 <MenuButton onClick={onOpen}>
                   <Text>Wallet: {shortenIfAddress(account ? account : '')}</Text>
                 </MenuButton>
-
                 <MenuList>
                   {/* <MenuItem onClick={onClose}>My Profile</MenuItem>
                   <MenuItem onClick={onClose}>Settings</MenuItem> */}

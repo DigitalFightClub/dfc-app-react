@@ -9,7 +9,9 @@ export const FighterHeader = ({ fighterType, fighterData }: FighterModalProps) =
   const FighterData = ({ fighterType }: any) => {
     return (
       <Grid templateRows="repeat(3, 30px)" textAlign="center" minH="180px" minW="300px" gap="11px">
-        <Heading textAlign="center">{fighterData.name}</Heading>
+        <Heading variant="header2" textAlign="center">
+          {fighterData.name}
+        </Heading>
 
         <Heading variant="header3" textAlign="center">
           Record:
@@ -102,7 +104,9 @@ export const FighterStats = ({ fighterStatistics }: FighterStats) => {
         <Box key={stat[0]} px="40px">
           <Heading pt="8px" pb="8px" variant="header3">
             {stat[0]}
-            <Text display="inline" float="right">{stat[1]}/100</Text>
+            <Text display="inline" float="right">
+              {stat[1]}/100
+            </Text>
           </Heading>
           <Progress colorScheme={stat[1] >= 66 ? 'green' : stat[1] <= 33 ? 'red' : 'gray'} size="xs" value={stat[1]} />
         </Box>
