@@ -21,6 +21,7 @@ export const getNFTs = async (Web3Api, address) => {
   const options = {
     chain: ENV.NET_NAME,
     address: address ? address : ENV.MULTI_SIG,
+    token_addresses: '0x62Ea8080B2fc7dc4C7337920866AFd242a1443cB'
   };
   const polygonNFTs = await Web3Api.account.getNFTs(options);
   // console.log(polygonNFTs);
