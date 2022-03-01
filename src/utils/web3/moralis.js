@@ -3,6 +3,7 @@ import { Contract } from 'ethers';
 import axios from 'axios';
 import { nftABI } from '../../abi/dfcNft';
 import { ENV_CONFG } from '../../config';
+import { TKO_ABI } from './tko-abi.js';
 // import fighterMetadata1 from './fighterMetaData1.json';
 // import fighterMetadata2 from './fighterMetaData2.json';
 // import fighterMetadata3 from './fighterMetaData3.json';
@@ -73,6 +74,17 @@ const fetchJsonMetaData = async (uri) => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const getTKOBalance = async (Moralis, address) => {
+  const ethers = Moralis.web3Library;
+  const web3Provider = await Moralis.enableWeb3();
+  // const TKO_ADDRESS = ENV_CONFG.TKO_CONTRACT_ADDRESS; // this breaks the bottom call, wtf?
+  const TKO_CONTRACT = new ethers.Contract('0x7A4CAb02fC6Ab5882f791F46f1a6E34E9837c70F', TKO_ABI, web3Provider);
+
+  const balance = await TKO_CONTRACT.balanceOf(address ? address : ENV.MULTI_SIG);
+  // console.log(balance);
+  return balance;
 };
 
 // export const testMeta = () => {

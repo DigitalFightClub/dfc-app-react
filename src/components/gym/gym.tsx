@@ -1,18 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Grid, Container, Stack, VStack, Box, Alert, AlertIcon } from '@chakra-ui/react';
-import { useMoralisWeb3Api, useMoralis } from 'react-moralis';
+import { useMoralisWeb3Api, useMoralis, useERC20Balances } from 'react-moralis';
 import { useEthers } from '@usedapp/core';
+
 import LoadingScreen from 'react-loading-screen';
 
-import { getNFTs, transformFighterMetadata } from '../../utils/web3/moralis';
+import { getNFTs, transformFighterMetadata, getTKOBalance } from '../../utils/web3/moralis';
 
 import GymTile from '../gymTile';
 import GymHeader from '../gymHeader';
 import FighterSelection from '../fighterSelection';
+import Moralis from 'moralis/types';
 
 export default function Gym() {
-  const { isInitialized, isInitializing } = useMoralis();
+  const { isInitialized, isInitializing, Moralis } = useMoralis();
+  const [ isLoaded, setIsLoaded ] = useState(false);
   const { account } = useEthers();
   const Web3Api = useMoralisWeb3Api();
 
@@ -23,16 +26,21 @@ export default function Gym() {
   const [retiredFighters, setRetiredFighters] = useState(0);
   const [activeFightRecord, setActiveFightRecord] = useState('0-0');
   const [overallFightRecord, setOverallFightRecord] = useState('0-0');
-  const [tkoTotal, setTkoTotal] = useState(0);
+  const [tkoTotal, setTkoTotal] = useState('0');
   const [championshipsHeld, setChampionshipsHeld] = useState(0);
+
+  const { fetchERC20Balances, data, isLoading, isFetching, error } = useERC20Balances();
 
   useEffect(() => {
     (async function () {
-      if (isInitialized && account) {
+      if (isInitialized && account && !isLoaded) {
         const nfts = await getNFTs(Web3Api, account);
+        const tko = await getTKOBalance(Moralis, account);
+        setTkoTotal(Intl.NumberFormat('en-US').format(Moralis.Units.FromWei(tko.toString())));
         setRawFightersMeta(nfts);
         // console.log(nfts);
         setNftCount(nfts.length);
+        setIsLoaded(true);
       }
     })();
   }, [isInitialized, account]);
