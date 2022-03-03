@@ -79,8 +79,8 @@ const fetchJsonMetaData = async (uri) => {
 export const getTKOBalance = async (Moralis, address) => {
   const ethers = Moralis.web3Library;
   const web3Provider = await Moralis.enableWeb3();
-  // const TKO_ADDRESS = ENV_CONFG.TKO_CONTRACT_ADDRESS; // this breaks the bottom call, wtf?
-  const TKO_CONTRACT = new ethers.Contract('0x7A4CAb02fC6Ab5882f791F46f1a6E34E9837c70F', TKO_ABI, web3Provider);
+  const TKO_ADDRESS = ENV.TKO_CONTRACT_ADDRESS;
+  const TKO_CONTRACT = new ethers.Contract(TKO_ADDRESS, TKO_ABI, web3Provider);
 
   const balance = await TKO_CONTRACT.balanceOf(address ? address : ENV.MULTI_SIG);
   // console.log(balance);
