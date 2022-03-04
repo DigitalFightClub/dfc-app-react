@@ -28,40 +28,27 @@ export const FighterHeader = ({ fighterType, fighterData }: FighterModalProps) =
         <Grid templateColumns="1fr" gap="11px">
           <Text variant="small">
             HEIGHT:&nbsp;&nbsp;
-            <chakra.span display="inline" variant="small">
-              {fighterData.height}
-            </chakra.span>
+            <chakra.span display="inline">{fighterData.height}</chakra.span>
           </Text>
 
           <Text variant="small">
             WEIGHT:&nbsp;&nbsp;
-            <chakra.span display="inline" variant="small">
-              {fighterData.weight}
-            </chakra.span>
+            <chakra.span display="inline">{fighterData.weight}</chakra.span>
           </Text>
 
           <Text variant="small">
             GENDER:&nbsp;&nbsp;
-            <chakra.span display="inline" variant="small">
-              {fighterData.gender}
-            </chakra.span>
+            <chakra.span display="inline">{fighterData.gender}</chakra.span>
           </Text>
 
           <Text variant="small">
             RECRUITED:&nbsp;&nbsp;
-            <chakra.span display="inline" variant="small">
-              {fighterData.recruited}
-            </chakra.span>
+            <chakra.span display="inline">{fighterData.recruited}</chakra.span>
           </Text>
 
           <Text variant="small">
             STATUS:&nbsp;&nbsp;
-            <chakra.span
-              display="inline"
-              variant="small"
-              fontWeight="400"
-              color={fighterType === 'active' ? 'green' : 'red'}
-            >
+            <chakra.span display="inline" fontWeight="400" color={fighterType === 'active' ? 'green' : 'red'}>
               {fighterData.status}
             </chakra.span>
           </Text>
@@ -75,13 +62,13 @@ export const FighterHeader = ({ fighterType, fighterData }: FighterModalProps) =
       boxSizing="border-box"
       transition="ease-in-out 0.4s"
       h="max-content"
-      w="fit-content"
+      w="100%"
       py="24px"
       px="32px"
       alignContent="center"
     >
       <Grid templateColumns="1.75fr 2.5fr">
-        <Box maxH="225px" justifySelf="center" alignSelf="center" pos="relative" pr="1rem">
+        <Box maxH="225px" minH="225px" minW="225px" justifySelf="center" alignSelf="center" pos="relative" pr="1rem">
           <Image boxSize="225px" src={fighterData.image} />
         </Box>
 

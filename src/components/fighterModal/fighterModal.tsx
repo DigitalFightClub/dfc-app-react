@@ -24,7 +24,7 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
   ];
 
   return (
-    <Flex bgImage="/assets/background.svg" bgRepeat="repeat-x" h="fit-content" w="fit-content" minW="550px">
+    <Flex bgImage="/assets/background.svg" bgRepeat={{md: 'repeat-y', lg: 'repeat-x'}} h="100%" w="100%">
       <Button
         w="0px"
         justifySelf="end"
@@ -43,8 +43,8 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
         <CloseIcon />
       </Button>
 
-      <Grid templateColumns="2fr 1fr">
-        <Grid direction="columns" templateRows="1fr 1.5fr">
+      <Grid templateColumns={{md: '1fr', lg: '2fr 1fr'}} w="100%">
+        <Grid templateRows="1fr 1.5fr">
           <FighterHeader fighterType={fighterType} fighterData={fighterData} />
           <FighterStats fighterStatistics={fighterStatistics} />
         </Grid>

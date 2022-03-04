@@ -36,7 +36,8 @@ export default function Gym() {
       if (isInitialized && account && !isLoaded) {
         const nfts = await getNFTs(Web3Api, account);
         const tko = await getTKOBalance(Moralis, account);
-        setTkoTotal(Intl.NumberFormat('en-US').format(Moralis.Units.FromWei(tko.toString())));
+        const tkoWei: number = +Moralis.Units.FromWei(tko.toString());
+        setTkoTotal(Intl.NumberFormat('en-US').format(tkoWei));
         setRawFightersMeta(nfts);
         // console.log(nfts);
         setNftCount(nfts.length);
