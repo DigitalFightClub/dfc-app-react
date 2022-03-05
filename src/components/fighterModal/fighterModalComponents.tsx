@@ -1,10 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Button, Flex, Text, Grid, Image, Heading, Progress, useColorModeValue, chakra } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Text,
+  Grid,
+  Image,
+  Heading,
+  Progress,
+  useColorModeValue,
+  chakra,
+  VStack,
+} from '@chakra-ui/react';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { FighterModalProps2 as FighterModalProps, Stats } from '../../types';
 
 // This is where the fighter image and basic data appears
-export const FighterHeader = ({ fighterType, fighterData }: FighterModalProps) => {
+export const FighterHeader = ({ fighterType, fighterData, isHorizontal }: FighterModalProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const FighterData = ({ fighterType }: any) => {
     return (
@@ -61,19 +73,37 @@ export const FighterHeader = ({ fighterType, fighterData }: FighterModalProps) =
     <Box
       boxSizing="border-box"
       transition="ease-in-out 0.4s"
-      h="max-content"
       w="100%"
       py="24px"
       px="32px"
       alignContent="center"
     >
-      <Grid templateColumns="1.75fr 2.5fr">
-        <Box maxH="225px" minH="225px" minW="225px" justifySelf="center" alignSelf="center" pos="relative" pr="1rem">
-          <Image boxSize="225px" src={fighterData.image} />
-        </Box>
+      {isHorizontal ? (
+        <Grid templateColumns="1.75fr 2.5fr">
+          <Box maxH="225px" minH="225px" minW="225px" justifySelf="center" alignSelf="center" pos="relative" pr="1rem">
+            <Image boxSize="225px" src={fighterData.image} />
+          </Box>
 
-        <FighterData fighterType={fighterType} />
-      </Grid>
+          <FighterData fighterType={fighterType} />
+        </Grid>
+      ) : (
+        <VStack marginBottom="30px">
+          <Box
+            maxH="225px"
+            minH="225px"
+            minW="225px"
+            justifySelf="center"
+            alignSelf="center"
+            pos="relative"
+            pr="1rem"
+            marginBottom="10px"
+          >
+            <Image boxSize="225px" src={fighterData.image} />
+          </Box>
+
+          <FighterData fighterType={fighterType} />
+        </VStack>
+      )}
     </Box>
   );
 };
@@ -86,9 +116,9 @@ type FighterStats = {
 // eslint-disable-next-line
 export const FighterStats = ({ fighterStatistics }: FighterStats) => {
   return (
-    <Grid mt="0px" templateColumns="repeat(2, 1fr)" templateRows="repeat(8, 55px)">
+    <Grid mt="0px" templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} templateRows="repeat(8, 55px)">
       {fighterStatistics.map((stat: any) => (
-        <Box key={stat[0]} px="40px">
+        <Box key={stat[0]} px={{base: '5px', md: '40px'}}>
           <Heading pt="8px" pb="8px" variant="header3">
             {stat[0]}
             <Text display="inline" float="right">
@@ -130,12 +160,12 @@ export function FighterHistory() {
   };
 
   return (
-    <Box bg="rgba(0, 0, 0, 0.3)" py="24px" px="40px">
+    <Box bg="rgba(0, 0, 0, 0.3)" py="24px" px={{base: '0px', md: '40px'}} minH={{base: '835px', md: '472px' }}>
       <Heading textAlign="center" variant="header3">
         Fight History
       </Heading>
 
-      <Flex opacity="none" p={50} w="full" alignItems="center" justifyContent="center">
+      <Flex opacity="none" py={50} px={{base: 10, md: 50}} w="full" alignItems="center" justifyContent="center">
         <Flex>
           <PagButton>
             <ArrowBackIcon />

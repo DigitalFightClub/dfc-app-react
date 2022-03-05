@@ -94,7 +94,8 @@ const FighterData = ({ fighterData, fighterType }: FighterType) => {
 
 export default function FighterTile({ fighterData, fighterType }: FighterType) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const modalSize = useBreakpointValue({ base: 'full', md: '2xl', lg: '5xl' });
+  const modalSize = useBreakpointValue({ base: 'xs', md: '2xl', lg: '5xl' });
+  const centered = useBreakpointValue({ base: false, md: true });
 
   const activeHover = {
     cursor: 'pointer',
@@ -109,7 +110,13 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
   return (
     <>
       {isOpen && (
-        <Modal size={modalSize} isCentered isOpen={isOpen} onClose={onClose}>
+        <Modal
+          size={modalSize}
+          isCentered={centered}
+          isOpen={isOpen}
+          onClose={onClose}
+          scrollBehavior="outside"
+        >
           <ModalOverlay />
           <ModalContent>
             <FighterModal fighterType={fighterType} onClose={onClose} fighterData={fighterData} />
