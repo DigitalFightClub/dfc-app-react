@@ -9,6 +9,7 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { FighterType } from '../../types';
 import FighterModal from '../fighterModal/fighterModal';
@@ -62,40 +63,27 @@ const FighterData = ({ fighterData, fighterType }: FighterType) => {
       >
         <Text variant="micro">
           HEIGHT:&nbsp;&nbsp;
-          <chakra.span display="inline" variant="small">
-            {fighterData.height}
-          </chakra.span>
+          <chakra.span display="inline">{fighterData.height}</chakra.span>
         </Text>
 
         <Text variant="micro">
           WEIGHT:&nbsp;&nbsp;
-          <chakra.span display="inline" variant="small">
-            {fighterData.weight}
-          </chakra.span>
+          <chakra.span display="inline">{fighterData.weight}</chakra.span>
         </Text>
 
         <Text variant="micro">
           GENDER:&nbsp;&nbsp;
-          <chakra.span display="inline" variant="small">
-            {fighterData.gender}
-          </chakra.span>
+          <chakra.span display="inline">{fighterData.gender}</chakra.span>
         </Text>
 
         <Text variant="micro">
           RECRUITED:&nbsp;&nbsp;
-          <chakra.span display="inline" variant="small">
-            {fighterData.recruited}
-          </chakra.span>
+          <chakra.span display="inline">{fighterData.recruited}</chakra.span>
         </Text>
 
         <Text variant="micro">
           STATUS:&nbsp;&nbsp;
-          <chakra.span
-            display="inline"
-            variant="small"
-            fontWeight="400"
-            color={fighterType === 'active' ? 'green' : 'red'}
-          >
+          <chakra.span display="inline" fontWeight="400" color={fighterType === 'active' ? 'green' : 'red'}>
             {fighterData.status}
           </chakra.span>
         </Text>
@@ -106,6 +94,8 @@ const FighterData = ({ fighterData, fighterType }: FighterType) => {
 
 export default function FighterTile({ fighterData, fighterType }: FighterType) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const modalSize = useBreakpointValue({ base: 'xs', md: '2xl', lg: '5xl' });
+  const centered = useBreakpointValue({ base: false, md: true });
 
   const activeHover = {
     cursor: 'pointer',
@@ -120,7 +110,13 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
   return (
     <>
       {isOpen && (
-        <Modal size="5xl" isCentered isOpen={isOpen} onClose={onClose}>
+        <Modal
+          size={modalSize}
+          isCentered={centered}
+          isOpen={isOpen}
+          onClose={onClose}
+          scrollBehavior="outside"
+        >
           <ModalOverlay />
           <ModalContent>
             <FighterModal fighterType={fighterType} onClose={onClose} fighterData={fighterData} />

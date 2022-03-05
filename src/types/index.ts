@@ -21,6 +21,7 @@ export type FighterModalProps = {
 export type FighterModalProps2 = {
   fighterType: string;
   fighterData: FighterInfo;
+  isHorizontal: boolean;
 };
 
 export type FighterStats = {

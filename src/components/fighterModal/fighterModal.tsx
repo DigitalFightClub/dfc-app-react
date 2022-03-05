@@ -1,4 +1,4 @@
-import { Flex, Button, Grid } from '@chakra-ui/react';
+import { Flex, Button, Grid, Tabs, TabList, TabPanels, Tab, TabPanel, Stack, Center, VStack } from '@chakra-ui/react';
 import { FighterModalProps, FighterStatistics } from '../../types';
 import { FighterHeader, FighterStats, FighterHistory } from './fighterModalComponents';
 import { CloseIcon } from '@chakra-ui/icons';
@@ -24,7 +24,12 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
   ];
 
   return (
-    <Flex bgImage="/assets/background.svg" bgRepeat="repeat-x" h="fit-content" w="fit-content" minW="550px">
+    <Flex
+      bgImage="/assets/background.svg"
+      bgRepeat={{ base: 'repeat-y', lg: 'repeat-x' }}
+      h={{ base: '1400px', md: '100%' }}
+      w="100%"
+    >
       <Button
         w="0px"
         justifySelf="end"
@@ -34,8 +39,8 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
         _hover={{ color: 'white', bg: 'gray' }}
         transition="0.5s"
         position="absolute"
-        top="-10px"
-        right="-10px"
+        top="5px"
+        right="5px"
         size="sm"
         p="0px"
         onClick={onClose}
@@ -43,14 +48,63 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
         <CloseIcon />
       </Button>
 
-      <Grid templateColumns="2fr 1fr">
-        <Grid direction="columns" templateRows="1fr 1.5fr">
-          <FighterHeader fighterType={fighterType} fighterData={fighterData} />
+      {/* Desktop friendly tabbed layout */}
+      <Grid templateColumns="2fr 1fr" w="100%" display={{ base: 'none', lg: 'flex' }}>
+        <Grid templateRows="1fr 1.5fr">
+          <FighterHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={true} />
           <FighterStats fighterStatistics={fighterStatistics} />
         </Grid>
 
         <FighterHistory />
       </Grid>
+
+      {/* Tablet friendly tabbed layout */}
+      <Grid templateColumns="1fr" w="100%" display={{ base: 'none', md: 'flex', lg: 'none' }}>
+        <Stack w="100%">
+          <FighterHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={true} />
+
+          <Tabs>
+            <Center>
+              <TabList>
+                <Tab>Fighter Stats</Tab>
+                <Tab>Fight History</Tab>
+              </TabList>
+            </Center>
+
+            <TabPanels minH="500px">
+              <TabPanel>
+                <FighterStats fighterStatistics={fighterStatistics} />
+              </TabPanel>
+              <TabPanel>
+                <FighterHistory />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </Stack>
+      </Grid>
+
+      {/* Mobile friendly tabbed layout */}
+      <VStack w="100%" display={{ base: 'flex', md: 'none' }}>
+        <FighterHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={false} />
+
+        <Tabs>
+          <Center>
+            <TabList>
+              <Tab>Fighter Stats</Tab>
+              <Tab>Fight History</Tab>
+            </TabList>
+          </Center>
+
+          <TabPanels>
+            <TabPanel>
+              <FighterStats fighterStatistics={fighterStatistics} />
+            </TabPanel>
+            <TabPanel>
+              <FighterHistory />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </VStack>
     </Flex>
   );
 }
