@@ -10,15 +10,25 @@ import {
   ModalOverlay,
   ModalContent,
   useBreakpointValue,
-  Center,
   Flex,
+  Tooltip,
+  IconButton,
+  Center,
 } from '@chakra-ui/react';
 import { FighterType } from '../../types';
 import { PunchIcon } from '../dfcIcons/PunchIcon';
 import { FlexIcon } from '../dfcIcons/FlexIcon';
+import { ChallengeIcon } from '../dfcIcons/ChallengeIcon';
 import FighterModal from '../fighterModal/fighterModal';
+import { useHistory } from 'react-router';
 
 const FighterData = ({ fighterData, fighterType }: FighterType) => {
+  const history = useHistory();
+
+  const orgPage = () => {
+    history.push('/orgs');
+  };
+
   return (
     <Grid templateRows="repeat(3, 30px)" textAlign="left" minH="180px" gap="11px">
       <Heading
@@ -59,12 +69,35 @@ const FighterData = ({ fighterData, fighterType }: FighterType) => {
         </Heading>
 
         <Flex justify="left">
-          <Center w="38px" h="38px" bg="#2ABB75" color="white" mx=".5rem">
-            <PunchIcon w="1.5rem" h="1.5rem" />
-          </Center>
-          <Center w="38px" h="38px" bg="#F26322" color="white" mx=".5rem">
-            <FlexIcon w="1.5rem" h="1.5rem" />
-          </Center>
+          <Tooltip hasArrow label="Fight" bg="gray.300" color="black">
+            <IconButton
+              as="button"
+              w="38px"
+              h="38px"
+              bg="#2ABB75"
+              color="white"
+              mx=".5rem"
+              borderRadius="0"
+              aria-label="Fight"
+              onClick={orgPage}
+            >
+              <PunchIcon w="1.5rem" h="1.5rem" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip hasArrow label="Improve" bg="gray.300" color="black">
+            <IconButton
+              w="38px"
+              h="38px"
+              bg="#F26322"
+              color="white"
+              mx=".5rem"
+              aria-label="Improve"
+              borderRadius="0"
+              isDisabled
+            >
+              <FlexIcon w="1.5rem" h="1.5rem" />
+            </IconButton>
+          </Tooltip>
         </Flex>
       </Flex>
 
@@ -137,6 +170,7 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
       )}
 
       <Box
+        position="relative"
         boxSizing="border-box"
         bg="linear-gradient(95.1deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.05) 101.67%)"
         transition="ease-in-out 0.4s"
@@ -148,6 +182,21 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
         alignContent="center"
         onClick={onOpen}
       >
+        <Center
+          position="absolute"
+          w="50px"
+          h="50px"
+          top="-20px"
+          right="-20px"
+          bg="#DF2151"
+          color="white"
+          boxShadow="-10px 10px 40px -5px #DF2151"
+          pr="0"
+          zIndex="10"
+        >
+          <ChallengeIcon w="2.1rem" h="2.1rem" />
+        </Center>
+
         <Grid
           templateColumns={{
             xl: '1fr 1fr',
