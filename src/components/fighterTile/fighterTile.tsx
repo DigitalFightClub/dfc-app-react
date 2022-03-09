@@ -193,6 +193,8 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
           boxShadow="-10px 10px 40px -5px #DF2151"
           pr="0"
           zIndex="10"
+          // TODO: bind Challenge flag
+          display="none"
         >
           <ChallengeIcon w="2.1rem" h="2.1rem" />
         </Center>
