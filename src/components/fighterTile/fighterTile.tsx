@@ -10,8 +10,12 @@ import {
   ModalOverlay,
   ModalContent,
   useBreakpointValue,
+  Center,
+  Flex,
 } from '@chakra-ui/react';
 import { FighterType } from '../../types';
+import { PunchIcon } from '../dfcIcons/PunchIcon';
+import { FlexIcon } from '../dfcIcons/FlexIcon';
 import FighterModal from '../fighterModal/fighterModal';
 
 const FighterData = ({ fighterData, fighterType }: FighterType) => {
@@ -30,28 +34,42 @@ const FighterData = ({ fighterData, fighterType }: FighterType) => {
         {fighterData.name}
       </Heading>
 
-      <Heading
-        variant="header4"
-        textAlign={{
-          xl: 'left',
-          lg: 'left',
-          md: 'left',
-          sm: 'center',
-          base: 'center',
-        }}
-      >
-        Record:
-        <Text display="inline" color="primary.500">
-          &nbsp;
-          {fighterData.wins}
-        </Text>
-        {'-'}
-        <chakra.span display="inline" color="secondary.500">
-          {fighterData.loses}
-        </chakra.span>
-      </Heading>
+      <Flex direction="row" justify={{ base: 'center', md: 'left' }}>
+        <Heading
+          variant="header4"
+          mr=".5rem"
+          textAlign={{
+            xl: 'left',
+            lg: 'left',
+            md: 'left',
+            sm: 'center',
+            base: 'center',
+          }}
+          whiteSpace="nowrap"
+        >
+          Record:
+          <Text display="inline" color="primary.500">
+            &nbsp;
+            {fighterData.wins}
+          </Text>
+          {'-'}
+          <chakra.span display="inline" color="secondary.500">
+            {fighterData.loses}
+          </chakra.span>
+        </Heading>
+
+        <Flex justify="left">
+          <Center w="38px" h="38px" bg="#2ABB75" color="white" mx=".5rem">
+            <PunchIcon w="1.5rem" h="1.5rem" />
+          </Center>
+          <Center w="38px" h="38px" bg="#F26322" color="white" mx=".5rem">
+            <FlexIcon w="1.5rem" h="1.5rem" />
+          </Center>
+        </Flex>
+      </Flex>
 
       <Grid
+        mt="1rem"
         templateColumns={{
           xl: '1',
           lg: '1fr',
@@ -110,13 +128,7 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
   return (
     <>
       {isOpen && (
-        <Modal
-          size={modalSize}
-          isCentered={centered}
-          isOpen={isOpen}
-          onClose={onClose}
-          scrollBehavior="outside"
-        >
+        <Modal size={modalSize} isCentered={centered} isOpen={isOpen} onClose={onClose} scrollBehavior="outside">
           <ModalOverlay />
           <ModalContent>
             <FighterModal fighterType={fighterType} onClose={onClose} fighterData={fighterData} />

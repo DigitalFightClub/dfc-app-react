@@ -39,8 +39,8 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
         _hover={{ color: 'white', bg: 'gray' }}
         transition="0.5s"
         position="absolute"
-        top="5px"
-        right="5px"
+        top="-10px"
+        right="-10px"
         size="sm"
         p="0px"
         onClick={onClose}
