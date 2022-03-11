@@ -10,6 +10,8 @@ export type FighterInfo = {
   status: string;
   image: string;
   stats: Record<string, number>;
+  isChallenged: boolean;
+  isOwned: boolean; // indicates is owned by current wallet
 };
 
 export type FighterModalProps = {

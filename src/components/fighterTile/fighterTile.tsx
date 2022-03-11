@@ -1,147 +1,18 @@
 import {
   Box,
-  chakra,
   useDisclosure,
   Image,
   Grid,
-  Text,
-  Heading,
   Modal,
   ModalOverlay,
   ModalContent,
   useBreakpointValue,
-  Flex,
-  Tooltip,
-  IconButton,
   Center,
 } from '@chakra-ui/react';
 import { FighterType } from '../../types';
-import { PunchIcon } from '../dfcIcons/PunchIcon';
-import { FlexIcon } from '../dfcIcons/FlexIcon';
 import { ChallengeIcon } from '../dfcIcons/ChallengeIcon';
+import FighterData from '../fighterData';
 import FighterModal from '../fighterModal/fighterModal';
-import { useHistory } from 'react-router';
-
-const FighterData = ({ fighterData, fighterType }: FighterType) => {
-  const history = useHistory();
-
-  const orgPage = () => {
-    history.push('/orgs');
-  };
-
-  return (
-    <Grid templateRows="repeat(3, 30px)" textAlign="left" minH="180px" gap="11px">
-      <Heading
-        textAlign={{
-          xl: 'left',
-          lg: 'left',
-          md: 'left',
-          sm: 'center',
-          base: 'center',
-        }}
-        variant="header3"
-      >
-        {fighterData.name}
-      </Heading>
-
-      <Flex direction="row" justify={{ base: 'center', md: 'left' }}>
-        <Heading
-          variant="header4"
-          mr=".5rem"
-          textAlign={{
-            xl: 'left',
-            lg: 'left',
-            md: 'left',
-            sm: 'center',
-            base: 'center',
-          }}
-          whiteSpace="nowrap"
-        >
-          Record:
-          <Text display="inline" color="primary.500">
-            &nbsp;
-            {fighterData.wins}
-          </Text>
-          {'-'}
-          <chakra.span display="inline" color="secondary.500">
-            {fighterData.loses}
-          </chakra.span>
-        </Heading>
-
-        <Flex justify="left">
-          <Tooltip hasArrow label="Fight" bg="gray.300" color="black">
-            <IconButton
-              as="button"
-              w="38px"
-              h="38px"
-              bg="#2ABB75"
-              color="white"
-              mx=".5rem"
-              borderRadius="0"
-              aria-label="Fight"
-              onClick={orgPage}
-            >
-              <PunchIcon w="1.5rem" h="1.5rem" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip hasArrow label="Improve" bg="gray.300" color="black">
-            <IconButton
-              w="38px"
-              h="38px"
-              bg="#F26322"
-              color="white"
-              mx=".5rem"
-              aria-label="Improve"
-              borderRadius="0"
-              isDisabled
-            >
-              <FlexIcon w="1.5rem" h="1.5rem" />
-            </IconButton>
-          </Tooltip>
-        </Flex>
-      </Flex>
-
-      <Grid
-        mt="1rem"
-        templateColumns={{
-          xl: '1',
-          lg: '1fr',
-          md: '1fr',
-          sm: 'repeat(2, 1fr)',
-          base: 'repeat(2, 1fr)',
-        }}
-        gap="11px"
-      >
-        <Text variant="micro">
-          HEIGHT:&nbsp;&nbsp;
-          <chakra.span display="inline">{fighterData.height}</chakra.span>
-        </Text>
-
-        <Text variant="micro">
-          WEIGHT:&nbsp;&nbsp;
-          <chakra.span display="inline">{fighterData.weight}</chakra.span>
-        </Text>
-
-        <Text variant="micro">
-          GENDER:&nbsp;&nbsp;
-          <chakra.span display="inline">{fighterData.gender}</chakra.span>
-        </Text>
-
-        <Text variant="micro">
-          RECRUITED:&nbsp;&nbsp;
-          <chakra.span display="inline">{fighterData.recruited}</chakra.span>
-        </Text>
-
-        <Text variant="micro">
-          STATUS:&nbsp;&nbsp;
-          <chakra.span display="inline" fontWeight="400" color={fighterType === 'active' ? 'green' : 'red'}>
-            {fighterData.status}
-          </chakra.span>
-        </Text>
-      </Grid>
-    </Grid>
-  );
-};
 
 export default function FighterTile({ fighterData, fighterType }: FighterType) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -193,8 +64,7 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
           boxShadow="-10px 10px 40px -5px #DF2151"
           pr="0"
           zIndex="10"
-          // TODO: bind Challenge flag
-          display="none"
+          display={fighterData.isChallenged ? 'flex' : 'none'}
         >
           <ChallengeIcon w="2.1rem" h="2.1rem" />
         </Center>
@@ -233,7 +103,7 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
             <Image boxSize="250px" src={fighterData.image} />
           </Box>
 
-          <FighterData fighterData={fighterData} fighterType={fighterType} />
+          <FighterData isTile fighterInfo={fighterData} fighterType={fighterType} />
         </Grid>
       </Box>
     </>

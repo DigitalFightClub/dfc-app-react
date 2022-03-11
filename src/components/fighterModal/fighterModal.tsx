@@ -1,7 +1,9 @@
 import { Flex, Button, Grid, Tabs, TabList, TabPanels, Tab, TabPanel, Stack, Center, VStack } from '@chakra-ui/react';
 import { FighterModalProps, FighterStatistics } from '../../types';
-import { FighterHeader, FighterStats, FighterHistory } from './fighterModalComponents';
+import { FighterModalHeader } from './fighterModalHeader';
 import { CloseIcon } from '@chakra-ui/icons';
+import FighterStatList from '../fighterStats';
+import FighterHistory from '../fighterHistory';
 
 export default function FighterModal({ fighterType, onClose, fighterData }: FighterModalProps) {
   const fighterStatistics: FighterStatistics = [
@@ -51,8 +53,8 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
       {/* Desktop friendly tabbed layout */}
       <Grid templateColumns="2fr 1fr" w="100%" display={{ base: 'none', lg: 'flex' }}>
         <Grid templateRows="1fr 1.5fr">
-          <FighterHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={true} />
-          <FighterStats fighterStatistics={fighterStatistics} />
+          <FighterModalHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={true} />
+          <FighterStatList fighterStatistics={fighterStatistics} />
         </Grid>
 
         <FighterHistory />
@@ -61,7 +63,7 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
       {/* Tablet friendly tabbed layout */}
       <Grid templateColumns="1fr" w="100%" display={{ base: 'none', md: 'flex', lg: 'none' }}>
         <Stack w="100%">
-          <FighterHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={true} />
+          <FighterModalHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={true} />
 
           <Tabs>
             <Center>
@@ -73,7 +75,7 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
 
             <TabPanels minH="500px">
               <TabPanel>
-                <FighterStats fighterStatistics={fighterStatistics} />
+                <FighterStatList fighterStatistics={fighterStatistics} />
               </TabPanel>
               <TabPanel>
                 <FighterHistory />
@@ -85,7 +87,7 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
 
       {/* Mobile friendly tabbed layout */}
       <VStack w="100%" display={{ base: 'flex', md: 'none' }}>
-        <FighterHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={false} />
+        <FighterModalHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={false} />
 
         <Tabs>
           <Center>
@@ -97,7 +99,7 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
 
           <TabPanels>
             <TabPanel>
-              <FighterStats fighterStatistics={fighterStatistics} />
+              <FighterStatList fighterStatistics={fighterStatistics} />
             </TabPanel>
             <TabPanel>
               <FighterHistory />
