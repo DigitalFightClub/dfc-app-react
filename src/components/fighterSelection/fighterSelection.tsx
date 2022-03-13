@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import { Grid, Stack, HStack, Button, Collapse } from '@chakra-ui/react';
-import { NftUris, FighterInfo } from '../../types';
+import { FighterInfo } from '../../types';
 import FighterTile from '../fighterTile';
 
-export default function FighterSelection({ refinedFightersMeta }: NftUris) {
+export interface FighterSelectionProps {
+  gymFighters: FighterInfo[];
+  loadingGymFitghers: boolean;
+}
+
+export default function FighterSelection({ gymFighters, loadingGymFitghers }: FighterSelectionProps) {
   const [showActive, setShowActive] = useState(true);
 
   const handleToggle = () => {
@@ -55,9 +60,13 @@ export default function FighterSelection({ refinedFightersMeta }: NftUris) {
             gap="5rem 4rem"
             pl={{ xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px' }}
           >
-            {refinedFightersMeta.map((fighterData: FighterInfo) => (
-              <FighterTile key={fighterData.name} fighterData={fighterData} fighterType="active" />
-            ))}
+            {!loadingGymFitghers ? (
+              gymFighters.map((fighterData: FighterInfo) => (
+                <FighterTile key={fighterData.name} fighterData={fighterData} fighterType="active" />
+              ))
+            ) : (
+              <FighterTile loadingGymFitghers />
+            )}
           </Grid>
         </Collapse>
 
@@ -75,7 +84,7 @@ export default function FighterSelection({ refinedFightersMeta }: NftUris) {
             gap="5rem 4rem"
             pl={{ xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px' }}
           >
-            {refinedFightersMeta.map((fighterData: FighterInfo) => (
+            {gymFighters.map((fighterData: FighterInfo) => (
               <FighterTile key={fighterData.name} fighterData={null} fighterType="inactive" />
             ))}
           </Grid>

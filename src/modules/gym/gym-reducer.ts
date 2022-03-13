@@ -38,6 +38,7 @@ function setGymFighters(state: GymState, action: AppAction<string, FighterInfo[]
 
 function setLoadingGymFighters(state: GymState, action: AppAction<string, boolean>): GymState {
   const { data = true } = action.payload;
+  console.log('loading gym fightersin progress', data);
 
   return {
     ...state,

@@ -8,13 +8,25 @@ import {
   ModalContent,
   useBreakpointValue,
   Center,
+  Skeleton,
+  SkeletonText,
 } from '@chakra-ui/react';
-import { FighterType } from '../../types';
+import { FighterInfo } from '../../types';
 import { ChallengeIcon } from '../dfcIcons/ChallengeIcon';
 import FighterData from '../fighterData';
 import FighterModal from '../fighterModal/fighterModal';
 
-export default function FighterTile({ fighterData, fighterType }: FighterType) {
+export interface FighterTileProps {
+  fighterData?: FighterInfo;
+  fighterType?: string;
+  loadingGymFitghers?: boolean;
+}
+
+export default function FighterTile({
+  fighterData = {} as FighterInfo,
+  fighterType = 'active',
+  loadingGymFitghers = false,
+}: FighterTileProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalSize = useBreakpointValue({ base: 'xs', md: '2xl', lg: '5xl' });
   const centered = useBreakpointValue({ base: false, md: true });
@@ -100,10 +112,14 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
             }}
             transition="0.5s"
           >
-            <Image boxSize="250px" src={fighterData.image} />
+            <Skeleton isLoaded={!loadingGymFitghers}>
+              <Image boxSize="250px" src={fighterData.image} />
+            </Skeleton>
           </Box>
 
-          <FighterData isTile fighterInfo={fighterData} fighterType={fighterType} />
+          <SkeletonText isLoaded={!loadingGymFitghers}>
+            <FighterData isTile fighterInfo={fighterData} fighterType={fighterType} />
+          </SkeletonText>
         </Grid>
       </Box>
     </>
