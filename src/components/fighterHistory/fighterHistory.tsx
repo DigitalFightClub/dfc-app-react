@@ -1,7 +1,15 @@
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Heading, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, useColorModeValue, VStack } from '@chakra-ui/react';
 
-export default function FighterHistory() {
+export interface FighterHistoryProps {
+  fighterId: number;
+  loading: boolean;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function FighterHistory({ fighterId, loading }: FighterHistoryProps) {
+  
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const PagButton = (props: any) => {
     const activeStyle = {
@@ -27,11 +35,14 @@ export default function FighterHistory() {
       </Button>
     );
   };
+
   return (
     <Box bg="rgba(0, 0, 0, 0.3)" py="24px" px={{ base: '0px', md: '40px' }} minH={{ base: '835px', md: '472px' }}>
       <Heading textAlign="center" variant="header3">
         Fight History
       </Heading>
+
+      <VStack>{/* HistoricMatchRow */}</VStack>
 
       <Flex opacity="none" py={50} px={{ base: 10, md: 50 }} w="full" alignItems="center" justifyContent="center">
         <Flex>

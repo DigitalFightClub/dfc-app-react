@@ -1,4 +1,13 @@
+import { Action } from 'redux';
+
+export type FighterNFT = {
+  name: string;
+  image: string;
+  attributes: [];
+};
+
 export type FighterInfo = {
+  fighterId: number;
   name: string;
   country: string;
   wins: string;
@@ -48,3 +57,46 @@ export type NftUris = {
 };
 
 export type Stats = [string, number];
+
+export enum MatchResult {
+  WIN,
+  LOSS,
+}
+
+export type HistoricMatch = {
+  challengerName: string;
+  challengerResult: MatchResult;
+  opponentName: string;
+  opponentResult: MatchResult;
+  matchDetails: string;
+};
+
+export type GymState = {
+  gymFighters: FighterInfo[];
+  fighterHistory: HistoricMatch[];
+  loadingGymFighters: boolean;
+  getGymFightersError: string | null;
+  loadingFighterHistory: boolean;
+  getFighterHistoryError: string | null;
+  tkoTotal: string;
+  loadingTotalTko: boolean;
+  getTotalTkoError: string | null;
+};
+
+// Global app state aggregated from the Redux reducers
+export interface AppState {
+  gymState: GymState;
+}
+
+// Generic Action type to be dispatched and used in Redux Saga
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface ActionPayload<T = any, M = string> {
+  data?: T;
+  msg?: M;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface AppAction<T = string, P = any> extends Action {
+  type: T;
+  payload: ActionPayload<P>;
+}

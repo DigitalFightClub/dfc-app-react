@@ -6,21 +6,31 @@ import { useEthers } from '@usedapp/core';
 
 import LoadingScreen from 'react-loading-screen';
 
-import { getNFTs, transformFighterMetadata, getTKOBalance } from '../../utils/web3/moralis';
+import { getNFTs, getTKOBalance } from '../../utils/web3/moralis';
 
 import GymTile from '../gymTile';
 import GymHeader from '../gymHeader';
 import FighterSelection from '../fighterSelection';
-import Moralis from 'moralis/types';
+import { RouteComponentProps } from 'react-router';
+import { FighterInfo } from '../../types';
+import { GymAction } from '../../modules/gym/gym-actions';
+import { GET_GYM_FIGHTERS_REQUEST } from '../../config/events';
 
-export default function Gym() {
+export interface GymProps extends RouteComponentProps {
+  gymFighters: FighterInfo[];
+  // tkoTotal: string;
+  getGymRequests: GymAction;
+  loadingGymFighters: boolean;
+  getGymFightersError: string | null;
+}
+
+export default function Gym({ gymFighters, getGymRequests, loadingGymFighters, getGymFightersError }: GymProps) {
   const { isInitialized, isInitializing, Moralis } = useMoralis();
-  const [ isLoaded, setIsLoaded ] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const { account } = useEthers();
   const Web3Api = useMoralisWeb3Api();
 
-  const [rawFightersMeta, setRawFightersMeta] = useState([]);
-  const [refinedFightersMeta, setRefinedFightersMeta] = useState([]);
+  const [renderGymFighters, setRenderGymFighters] = useState<FighterInfo[]>([]);
   const [nftCount, setNftCount] = useState(0);
   const [activeFighters, setActiveFighters] = useState(0);
   const [retiredFighters, setRetiredFighters] = useState(0);
@@ -34,26 +44,27 @@ export default function Gym() {
   useEffect(() => {
     (async function () {
       if (isInitialized && account && !isLoaded) {
-        const nfts = await getNFTs(Web3Api, account);
+        // const nfts = await getNFTs(Web3Api, account);
+        getGymRequests(GET_GYM_FIGHTERS_REQUEST, {
+          data: { web3Api: Web3Api, address: account },
+        });
+
         const tko = await getTKOBalance(Moralis, account);
         const tkoWei: number = +Moralis.Units.FromWei(tko.toString());
         setTkoTotal(Intl.NumberFormat('en-US').format(tkoWei));
-        setRawFightersMeta(nfts);
-        // console.log(nfts);
-        setNftCount(nfts.length);
         setIsLoaded(true);
       }
     })();
   }, [isInitialized, account]);
 
   useEffect(() => {
-    if (rawFightersMeta.length > 0) {
-      // console.log(rawFightersMeta);
-      const result = transformFighterMetadata(rawFightersMeta);
-      setRefinedFightersMeta(result);
-      // console.log(result);
+    if (gymFighters) {
+      console.log('Got Gym Fighters', JSON.stringify(gymFighters));
+      const newGymFighters: FighterInfo[] = [...gymFighters];
+      setRenderGymFighters(newGymFighters);
+      setNftCount(newGymFighters.length);
     }
-  }, [rawFightersMeta]);
+  }, [gymFighters]);
 
   return (
     <Box>
@@ -118,7 +129,7 @@ export default function Gym() {
             </Stack> */}
 
             {/* Pass in refined fighter metadata */}
-            {refinedFightersMeta.length > 0 ? <FighterSelection refinedFightersMeta={refinedFightersMeta} /> : null}
+            {renderGymFighters.length > 0 ? <FighterSelection refinedFightersMeta={renderGymFighters} /> : null}
           </VStack>
         </Container>
       </div>
