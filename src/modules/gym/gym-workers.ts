@@ -6,9 +6,9 @@ import {
   GET_TOTAL_TKO_SUCCESS,
   GET_GYM_FIGHTERS_IN_PROGRESS,
 } from '../../config/events';
-import { gymAction } from './gym-actions';
 import { gymApi } from './gym-api';
 import { ErrorResponse } from '../../types/Errors';
+import { dfcAction } from '../../types/actions';
 
 export function* getGymFightersWorker(action: AppAction) {
   try {
@@ -17,7 +17,7 @@ export function* getGymFightersWorker(action: AppAction) {
     console.log(JSON.stringify(data));
 
     yield put(
-      gymAction(GET_GYM_FIGHTERS_IN_PROGRESS, {
+      dfcAction(GET_GYM_FIGHTERS_IN_PROGRESS, {
         msg: 'Wallet not connected!',
       })
     );
@@ -25,7 +25,7 @@ export function* getGymFightersWorker(action: AppAction) {
     if (!data.address) {
       console.log('Wallet not connected!');
       yield put(
-        gymAction(GET_GYM_FIGHTERS_FAILED, {
+        dfcAction(GET_GYM_FIGHTERS_FAILED, {
           msg: 'Wallet not connected!',
         })
       );
@@ -43,7 +43,7 @@ export function* getGymFightersWorker(action: AppAction) {
       }
 
       yield put(
-        gymAction(GET_GYM_FIGHTERS_SUCCESS, {
+        dfcAction(GET_GYM_FIGHTERS_SUCCESS, {
           data: refinedFighters,
           msg: 'Get gym fighters successful',
         })
@@ -58,7 +58,7 @@ export function* getGymFightersWorker(action: AppAction) {
     }
 
     yield put(
-      gymAction(GET_GYM_FIGHTERS_FAILED, {
+      dfcAction(GET_GYM_FIGHTERS_FAILED, {
         msg,
       })
     );
@@ -70,7 +70,7 @@ export function* getTotalTkoWorker(action: AppAction<string, string>) {
   //TODO: call get TKO
   yield delay(1000);
   yield put(
-    gymAction(GET_TOTAL_TKO_SUCCESS, {
+    dfcAction(GET_TOTAL_TKO_SUCCESS, {
       data: '0',
       msg: 'Get gym fighters successful',
     })

@@ -1,4 +1,4 @@
-import { ActionPayload, AppAction } from '../../types';
+import { ActionPayload, AppAction } from '.';
 
 /**
  * Define a generic action function which will construct a Redux Action
@@ -7,11 +7,11 @@ import { ActionPayload, AppAction } from '../../types';
  * @param type Action type defined in /utils/Constants
  * @param payload data to update state
  */
-export function gymAction<T, P>(type: T, payload: ActionPayload<P>): AppAction<T, P> {
+export function dfcAction<T, P>(type: T, payload: ActionPayload<P>): AppAction<T, P> {
   return {
     type,
     payload,
   };
 }
 
-export type GymAction = typeof gymAction;
+export type DfcAction = typeof dfcAction;

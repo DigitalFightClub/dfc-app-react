@@ -10,23 +10,20 @@ import GymTile from '../gymTile';
 import GymHeader from '../gymHeader';
 import FighterSelection from '../fighterSelection';
 import { RouteComponentProps } from 'react-router';
-import { FighterInfo } from '../../types';
-import { GymAction } from '../../modules/gym/gym-actions';
+import { AppState, FighterInfo } from '../../types';
 import { GET_GYM_FIGHTERS_REQUEST } from '../../config/events';
+import { dfcAction } from '../../types/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
-export interface GymProps extends RouteComponentProps {
-  gymFighters: FighterInfo[];
-  // tkoTotal: string;
-  getGymRequests: GymAction;
-  loadingGymFighters: boolean;
-  getGymFightersError: string | null;
-}
-
-export default function Gym({ gymFighters, getGymRequests, loadingGymFighters, getGymFightersError }: GymProps) {
+export default function Gym() {
   const { isInitialized, isInitializing, Moralis } = useMoralis();
   const [isLoaded, setIsLoaded] = useState(false);
   const { account } = useEthers();
   const Web3Api = useMoralisWeb3Api();
+
+  // Redux Hooks
+  const { gymFighters, loadingGymFighters, getGymFightersError } = useSelector((state: AppState) => state.gymState);
+  const dispatch = useDispatch();
 
   const [renderGymFighters, setRenderGymFighters] = useState<FighterInfo[]>([]);
   const [nftCount, setNftCount] = useState(0);
@@ -40,9 +37,11 @@ export default function Gym({ gymFighters, getGymRequests, loadingGymFighters, g
   useEffect(() => {
     (async function () {
       if (isInitialized && account && !isLoaded) {
-        getGymRequests(GET_GYM_FIGHTERS_REQUEST, {
-          data: { web3Api: Web3Api, address: account },
-        });
+        dispatch(
+          dfcAction(GET_GYM_FIGHTERS_REQUEST, {
+            data: { web3Api: Web3Api, address: account },
+          })
+        );
 
         const tko = await getTKOBalance(Moralis, account);
         const tkoWei: number = +Moralis.Units.FromWei(tko.toString());

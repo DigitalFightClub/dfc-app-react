@@ -63,21 +63,26 @@ export enum MatchResult {
   LOSS,
 }
 
-export type HistoricMatch = {
+export type FightHistoryBrief = {
+  matchId: string;
   challengerName: string;
-  challengerResult: MatchResult;
+  challengerImage: string;
   opponentName: string;
-  opponentResult: MatchResult;
+  opponentImage: string;
+  matchResult: MatchResult;
   matchDetails: string;
+};
+
+export type FighterHistoryState = {
+  fighterHistory: FightHistoryBrief[];
+  loadingFighterHistory: boolean;
+  getFighterHistoryError: string | null;
 };
 
 export type GymState = {
   gymFighters: FighterInfo[];
-  fighterHistory: HistoricMatch[];
   loadingGymFighters: boolean;
   getGymFightersError: string | null;
-  loadingFighterHistory: boolean;
-  getFighterHistoryError: string | null;
   tkoTotal: string;
   loadingTotalTko: boolean;
   getTotalTkoError: string | null;
@@ -86,6 +91,7 @@ export type GymState = {
 // Global app state aggregated from the Redux reducers
 export interface AppState {
   gymState: GymState;
+  fighterHistoryState: FighterHistoryState;
 }
 
 // Generic Action type to be dispatched and used in Redux Saga

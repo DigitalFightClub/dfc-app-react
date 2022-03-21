@@ -1,4 +1,3 @@
-import * as gymActions from './gym-actions';
 import { gymWatchers } from './gym-watchers';
 import { gymApi } from './gym-api';
 import { gymReducer } from './gym-reducer';
@@ -11,7 +10,6 @@ import { gymReducer } from './gym-reducer';
  * All gym framework components are exposed by this index.
  */
 export {
-  gymActions,
   gymApi,
   gymWatchers,
   gymReducer,

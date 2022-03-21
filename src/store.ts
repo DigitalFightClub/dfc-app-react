@@ -4,10 +4,12 @@ import createSagaMiddleware from 'redux-saga';
 import { rootReducer } from './reducers';
 import { initGymState } from './modules/gym/gym-reducer';
 import { AppState } from './types';
+import { initFighterHistoryState } from './modules/fight-history/fight-history-reducer';
 
 // Create initial state form the app from each feature module
 const init: AppState = {
   gymState: initGymState,
+  fighterHistoryState: initFighterHistoryState,
 };
 
 export function store(initialState: AppState = init) {

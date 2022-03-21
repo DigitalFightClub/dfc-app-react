@@ -11,11 +11,8 @@ import {
 
 export const initGymState: GymState = {
   gymFighters: [],
-  fighterHistory: [],
   loadingGymFighters: false,
   getGymFightersError: null,
-  loadingFighterHistory: false,
-  getFighterHistoryError: null,
   tkoTotal: '0',
   loadingTotalTko: false,
   getTotalTkoError: null,
