@@ -91,7 +91,7 @@ export type GymState = {
 // Global app state aggregated from the Redux reducers
 export interface AppState {
   gymState: GymState;
-  fighterHistoryState: FighterHistoryState;
+  fightHistoryState: FighterHistoryState;
 }
 
 // Generic Action type to be dispatched and used in Redux Saga

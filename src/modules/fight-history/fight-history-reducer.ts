@@ -54,7 +54,7 @@ function setGetFighterHistoryFailed(
   };
 }
 
-export const fighterHistoryReducer: Reducer<FighterHistoryState, AppAction> = (
+export const FightHistoryReducer: Reducer<FighterHistoryState, AppAction> = (
   state: FighterHistoryState = initFighterHistoryState,
   action: AppAction
 ): FighterHistoryState => {

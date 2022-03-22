@@ -9,7 +9,7 @@ import { initFighterHistoryState } from './modules/fight-history/fight-history-r
 // Create initial state form the app from each feature module
 const init: AppState = {
   gymState: initGymState,
-  fighterHistoryState: initFighterHistoryState,
+  fightHistoryState: initFighterHistoryState,
 };
 
 export function store(initialState: AppState = init) {

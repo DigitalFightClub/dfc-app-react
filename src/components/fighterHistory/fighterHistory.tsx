@@ -1,16 +1,51 @@
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Heading, useColorModeValue, VStack } from '@chakra-ui/react';
-import { FightHistoryBrief, MatchResult } from '../../types';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { GET_FIGHTER_HISTORY_REQUEST } from '../../config/events';
+import { AppState, FightHistoryBrief } from '../../types';
+import { dfcAction } from '../../types/actions';
 import FighterHistoryRow from './fighterHistoryRow';
 
 export interface FighterHistoryProps {
   fighterId: number;
-  fighterImage: string;
-  loading: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function FighterHistory({ fighterId, fighterImage, loading }: FighterHistoryProps) {
+export default function FighterHistory({ fighterId }: FighterHistoryProps) {
+  // Redux Hooks
+  const { fighterHistory, loadingFighterHistory, getFighterHistoryError } = useSelector(
+    (state: AppState) => {
+      console.log(state);
+      return state.fightHistoryState;
+    }
+  );
+  const dispatch = useDispatch();
+
+  // component state
+  const [renderFighterHistory, setRenderFighterHistory] = useState<FightHistoryBrief[]>([]);
+
+  useEffect(() => {
+    (async function () {
+      console.log('Fetch fighter history', fighterId);
+      if (fighterId) {
+        dispatch(
+          dfcAction(GET_FIGHTER_HISTORY_REQUEST, {
+            data: { fighterId },
+          })
+        );
+      }
+    })();
+  }, [fighterId]);
+
+  useEffect(() => {
+    if (fighterHistory) {
+      console.log('Got Fighter History', JSON.stringify(fighterHistory));
+      const newFighterHsitory: FightHistoryBrief[] = [...fighterHistory];
+      setRenderFighterHistory(newFighterHsitory);
+    }
+  }, [fighterHistory]);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const PagButton = (props: any) => {
     const activeStyle = {
@@ -37,69 +72,6 @@ export default function FighterHistory({ fighterId, fighterImage, loading }: Fig
     );
   };
 
-  const fighterHistory: FightHistoryBrief[] = [
-    {
-      matchId: '1',
-      challengerName: 'Bastian Bender',
-      challengerImage: fighterImage,
-      opponentName: 'Awaiza Sarwar',
-      opponentImage:
-        'https://lh3.googleusercontent.com/DxpdvS00hmj9yaUUG0u-Bs1cGD1ZZ6offUZIieMD5ePI0WtxOuXNZa4W2muSeTHqOzxKfMfE7svsXM8_4cLD_ZKhylgHkQf8BcqHzw=w600',
-      matchResult: MatchResult.WIN,
-      matchDetails: '2nd Round Stoppage',
-    },
-    {
-      matchId: '2',
-      challengerName: 'Bastian Bender',
-      challengerImage: fighterImage,
-      opponentName: 'Awaiza Sarwar',
-      opponentImage:
-        'https://lh3.googleusercontent.com/DxpdvS00hmj9yaUUG0u-Bs1cGD1ZZ6offUZIieMD5ePI0WtxOuXNZa4W2muSeTHqOzxKfMfE7svsXM8_4cLD_ZKhylgHkQf8BcqHzw=w600',
-      matchResult: MatchResult.WIN,
-      matchDetails: '2nd Round Stoppage',
-    },
-    {
-      matchId: '3',
-      challengerName: 'Bastian Bender',
-      challengerImage: fighterImage,
-      opponentName: 'Awaiza Sarwar',
-      opponentImage:
-        'https://lh3.googleusercontent.com/DxpdvS00hmj9yaUUG0u-Bs1cGD1ZZ6offUZIieMD5ePI0WtxOuXNZa4W2muSeTHqOzxKfMfE7svsXM8_4cLD_ZKhylgHkQf8BcqHzw=w600',
-      matchResult: MatchResult.WIN,
-      matchDetails: '2nd Round Stoppage',
-    },
-    {
-      matchId: '4',
-      challengerName: 'Bastian Bender',
-      challengerImage: fighterImage,
-      opponentName: 'Awaiza Sarwar',
-      opponentImage:
-        'https://lh3.googleusercontent.com/DxpdvS00hmj9yaUUG0u-Bs1cGD1ZZ6offUZIieMD5ePI0WtxOuXNZa4W2muSeTHqOzxKfMfE7svsXM8_4cLD_ZKhylgHkQf8BcqHzw=w600',
-      matchResult: MatchResult.LOSS,
-      matchDetails: '2nd Round Stoppage',
-    },
-    {
-      matchId: '5',
-      challengerName: 'Bastian Bender',
-      challengerImage: fighterImage,
-      opponentName: 'Awaiza Sarwar',
-      opponentImage:
-        'https://lh3.googleusercontent.com/DxpdvS00hmj9yaUUG0u-Bs1cGD1ZZ6offUZIieMD5ePI0WtxOuXNZa4W2muSeTHqOzxKfMfE7svsXM8_4cLD_ZKhylgHkQf8BcqHzw=w600',
-      matchResult: MatchResult.WIN,
-      matchDetails: '2nd Round Stoppage',
-    },
-    {
-      matchId: '6',
-      challengerName: 'Bastian Bender',
-      challengerImage: fighterImage,
-      opponentName: 'Awaiza Sarwar',
-      opponentImage:
-        'https://lh3.googleusercontent.com/DxpdvS00hmj9yaUUG0u-Bs1cGD1ZZ6offUZIieMD5ePI0WtxOuXNZa4W2muSeTHqOzxKfMfE7svsXM8_4cLD_ZKhylgHkQf8BcqHzw=w600',
-      matchResult: MatchResult.WIN,
-      matchDetails: '2nd Round Stoppage',
-    },
-  ];
-
   return (
     <Box bg="rgba(0, 0, 0, 0.3)" py="24px" px={{ base: '0px', md: '40px' }} minH={{ base: '835px', md: '472px' }}>
       <Heading textAlign="center" variant="header3" fontWeight="semibold">
@@ -107,7 +79,7 @@ export default function FighterHistory({ fighterId, fighterImage, loading }: Fig
       </Heading>
 
       <VStack w="100%">
-        {fighterHistory.map((match) => (
+        {renderFighterHistory.map((match) => (
           <FighterHistoryRow key={match.matchId} fightHistoryBrief={match}></FighterHistoryRow>
         ))}
       </VStack>
