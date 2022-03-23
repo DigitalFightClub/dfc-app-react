@@ -36,7 +36,7 @@ export default function FighterHistory({ fighterId }: FighterHistoryProps) {
         );
       }
     })();
-  }, [fighterId]);
+  }, []);
 
   useEffect(() => {
     if (fighterHistory) {

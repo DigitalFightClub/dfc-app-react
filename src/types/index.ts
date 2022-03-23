@@ -73,6 +73,17 @@ export type FightHistoryBrief = {
   matchDetails: string;
 };
 
+export type OrganizationInfo = {
+  orgName: string;
+  orgCategory: string;
+  orgFighters: FighterInfo[];
+};
+
+export type OrganizationState = {
+  selectedFighter: FighterInfo | null;
+  selectedOrg: OrganizationInfo | null;
+};
+
 export type FighterHistoryState = {
   fighterHistory: FightHistoryBrief[];
   loadingFighterHistory: boolean;
@@ -92,6 +103,7 @@ export type GymState = {
 export interface AppState {
   gymState: GymState;
   fightHistoryState: FighterHistoryState;
+  organizationState: OrganizationState;
 }
 
 // Generic Action type to be dispatched and used in Redux Saga

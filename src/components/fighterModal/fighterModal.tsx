@@ -4,26 +4,10 @@ import { FighterModalHeader } from './fighterModalHeader';
 import { CloseIcon } from '@chakra-ui/icons';
 import FighterStatList from '../fighterStats';
 import FighterHistory from '../fighterHistory';
+import getFighterStatistics from '../fighterStatistics/fighterStatistics';
 
 export default function FighterModal({ fighterType, onClose, fighterData }: FighterModalProps) {
-  const fighterStatistics: FighterStatistics = [
-    ['Power', fighterData.stats.power],
-    ['Kickboxing', fighterData.stats.kickboxing],
-    ['Speed', fighterData.stats.speed],
-    ['BJJ', fighterData.stats.bjj],
-    ['Strength', fighterData.stats.strength],
-    ['Karate', fighterData.stats.karate],
-    ['Flexibility', fighterData.stats.flexibility],
-    ['Wrestling', fighterData.stats.wrestling],
-    ['Conditioning', fighterData.stats.conditioning],
-    ['Judo', fighterData.stats.judo],
-    ['Balance', fighterData.stats.balance],
-    ['Muay Thai', fighterData.stats.mauyThai],
-    ['Reflex', fighterData.stats.reflex],
-    ['Taekwondo', fighterData.stats.taekwondo],
-    ['Footwork', fighterData.stats.footwork],
-    ['Sambo', fighterData.stats.sambo],
-  ];
+  const fighterStatistics: FighterStatistics = getFighterStatistics(fighterData);
 
   return (
     <Flex
@@ -99,7 +83,7 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
 
           <TabPanels>
             <TabPanel>
-              <FighterStatList fighterStatistics={fighterStatistics} />
+              <FighterStatList fighterStatistics={fighterStatistics} slim />
             </TabPanel>
             <TabPanel>
               <FighterHistory fighterId={parseInt(fighterData.image.split('/')[4].split('.')[0])} />

@@ -5,11 +5,13 @@ import { rootReducer } from './reducers';
 import { initGymState } from './modules/gym/gym-reducer';
 import { AppState } from './types';
 import { initFighterHistoryState } from './modules/fight-history/fight-history-reducer';
+import { initOrganizationState } from './modules/organization/organization-reducer';
 
 // Create initial state form the app from each feature module
 const init: AppState = {
   gymState: initGymState,
   fightHistoryState: initFighterHistoryState,
+  organizationState: initOrganizationState,
 };
 
 export function store(initialState: AppState = init) {
