@@ -68,27 +68,27 @@ export const FighterHeader = ({ fighterType, fighterData }: FighterHeaderProps) 
             </Text>
           </Flex>
 
-          <Text variant="micro">
+          <Text variant="micro" fontFamily="Sora" fontWeight="normal" fontSize="18px">
             HEIGHT:&nbsp;&nbsp;
             <chakra.span display="inline">{fighterData.height}</chakra.span>
           </Text>
 
-          <Text variant="micro">
+          <Text variant="micro" fontFamily="Sora" fontWeight="normal" fontSize="18px">
             WEIGHT:&nbsp;&nbsp;
             <chakra.span display="inline">{fighterData.weight}</chakra.span>
           </Text>
 
-          <Text variant="micro">
+          <Text variant="micro" fontFamily="Sora" fontWeight="normal" fontSize="18px">
             GENDER:&nbsp;&nbsp;
             <chakra.span display="inline">{fighterData.gender}</chakra.span>
           </Text>
 
-          <Text variant="micro">
+          <Text variant="micro" fontFamily="Sora" fontWeight="normal" fontSize="18px">
             RECRUITED:&nbsp;&nbsp;
             <chakra.span display="inline">{fighterData.recruited}</chakra.span>
           </Text>
 
-          <Text variant="micro">
+          <Text variant="micro" fontFamily="Sora" fontWeight="normal" fontSize="18px">
             STATUS:&nbsp;&nbsp;
             <chakra.span display="inline" fontWeight="400" color={fighterType === 'active' ? 'green' : 'red'}>
               {fighterData.status}
