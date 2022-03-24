@@ -74,6 +74,7 @@ export type FightHistoryBrief = {
 };
 
 export type OrganizationInfo = {
+  orgIcon: string;
   orgName: string;
   orgCategory: string;
   orgFighters: FighterInfo[];

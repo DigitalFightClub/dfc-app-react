@@ -24,3 +24,6 @@ export const GET_FIGHTER_HISTORY_SUCCESS = '@FighterHistory/GET-fighter-history-
 export type GET_FIGHTER_HISTORY_SUCCESS = typeof GET_FIGHTER_HISTORY_SUCCESS;
 export const GET_FIGHTER_HISTORY_FAILED = '@FighterHistory/GET-fighter-history-failed';
 export type GET_FIGHTER_HISTORY_FAILED = typeof GET_FIGHTER_HISTORY_FAILED;
+
+export const SET_SELECTED_FIGHTER = '@Organization/SET-selected-fighter';
+export type SET_SELECTED_FIGHTER = typeof SET_SELECTED_FIGHTER;

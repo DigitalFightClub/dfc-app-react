@@ -2,13 +2,13 @@
 import { chakra, Box, Flex, Image, Text, VStack } from '@chakra-ui/react';
 import { FighterInfo } from '../../types';
 
-export interface FighterHeaderProps {
+export interface FighterDetailsProps {
   fighterType: string;
   fighterData: FighterInfo;
 }
 
 // This is where the fighter image and basic data appears
-export const FighterHeader = ({ fighterType, fighterData }: FighterHeaderProps) => {
+export const FighterDetails = ({ fighterType, fighterData }: FighterDetailsProps) => {
   return (
     <Box boxSizing="border-box" transition="ease-in-out 0.4s" w="100%" alignContent="center">
       <VStack marginBottom="30px">
@@ -57,10 +57,10 @@ export const FighterHeader = ({ fighterType, fighterData }: FighterHeaderProps) 
               whiteSpace="nowrap"
             >
               Record:
-              <Text display="inline" color="primary.500">
+              <chakra.span display="inline" color="primary.500">
                 &nbsp;
                 {fighterData.wins}
-              </Text>
+              </chakra.span>
               {'-'}
               <chakra.span display="inline" color="secondary.500">
                 {fighterData.loses}

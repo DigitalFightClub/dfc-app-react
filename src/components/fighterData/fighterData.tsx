@@ -3,6 +3,9 @@ import { FighterInfo } from '../../types';
 import { PunchIcon } from '../dfcIcons/PunchIcon';
 import { FlexIcon } from '../dfcIcons/FlexIcon';
 import { useHistory } from 'react-router';
+import { dfcAction } from '../../types/actions';
+import { SET_SELECTED_FIGHTER } from '../../config/events';
+import { useDispatch } from 'react-redux';
 
 export interface FighterDataProps {
   isTile?: boolean;
@@ -13,7 +16,15 @@ export interface FighterDataProps {
 export default function FighterData({ isTile = false, fighterInfo: fighterData, fighterType }: FighterDataProps) {
   const history = useHistory();
 
-  const orgPage = () => {
+  // connect redux saga
+  const dispatch = useDispatch();
+
+  const selectFighter = () => {
+    dispatch(
+      dfcAction(SET_SELECTED_FIGHTER, {
+        data: { fighterData },
+      })
+    );
     history.push('/orgs');
   };
 
@@ -46,10 +57,10 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
           whiteSpace="nowrap"
         >
           Record:
-          <Text display="inline" color="primary.500">
+          <chakra.span display="inline" color="primary.500">
             &nbsp;
             {fighterData.wins}
-          </Text>
+          </chakra.span>
           {'-'}
           <chakra.span display="inline" color="secondary.500">
             {fighterData.loses}
@@ -66,7 +77,7 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
             mx=".5rem"
             borderRadius="0"
             aria-label="Fight"
-            onClick={orgPage}
+            onClick={selectFighter}
           >
             Fight
           </Button>
@@ -95,7 +106,7 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
               mx=".5rem"
               borderRadius="0"
               aria-label="Fight"
-              onClick={orgPage}
+              onClick={selectFighter}
             >
               <PunchIcon w="1.5rem" h="1.5rem" />
             </IconButton>
