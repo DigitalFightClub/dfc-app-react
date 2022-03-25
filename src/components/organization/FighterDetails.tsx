@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { chakra, Box, Flex, Image, Text, VStack } from '@chakra-ui/react';
 import { FighterInfo } from '../../types';
+import 'flag-icons/css/flag-icons.min.css';
 
 export interface FighterDetailsProps {
   fighterType: string;
@@ -39,6 +40,7 @@ export const FighterDetails = ({ fighterType, fighterData }: FighterDetailsProps
             fontSize="24px"
           >
             {fighterData.name}
+            <chakra.span display="inline" ml="10px" className="fi fi-us" />
           </Text>
 
           <Flex direction="row" justify={{ base: 'center', md: 'left' }} mb="10px">

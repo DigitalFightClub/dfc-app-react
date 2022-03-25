@@ -1,4 +1,4 @@
-import { Center, Checkbox, Divider, Flex, HStack, Image, Switch, Text } from '@chakra-ui/react';
+import { chakra, Center, Checkbox, Divider, Flex, HStack, Image, Switch, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 
 export interface OrgHeaderProps {
@@ -40,6 +40,7 @@ export default function OrgHeader({ orgIcon, orgName, orgCategory, selectedFight
         {selectedFighterName ? (
           <Text fontSize="24px" fontWeight="normal">
             {selectedFighterName}
+            <chakra.span display="inline" ml="10px" className="fi fi-us" />
           </Text>
         ) : (
           <Text fontSize="16px" fontWeight="normal" fontStyle="italic">
@@ -57,7 +58,9 @@ export default function OrgHeader({ orgIcon, orgName, orgCategory, selectedFight
         <HStack>
           <Text color={selectOnlineOnly ? 'grey' : 'white'}>All</Text>
           <Switch colorScheme="teal" size="md" onChange={() => setSelectOnlineOnly(!selectOnlineOnly)} />
-          <Text wordBreak="keep-all" color={!selectOnlineOnly ? 'grey' : 'white'}>Online Only</Text>
+          <Text wordBreak="keep-all" color={!selectOnlineOnly ? 'grey' : 'white'}>
+            Online Only
+          </Text>
         </HStack>
         <HStack>
           <Text color={selectChallengers ? 'grey' : 'white'}>All</Text>

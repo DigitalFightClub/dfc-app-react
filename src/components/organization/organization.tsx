@@ -44,7 +44,7 @@ export default function Organization() {
             recruited: '11/30/2021',
             gender: 'male',
             height: '5\'6"',
-            country: 'Germany',
+            country: 'de',
             weight: '136 lbs',
             stats: {
               power: 37,
@@ -64,7 +64,7 @@ export default function Organization() {
               taekwondo: 54,
               wrestling: 48,
             },
-            isOwned: true,
+            isOwned: false,
             challengeState: ChallengeState.CHALLENGING,
           },
           {
@@ -77,7 +77,7 @@ export default function Organization() {
             recruited: '11/30/2021',
             gender: 'male',
             height: '5\'0"',
-            country: 'Vietnam',
+            country: 'vn',
             weight: '114 lbs',
             stats: {
               power: 72,
@@ -97,7 +97,7 @@ export default function Organization() {
               taekwondo: 17,
               wrestling: 83,
             },
-            isOwned: true,
+            isOwned: false,
             challengeState: ChallengeState.AVAILABLE,
           },
           {
@@ -110,7 +110,7 @@ export default function Organization() {
             recruited: '11/30/2021',
             gender: 'male',
             height: '5\'9"',
-            country: 'Ukraine',
+            country: 'ua',
             weight: '172 lbs',
             stats: {
               power: 59,
@@ -130,7 +130,7 @@ export default function Organization() {
               taekwondo: 27,
               wrestling: 41,
             },
-            isOwned: true,
+            isOwned: false,
             challengeState: ChallengeState.AVAILABLE,
           },
           {
@@ -143,7 +143,7 @@ export default function Organization() {
             recruited: '11/30/2021',
             gender: 'female',
             height: '5\'7"',
-            country: 'Pakistan',
+            country: 'pk',
             weight: '175 lbs',
             stats: {
               power: 20,
@@ -163,7 +163,7 @@ export default function Organization() {
               taekwondo: 92,
               wrestling: 38,
             },
-            isOwned: true,
+            isOwned: false,
             challengeState: ChallengeState.CHALLENGED,
           },
           {
@@ -176,7 +176,7 @@ export default function Organization() {
             recruited: '11/30/2021',
             gender: 'male',
             height: '5\'0"',
-            country: 'China',
+            country: 'cn',
             weight: '113 lbs',
             stats: {
               power: 55,
@@ -196,7 +196,7 @@ export default function Organization() {
               taekwondo: 66,
               wrestling: 57,
             },
-            isOwned: true,
+            isOwned: false,
             challengeState: ChallengeState.AVAILABLE,
           },
         ],
