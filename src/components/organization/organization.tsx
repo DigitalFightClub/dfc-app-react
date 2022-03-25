@@ -1,7 +1,8 @@
 import { Box, Container, Flex, Heading, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { AppState, FighterInfo, OrganizationInfo } from '../../types';
+import { Link } from 'react-router-dom';
+import { AppState, ChallengeState, FighterInfo, OrganizationInfo } from '../../types';
 import getFighterStatistics from '../fighterStatistics/fighterStatistics';
 import FighterStatList from '../fighterStats/fighterStats';
 import { FighterDetails } from './FighterDetails';
@@ -22,7 +23,7 @@ export default function Organization() {
         const newSelectedFighter: FighterInfo = {
           ...selectedFighter,
           fighterId: parseInt(selectedFighter.image.split('/')[4].split('.')[0]),
-          isChallenged: true,
+          challengeState: ChallengeState.CHALLENGED,
           isOwned: true,
         };
         setRenderSelectedFighter(newSelectedFighter);
@@ -63,8 +64,8 @@ export default function Organization() {
               taekwondo: 54,
               wrestling: 48,
             },
-            isChallenged: true,
             isOwned: true,
+            challengeState: ChallengeState.CHALLENGING,
           },
           {
             fighterId: 4,
@@ -96,8 +97,8 @@ export default function Organization() {
               taekwondo: 17,
               wrestling: 83,
             },
-            isChallenged: true,
             isOwned: true,
+            challengeState: ChallengeState.AVAILABLE,
           },
           {
             fighterId: 5,
@@ -129,8 +130,8 @@ export default function Organization() {
               taekwondo: 27,
               wrestling: 41,
             },
-            isChallenged: true,
             isOwned: true,
+            challengeState: ChallengeState.AVAILABLE,
           },
           {
             fighterId: 8,
@@ -162,8 +163,8 @@ export default function Organization() {
               taekwondo: 92,
               wrestling: 38,
             },
-            isChallenged: true,
             isOwned: true,
+            challengeState: ChallengeState.CHALLENGED,
           },
           {
             fighterId: 9,
@@ -195,8 +196,8 @@ export default function Organization() {
               taekwondo: 66,
               wrestling: 57,
             },
-            isChallenged: true,
             isOwned: true,
+            challengeState: ChallengeState.AVAILABLE,
           },
         ],
       };
@@ -218,7 +219,12 @@ export default function Organization() {
               <FighterStatList fighterStatistics={getFighterStatistics(renderSelectedFighter)} slim />
             </VStack>
           ) : (
-            <Heading>Select a fighter to fight from Gym</Heading>
+            <Heading>
+              Select a fighter from the{' '}
+              <Link to="/gym" style={{ color: '#F26322', textDecoration: 'underline' }}>
+                Gym
+              </Link>
+            </Heading>
           )}
 
           {/* Org Panel */}

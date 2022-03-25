@@ -19,9 +19,15 @@ export type FighterInfo = {
   status: string;
   image: string;
   stats: Record<string, number>;
-  isChallenged: boolean;
   isOwned: boolean; // indicates is owned by current wallet
+  challengeState: ChallengeState;
 };
+
+export enum ChallengeState {
+  AVAILABLE,
+  CHALLENGED,
+  CHALLENGING,
+}
 
 export type FighterModalProps = {
   fighterType: string;

@@ -41,7 +41,7 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
           <FighterStatList fighterStatistics={fighterStatistics} />
         </Grid>
 
-        <FighterHistory fighterId={parseInt(fighterData.image.split('/')[4].split('.')[0])} />
+        <FighterHistory fighterData={fighterData} />
       </Grid>
 
       {/* Tablet friendly tabbed layout */}
@@ -62,7 +62,7 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
                 <FighterStatList fighterStatistics={fighterStatistics} />
               </TabPanel>
               <TabPanel>
-                <FighterHistory fighterId={parseInt(fighterData.image.split('/')[4].split('.')[0])} />
+                <FighterHistory fighterData={fighterData} />
               </TabPanel>
             </TabPanels>
           </Tabs>
@@ -86,7 +86,7 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
               <FighterStatList fighterStatistics={fighterStatistics} slim />
             </TabPanel>
             <TabPanel>
-              <FighterHistory fighterId={parseInt(fighterData.image.split('/')[4].split('.')[0])} />
+              <FighterHistory fighterData={fighterData} />
             </TabPanel>
           </TabPanels>
         </Tabs>

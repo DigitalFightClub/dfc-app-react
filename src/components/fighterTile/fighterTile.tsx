@@ -11,7 +11,7 @@ import {
   Skeleton,
   SkeletonText,
 } from '@chakra-ui/react';
-import { FighterInfo } from '../../types';
+import { ChallengeState, FighterInfo } from '../../types';
 import { ChallengeIcon } from '../dfcIcons/ChallengeIcon';
 import FighterData from '../fighterData';
 import FighterModal from '../fighterModal/fighterModal';
@@ -76,7 +76,7 @@ export default function FighterTile({
           boxShadow="-10px 10px 40px -5px #DF2151"
           pr="0"
           zIndex="10"
-          display={fighterData.isChallenged ? 'flex' : 'none'}
+          display={ChallengeState.CHALLENGED === fighterData.challengeState ? 'flex' : 'none'}
         >
           <ChallengeIcon w="2.1rem" h="2.1rem" />
         </Center>

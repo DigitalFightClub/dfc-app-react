@@ -21,7 +21,7 @@ export function* getFighterHistoryWorker(action: AppAction) {
       })
     );
 
-    if (!data.fighterId) {
+    if (!data.fighterData) {
       yield put(
         dfcAction(GET_FIGHTER_HISTORY_FAILED, {
           msg: 'Missing fighter ID!',
@@ -30,7 +30,7 @@ export function* getFighterHistoryWorker(action: AppAction) {
     } else {
       // Get fighter history
       console.log('Fetch fighter history');
-      const fighterHistory: FightHistoryBrief[] = yield call(fightHistoryApi.getFighterHistory, data.fighterId);
+      const fighterHistory: FightHistoryBrief[] = yield call(fightHistoryApi.getFighterHistory, data.fighterData);
       console.log('Filled fighter history', JSON.stringify(fighterHistory));
 
       yield put(

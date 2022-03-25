@@ -3,23 +3,21 @@ import { Box, Button, Flex, Heading, useColorModeValue, VStack } from '@chakra-u
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GET_FIGHTER_HISTORY_REQUEST } from '../../config/events';
-import { AppState, FightHistoryBrief } from '../../types';
+import { AppState, FighterInfo, FightHistoryBrief } from '../../types';
 import { dfcAction } from '../../types/actions';
 import FighterHistoryRow from './fighterHistoryRow';
 
 export interface FighterHistoryProps {
-  fighterId: number;
+  fighterData: FighterInfo;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function FighterHistory({ fighterId }: FighterHistoryProps) {
+export default function FighterHistory({ fighterData }: FighterHistoryProps) {
   // Redux Hooks
-  const { fighterHistory, loadingFighterHistory, getFighterHistoryError } = useSelector(
-    (state: AppState) => {
-      console.log(state);
-      return state.fightHistoryState;
-    }
-  );
+  const { fighterHistory, loadingFighterHistory, getFighterHistoryError } = useSelector((state: AppState) => {
+    console.log(state);
+    return state.fightHistoryState;
+  });
   const dispatch = useDispatch();
 
   // component state
@@ -27,11 +25,11 @@ export default function FighterHistory({ fighterId }: FighterHistoryProps) {
 
   useEffect(() => {
     (async function () {
-      console.log('Fetch fighter history', fighterId);
-      if (fighterId) {
+      console.log('Fetch fighter history', fighterData);
+      if (fighterData) {
         dispatch(
           dfcAction(GET_FIGHTER_HISTORY_REQUEST, {
-            data: { fighterId },
+            data: { fighterData },
           })
         );
       }

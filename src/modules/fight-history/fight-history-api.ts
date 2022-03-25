@@ -1,4 +1,4 @@
-import { FightHistoryBrief, MatchResult } from '../../types';
+import { FighterInfo, FightHistoryBrief, MatchResult } from '../../types';
 
 class FightHistoryApi {
   public constructor() {
@@ -6,11 +6,12 @@ class FightHistoryApi {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async getFighterHistory(fighterId: string): Promise<FightHistoryBrief[]> {
+  public async getFighterHistory(fighterData: FighterInfo): Promise<FightHistoryBrief[]> {
+    const fighterId: number = parseInt(fighterData.image.split('/')[4].split('.')[0]);
     return [
       {
         matchId: '1',
-        challengerName: 'Bastian Bender',
+        challengerName: fighterData.name,
         challengerImage: `https://mainnet.api.digitalfightclub.io/renderedFighter/${fighterId}.png`,
         opponentName: 'Awaiza Sarwar',
         opponentImage:
@@ -20,7 +21,7 @@ class FightHistoryApi {
       },
       {
         matchId: '2',
-        challengerName: 'Bastian Bender',
+        challengerName: fighterData.name,
         challengerImage: `https://mainnet.api.digitalfightclub.io/renderedFighter/${fighterId}.png`,
         opponentName: 'Awaiza Sarwar',
         opponentImage:
@@ -30,7 +31,7 @@ class FightHistoryApi {
       },
       {
         matchId: '3',
-        challengerName: 'Bastian Bender',
+        challengerName: fighterData.name,
         challengerImage: `https://mainnet.api.digitalfightclub.io/renderedFighter/${fighterId}.png`,
         opponentName: 'Awaiza Sarwar',
         opponentImage:
@@ -40,7 +41,7 @@ class FightHistoryApi {
       },
       {
         matchId: '4',
-        challengerName: 'Bastian Bender',
+        challengerName: fighterData.name,
         challengerImage: `https://mainnet.api.digitalfightclub.io/renderedFighter/${fighterId}.png`,
         opponentName: 'Awaiza Sarwar',
         opponentImage:
@@ -50,7 +51,7 @@ class FightHistoryApi {
       },
       {
         matchId: '5',
-        challengerName: 'Bastian Bender',
+        challengerName: fighterData.name,
         challengerImage: `https://mainnet.api.digitalfightclub.io/renderedFighter/${fighterId}.png`,
         opponentName: 'Awaiza Sarwar',
         opponentImage:
@@ -60,7 +61,7 @@ class FightHistoryApi {
       },
       {
         matchId: '6',
-        challengerName: 'Bastian Bender',
+        challengerName: fighterData.name,
         challengerImage: `https://mainnet.api.digitalfightclub.io/renderedFighter/${fighterId}.png`,
         opponentName: 'Awaiza Sarwar',
         opponentImage:
@@ -70,7 +71,6 @@ class FightHistoryApi {
       },
     ];
   }
-
 }
 
 export const fightHistoryApi = new FightHistoryApi();

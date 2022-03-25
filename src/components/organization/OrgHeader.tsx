@@ -17,7 +17,7 @@ export default function OrgHeader({ orgIcon, orgName, orgCategory, selectedFight
   return (
     <Flex
       flexDirection="column"
-      w="48.125rem"
+      maxW="48.125rem"
       h="2054px"
       px="1.5rem"
       py="2rem"
@@ -36,15 +36,19 @@ export default function OrgHeader({ orgIcon, orgName, orgCategory, selectedFight
         </Text>
       </Center>
 
-      {selectedFighterName ? (
-        <Center>
+      <Center>
+        {selectedFighterName ? (
           <Text fontSize="24px" fontWeight="normal">
             {selectedFighterName}
           </Text>
-        </Center>
-      ) : null}
+        ) : (
+          <Text fontSize="16px" fontWeight="normal" fontStyle="italic">
+            No Fighter Selected
+          </Text>
+        )}
+      </Center>
 
-      <Center gap="40px">
+      <Center flexWrap="wrap" gap="40px">
         <HStack>
           <Text color={selectAvailable ? 'grey' : 'white'}>All</Text>
           <Switch colorScheme="teal" size="md" onChange={() => setSelectAvailable(!selectAvailable)} />
