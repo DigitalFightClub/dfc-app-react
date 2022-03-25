@@ -57,7 +57,7 @@ export default function OrgHeader({ orgIcon, orgName, orgCategory, selectedFight
         <HStack>
           <Text color={selectOnlineOnly ? 'grey' : 'white'}>All</Text>
           <Switch colorScheme="teal" size="md" onChange={() => setSelectOnlineOnly(!selectOnlineOnly)} />
-          <Text color={!selectOnlineOnly ? 'grey' : 'white'}>Online Only</Text>
+          <Text wordBreak="keep-all" color={!selectOnlineOnly ? 'grey' : 'white'}>Online Only</Text>
         </HStack>
         <HStack>
           <Text color={selectChallengers ? 'grey' : 'white'}>All</Text>
