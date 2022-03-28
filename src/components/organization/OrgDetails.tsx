@@ -78,10 +78,7 @@ export default function OrgDetails({ orgData, selectedFighterName, selectedFight
           const nfts: TokenNFTResult = await getDFCNFTs(Web3Api, pageSize, pageSize * (page - 1), address);
           // console.log('response org nfts', nfts);
           setTotalDFCSupply(nfts.total);
-
-          const refinedFighterNFTs: FighterInfo[] = transformFighterMetadata(nfts.result, address);
-          console.log('refined org nfts', refinedFighterNFTs);
-          setRenderOrgFighters([...refinedFighterNFTs]);
+          setRenderOrgFighters([...nfts.result]);
         }
       }
     })();

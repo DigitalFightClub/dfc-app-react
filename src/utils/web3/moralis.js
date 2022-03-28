@@ -48,10 +48,16 @@ export const signMessage = async (Moralis, message) => {
 };
 
 export const getDFCNFTs = async (Web3Api, limit, offset, address) => {
-  // Fetch batch of minted NFTs from DFC token contract
-  const options = { address: ENV.NFT_CONTRACT_ADDRESS, chain: ENV.NET_NAME, limit, offset };
+  const DFCNFTs = {};
+
+  // Fetch a minted NFTs from DFC token contract through Moralis to find total supply
+  const options = { address: ENV.NFT_CONTRACT_ADDRESS, chain: ENV.NET_NAME, limit: 1 };
   const NFTs = await Web3Api.token.getAllTokenIds(options);
+  DFCNFTs.total = NFTs.total;
   console.log(`Fetched DFT total supply ${NFTs.total}`, JSON.stringify(NFTs));
+
+  // Get paged metadata
+  const pagedFighters = await getMetadataByPage(DFCNFTs.total, limit, offset, address);
 
   // Fetch user DFC NFT IDs
   const polygonNFTs = await getUserDFCNFTs(Web3Api, address);
@@ -59,18 +65,41 @@ export const getDFCNFTs = async (Web3Api, limit, offset, address) => {
   console.log('user DFC nFT IDs', userNFTIDs);
 
   // Flag user NFTs
-  const flaggedNFTs = NFTs.result.map((nft) => {
+  const flaggedNFTs = pagedFighters.map((nft) => {
     if (userNFTIDs.includes(nft.token_id)) {
-      return { ...nft, owner_of: address };
+      nft.metadata.isOwned = true;
+      return nft;
     }
     return nft;
   });
 
-  const sortedFlaggedNFTs = await fillMissingMetadata(flaggedNFTs, false);
-  return { ...NFTs, result: [...sortedFlaggedNFTs] };
+  const sortedFlaggedNFTs = flaggedNFTs.sort((a, b) => {
+    return parseInt(a.token_id) > parseInt(b.token_id) ? 1 : -1;
+  });
+  return { ...DFCNFTs, result: [...sortedFlaggedNFTs] };
 };
 
-const fillMissingMetadata = async (NFTs, asc=true) => {
+const getMetadataByPage = async (total, limit, offset, address) => {
+  // loop to create promises to fetch NFT metadata
+  const promises = [];
+  let currentNFT = offset + 1;
+  for (let i = 0; i < limit && currentNFT <= total; i++, currentNFT++) {
+    const metadataPromise = appendJsonMetaData({ token_uri: `${ENV.FIGHTER_METADATA_URL}/${currentNFT}` });
+    promises.push(metadataPromise);
+  }
+
+  // wait for all requests to return and collect results
+  const metadataList = await Promise.allSettled(promises).then((results) => results.map((result) => result.value));
+  console.log('Paged figher metadata results', metadataList);
+
+  // refine the fighter metadata
+  const fighters = transformFighterMetadata(metadataList, address);
+  console.log('Paged fighers refined', fighters);
+
+  return fighters;
+};
+
+const fillMissingMetadata = async (NFTs) => {
   console.log('fillMissingMetadta', JSON.stringify(NFTs));
 
   // fetch missing metadata
@@ -89,15 +118,9 @@ const fillMissingMetadata = async (NFTs, asc=true) => {
 
   // sort NFTs
   let sortedFlaggedNFTs = [];
-  if (asc) {
-    sortedFlaggedNFTs = filledNFTs.sort((a, b) => {
-      return parseInt(a.token_id) > parseInt(b.token_id) ? 1 : -1;
-    });
-  } else {
-    sortedFlaggedNFTs = filledNFTs.sort((a, b) => {
-      return parseInt(b.token_id) > parseInt(a.token_id) ? 1 : -1;
-    });
-  }
+  sortedFlaggedNFTs = filledNFTs.sort((a, b) => {
+    return parseInt(a.token_id) > parseInt(b.token_id) ? 1 : -1;
+  });
 
   console.log('NFTs filled and sorted', sortedFlaggedNFTs);
 
@@ -119,6 +142,7 @@ const getUserDFCNFTs = async (Web3Api, address) => {
 
 const appendJsonMetaData = async (nft) => {
   try {
+    console.log('appendJsonMetaData uri', nft.token_uri);
     const response = await axios.get(nft.token_uri);
     console.log('appendJsonMetaData response.data', response.data);
     return { ...nft, metadata: response.data };
@@ -133,7 +157,7 @@ export const transformFighterMetadata = (fighters, address) => {
     const refinedFighter = {};
 
     // console.log(fighter.name);
-    refinedFighter.fighterId = fighter.token_id;
+    refinedFighter.fighterId = parseInt(fighter.metadata.image.split('/')[4].split('.')[0]);
     refinedFighter.name = fighter.metadata.name;
     refinedFighter.image = fighter.metadata.image;
 
@@ -170,7 +194,7 @@ export const transformFighterMetadata = (fighters, address) => {
     refinedFighter.stats.sambo = parseInt(fighter.metadata.attributes[8].value);
     refinedFighter.stats.taekwondo = parseInt(fighter.metadata.attributes[9].value);
     refinedFighter.stats.wrestling = parseInt(fighter.metadata.attributes[10].value);
-    refinedFighter.isOwned = fighter.owner_of ? address.toLowerCase() === fighter.owner_of.toLowerCase() : false;
+    refinedFighter.isOwned = false;
     refinedFighter.challengeState = 0;
     return refinedFighter;
   });

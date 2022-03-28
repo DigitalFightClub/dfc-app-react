@@ -38,10 +38,7 @@ export type AccountNFTResult = {
 
 export type TokenNFTResult = {
   total: number;
-  page: number;
-  page_size: number;
-  cursor: string;
-  result: BaseMoralisNFT[];
+  result: FighterInfo[];
 };
 
 export type FighterInfo = {
