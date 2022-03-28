@@ -1,10 +1,11 @@
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Heading, useColorModeValue, VStack } from '@chakra-ui/react';
+import { Box, Flex, Heading, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GET_FIGHTER_HISTORY_REQUEST } from '../../config/events';
 import { AppState, FighterInfo, FightHistoryBrief } from '../../types';
 import { dfcAction } from '../../types/actions';
+import PagButton from '../pageButton/pagebutton';
 import FighterHistoryRow from './fighterHistoryRow';
 
 export interface FighterHistoryProps {
@@ -43,32 +44,6 @@ export default function FighterHistory({ fighterData }: FighterHistoryProps) {
       setRenderFighterHistory(newFighterHsitory);
     }
   }, [fighterHistory]);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const PagButton = (props: any) => {
-    const activeStyle = {
-      bg: useColorModeValue('#252A34', '#EEF0F1'),
-      color: useColorModeValue('white', 'black'),
-    };
-
-    return (
-      <Button
-        mx={1}
-        px={1}
-        py={1}
-        rounded="md"
-        border="1px solid #4C5058"
-        color="#4C5058"
-        bg={useColorModeValue('white', 'gray.800')}
-        opacity={props.disabled && 0.6}
-        _hover={!props.disabled && activeStyle}
-        cursor={props.disabled && 'not-allowed'}
-        {...(props.active && activeStyle)}
-      >
-        {props.children}
-      </Button>
-    );
-  };
 
   return (
     <Box bg="rgba(0, 0, 0, 0.3)" py="24px" px={{ base: '0px', md: '40px' }} minH={{ base: '835px', md: '472px' }}>

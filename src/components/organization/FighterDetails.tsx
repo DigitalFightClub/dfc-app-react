@@ -4,12 +4,11 @@ import { FighterInfo } from '../../types';
 import 'flag-icons/css/flag-icons.min.css';
 
 export interface FighterDetailsProps {
-  fighterType: string;
   fighterData: FighterInfo;
 }
 
 // This is where the fighter image and basic data appears
-export const FighterDetails = ({ fighterType, fighterData }: FighterDetailsProps) => {
+export const FighterDetails = ({ fighterData }: FighterDetailsProps) => {
   return (
     <Box boxSizing="border-box" transition="ease-in-out 0.4s" w="100%" alignContent="center">
       <VStack marginBottom="30px">
@@ -40,7 +39,9 @@ export const FighterDetails = ({ fighterType, fighterData }: FighterDetailsProps
             fontSize="24px"
           >
             {fighterData.name}
-            <chakra.span display="inline" ml="10px" className="fi fi-us" />
+            {fighterData && fighterData.countryCode ? (
+              <chakra.span ml="10px" className={`fi fi-${fighterData.countryCode.toLowerCase()}`} />
+            ) : null}
           </Text>
 
           <Flex direction="row" justify={{ base: 'center', md: 'left' }} mb="10px">
@@ -92,7 +93,7 @@ export const FighterDetails = ({ fighterType, fighterData }: FighterDetailsProps
 
           <Text variant="micro" fontFamily="Sora" fontWeight="normal" fontSize="18px">
             STATUS:&nbsp;&nbsp;
-            <chakra.span display="inline" fontWeight="400" color={fighterType === 'active' ? 'green' : 'red'}>
+            <chakra.span display="inline" fontWeight="400" color={fighterData.status === 'Active' ? 'green' : 'red'}>
               {fighterData.status}
             </chakra.span>
           </Text>

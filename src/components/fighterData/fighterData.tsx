@@ -41,6 +41,9 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
         variant="header3"
       >
         {fighterData.name}
+        {fighterData && fighterData.countryCode ? (
+          <chakra.span ml="10px" className={`fi fi-${fighterData.countryCode.toLowerCase()}`} />
+        ) : null}
       </Heading>
 
       <Flex direction="row" justify={{ base: 'center', md: 'left' }}>
@@ -68,7 +71,7 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
         </Heading>
 
         {/* Tablet and up buttons */}
-        <Flex justify="left" display={(isTile) ? 'none' : { base: 'none', md: 'flex' }}>
+        <Flex justify="left" display={isTile ? 'none' : { base: 'none', md: 'flex' }}>
           <Button
             w="6rem"
             h="2.375rem"

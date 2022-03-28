@@ -1,15 +1,54 @@
 import { Action } from 'redux';
 
+export type BaseMoralisNFT = {
+  token_address: string;
+  token_id: string;
+  contract_type: string;
+  token_uri: string;
+  metadata: string;
+  synced_at: string;
+  amount: string;
+  name: string;
+  symbol: string;
+};
+
+export type MoralisNFT = BaseMoralisNFT & {
+  block_number_minted: string;
+  owner_of: string;
+  block_number: string;
+  is_valid: number;
+  syncing: number;
+  frozen: number;
+};
+
 export type FighterNFT = {
   name: string;
   image: string;
   attributes: [];
 };
 
+export type AccountNFTResult = {
+  total: number;
+  page: number;
+  page_size: number;
+  cursor: string;
+  result: MoralisNFT[];
+  status: string;
+};
+
+export type TokenNFTResult = {
+  total: number;
+  page: number;
+  page_size: number;
+  cursor: string;
+  result: BaseMoralisNFT[];
+};
+
 export type FighterInfo = {
   fighterId: number;
   name: string;
   country: string;
+  countryCode: string;
   wins: string;
   loses: string;
   height: string;
@@ -27,6 +66,7 @@ export enum ChallengeState {
   AVAILABLE,
   CHALLENGED,
   CHALLENGING,
+  COOLDOWN,
 }
 
 export type FighterModalProps = {
@@ -50,6 +90,12 @@ export type FighterStatistics = Stats[];
 export type FighterType = {
   fighterData: FighterInfo;
   fighterType: string;
+};
+
+export type FightingStyle = {
+  styleId: number;
+  style: string;
+  description: string;
 };
 
 export type GymTileData = {
@@ -83,12 +129,12 @@ export type OrganizationInfo = {
   orgIcon: string;
   orgName: string;
   orgCategory: string;
-  orgFighters: FighterInfo[];
 };
 
 export type OrganizationState = {
   selectedFighter: FighterInfo | null;
   selectedOrg: OrganizationInfo | null;
+  orgFighters: FighterInfo[] | null;
 };
 
 export type FighterHistoryState = {

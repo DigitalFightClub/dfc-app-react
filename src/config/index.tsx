@@ -37,7 +37,8 @@ const DEFAULT_OBJ = {
 };
 
 // Mainnet
-const FIGHTER_IMAGE_URL = 'https://mainnet.api.digitalfightclub.io/renderedFighter/';
+const FIGHTER_IMAGE_URL = 'https://mainnet.api.digitalfightclub.io/renderedFighter';
+const FIGHTER_METADATA_URL = 'https://mainnet.api.digitalfightclub.io/metadata';
 // const WEBOOK_AUTOTASK_BACKUP_1 =
 // const WEBOOK_AUTOTASK_BACKUP_0 =
 // const WEBOOK_AUTOTASK_PRIMARY =
@@ -70,7 +71,8 @@ const MAINNET_OBJ = {
 };
 
 // Testnet
-const TEST_FIGHTER_IMAGE_URL = 'https://testnet.api.digitalfightclub.io/renderedFighter/';
+const TEST_FIGHTER_IMAGE_URL = 'https://testnet.api.digitalfightclub.io/renderedFighter';
+const TEST_FIGHTER_METADATA_URL = 'https://testnet.api.digitalfightclub.io/metadata';
 // const TEST_MUMBAI_WEBOOK_AUTOTASK_BACKUP_0 =
 // const TEST_MUMBAI_WEBOOK_AUTOTASK_BACKUP_1 = TEST_MUMBAI_WEBOOK_AUTOTASK_BACKUP_0
 // const TEST_MUMBAI_WEBOOK_AUTOTASK_PRIMARY =
@@ -101,7 +103,8 @@ export const ENV_CONFG = () => {
         NET_NAME: 'matic',
         NFT_ADDY: '0x62ea8080b2fc7dc4c7337920866afd242a1443cb',
         TARGET_NET: MAINNET,
-        FIGHTER_IMAGE_URL: FIGHTER_IMAGE_URL,
+        FIGHTER_IMAGE_URL,
+        FIGHTER_METADATA_URL,
         ...MAINNET_OBJ,
       };
     default:
@@ -111,6 +114,7 @@ export const ENV_CONFG = () => {
         NFT_ADDY: '0x4ecf5910a1eecf0b9716efae19ac2fdd77a1010a',
         TARGET_NET: TESTNET,
         FIGHTER_IMAGE_URL: TEST_FIGHTER_IMAGE_URL,
+        FIGHTER_METADATA_URL: TEST_FIGHTER_METADATA_URL,
         ...TESTNET_OBJ,
       };
   }

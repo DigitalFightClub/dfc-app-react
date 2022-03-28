@@ -1,5 +1,5 @@
 import Web3Api from 'moralis/types/generated/web3Api';
-import { FighterInfo, FighterNFT } from '../../types';
+import { AccountNFTResult, FighterInfo, MoralisNFT } from '../../types';
 import { getNFTs, transformFighterMetadata } from '../../utils/web3/moralis';
 
 class GymApi {
@@ -9,12 +9,12 @@ class GymApi {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async getGymFighterNFTs(web3Api: Web3Api, address: string): Promise<FighterNFT[]> {
+  public async getGymFighterNFTs(web3Api: Web3Api, address: string): Promise<AccountNFTResult> {
     return getNFTs(web3Api, address);
   }
 
-  public async transformFighterMetadata(fighterNFTs: FighterNFT[]): Promise<FighterInfo> {
-    return transformFighterMetadata(fighterNFTs);
+  public async transformFighterMetadata(fighterNFTs: MoralisNFT[], address: string): Promise<FighterInfo[]> {
+    return transformFighterMetadata(fighterNFTs, address);
   }
 }
 

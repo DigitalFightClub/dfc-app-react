@@ -1,4 +1,7 @@
 import { FighterInfo, FightHistoryBrief, MatchResult } from '../../types';
+import { ENV_CONFG } from './../../config';
+
+const ENV = ENV_CONFG();
 
 class FightHistoryApi {
   public constructor() {
@@ -12,60 +15,54 @@ class FightHistoryApi {
       {
         matchId: '1',
         challengerName: fighterData.name,
-        challengerImage: `https://mainnet.api.digitalfightclub.io/renderedFighter/${fighterId}.png`,
-        opponentName: 'Awaiza Sarwar',
-        opponentImage:
-          'https://lh3.googleusercontent.com/DxpdvS00hmj9yaUUG0u-Bs1cGD1ZZ6offUZIieMD5ePI0WtxOuXNZa4W2muSeTHqOzxKfMfE7svsXM8_4cLD_ZKhylgHkQf8BcqHzw=w600',
+        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${fighterId}.png`,
+        opponentName: 'Rosangela Chumpitaz',
+        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/25.png`,
         matchResult: MatchResult.WIN,
         matchDetails: '2nd Round Stoppage',
       },
       {
         matchId: '2',
         challengerName: fighterData.name,
-        challengerImage: `https://mainnet.api.digitalfightclub.io/renderedFighter/${fighterId}.png`,
-        opponentName: 'Awaiza Sarwar',
-        opponentImage:
-          'https://lh3.googleusercontent.com/DxpdvS00hmj9yaUUG0u-Bs1cGD1ZZ6offUZIieMD5ePI0WtxOuXNZa4W2muSeTHqOzxKfMfE7svsXM8_4cLD_ZKhylgHkQf8BcqHzw=w600',
+        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${fighterId}.png`,
+        opponentName: 'Rosangela Chumpitaz',
+        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/25.png`,
         matchResult: MatchResult.WIN,
         matchDetails: '2nd Round Stoppage',
       },
       {
         matchId: '3',
         challengerName: fighterData.name,
-        challengerImage: `https://mainnet.api.digitalfightclub.io/renderedFighter/${fighterId}.png`,
-        opponentName: 'Awaiza Sarwar',
-        opponentImage:
-          'https://lh3.googleusercontent.com/DxpdvS00hmj9yaUUG0u-Bs1cGD1ZZ6offUZIieMD5ePI0WtxOuXNZa4W2muSeTHqOzxKfMfE7svsXM8_4cLD_ZKhylgHkQf8BcqHzw=w600',
+        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${fighterId}.png`,
+        opponentName: 'Rosangela Chumpitaz',
+        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/25.png`,
         matchResult: MatchResult.WIN,
         matchDetails: '2nd Round Stoppage',
       },
       {
         matchId: '4',
         challengerName: fighterData.name,
-        challengerImage: `https://mainnet.api.digitalfightclub.io/renderedFighter/${fighterId}.png`,
-        opponentName: 'Awaiza Sarwar',
-        opponentImage:
-          'https://lh3.googleusercontent.com/DxpdvS00hmj9yaUUG0u-Bs1cGD1ZZ6offUZIieMD5ePI0WtxOuXNZa4W2muSeTHqOzxKfMfE7svsXM8_4cLD_ZKhylgHkQf8BcqHzw=w600',
+        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${fighterId}.png`,
+        opponentName: 'Rosangela Chumpitaz',
+        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/25.png`,
         matchResult: MatchResult.LOSS,
         matchDetails: '2nd Round Stoppage',
       },
       {
         matchId: '5',
         challengerName: fighterData.name,
-        challengerImage: `https://mainnet.api.digitalfightclub.io/renderedFighter/${fighterId}.png`,
-        opponentName: 'Awaiza Sarwar',
-        opponentImage:
-          'https://lh3.googleusercontent.com/DxpdvS00hmj9yaUUG0u-Bs1cGD1ZZ6offUZIieMD5ePI0WtxOuXNZa4W2muSeTHqOzxKfMfE7svsXM8_4cLD_ZKhylgHkQf8BcqHzw=w600',
+        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${fighterId}.png`,
+        opponentName: 'Rosangela Chumpitaz',
+        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/25.png`,
         matchResult: MatchResult.WIN,
         matchDetails: '2nd Round Stoppage',
       },
       {
         matchId: '6',
         challengerName: fighterData.name,
-        challengerImage: `https://mainnet.api.digitalfightclub.io/renderedFighter/${fighterId}.png`,
-        opponentName: 'Awaiza Sarwar',
-        opponentImage:
-          'https://lh3.googleusercontent.com/DxpdvS00hmj9yaUUG0u-Bs1cGD1ZZ6offUZIieMD5ePI0WtxOuXNZa4W2muSeTHqOzxKfMfE7svsXM8_4cLD_ZKhylgHkQf8BcqHzw=w600',
+        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${fighterId}.png`,
+        opponentName: 'Rosangela Chumpitaz',
+        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/25.png`,
         matchResult: MatchResult.WIN,
         matchDetails: '2nd Round Stoppage',
       },

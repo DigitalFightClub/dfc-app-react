@@ -1,4 +1,4 @@
-import { AppAction, FighterInfo, FighterNFT } from '../../types';
+import { AccountNFTResult, AppAction, FighterInfo } from '../../types';
 import { call, delay, put } from 'redux-saga/effects';
 import {
   GET_GYM_FIGHTERS_SUCCESS,
@@ -32,14 +32,14 @@ export function* getGymFightersWorker(action: AppAction) {
     } else {
       // Get fighter NFTs
       console.log('Fetch fighter NFTs');
-      const fighterNFTs: FighterNFT[] = yield call(gymApi.getGymFighterNFTs, data.web3Api, data.address);
-      console.log(JSON.stringify(fighterNFTs));
+      const fighterNFTs: AccountNFTResult = yield call(gymApi.getGymFighterNFTs, data.web3Api, data.address);
+      console.log(fighterNFTs);
 
       let refinedFighters: FighterInfo[] | null = null;
-      if (fighterNFTs.length > 0) {
+      if (fighterNFTs && fighterNFTs.total > 0) {
         // create fighter info array
         console.log('transform fighter NFT metadata');
-        refinedFighters = yield call(gymApi.transformFighterMetadata, fighterNFTs);
+        refinedFighters = yield call(gymApi.transformFighterMetadata, fighterNFTs.result, data.address);
       }
 
       yield put(
