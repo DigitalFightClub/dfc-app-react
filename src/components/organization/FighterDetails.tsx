@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { chakra, Box, Flex, Image, Text, VStack } from '@chakra-ui/react';
-import { FighterInfo } from '../../types';
+import { FighterInfo, FighterStatus } from '../../types';
 import 'flag-icons/css/flag-icons.min.css';
 
 export interface FighterDetailsProps {
@@ -93,7 +93,11 @@ export const FighterDetails = ({ fighterData }: FighterDetailsProps) => {
 
           <Text variant="micro" fontFamily="Sora" fontWeight="normal" fontSize="18px">
             STATUS:&nbsp;&nbsp;
-            <chakra.span display="inline" fontWeight="400" color={fighterData.status === 'Active' ? 'green' : 'red'}>
+            <chakra.span
+              display="inline"
+              fontWeight="400"
+              color={fighterData.status === FighterStatus.ACTIVE ? 'green' : 'red'}
+            >
               {fighterData.status}
             </chakra.span>
           </Text>

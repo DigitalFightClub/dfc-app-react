@@ -11,20 +11,18 @@ import {
   Skeleton,
   SkeletonText,
 } from '@chakra-ui/react';
-import { ChallengeState, FighterInfo } from '../../types';
+import { ChallengeState, FighterInfo, FighterStatus } from '../../types';
 import { ChallengeIcon } from '../dfcIcons/ChallengeIcon';
 import FighterData from '../fighterData';
 import FighterModal from '../fighterModal/fighterModal';
 
 export interface FighterTileProps {
   fighterData?: FighterInfo;
-  fighterType?: string;
   loadingGymFitghers?: boolean;
 }
 
 export default function FighterTile({
   fighterData = {} as FighterInfo,
-  fighterType = 'active',
   loadingGymFitghers = false,
 }: FighterTileProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,7 +45,7 @@ export default function FighterTile({
         <Modal size={modalSize} isCentered={centered} isOpen={isOpen} onClose={onClose} scrollBehavior="outside">
           <ModalOverlay />
           <ModalContent>
-            <FighterModal fighterType={fighterType} onClose={onClose} fighterData={fighterData} />
+            <FighterModal onClose={onClose} fighterData={fighterData} />
           </ModalContent>
         </Modal>
       )}
@@ -57,7 +55,7 @@ export default function FighterTile({
         boxSizing="border-box"
         bg="linear-gradient(95.1deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.05) 101.67%)"
         transition="ease-in-out 0.4s"
-        _hover={fighterType === 'active' ? activeHover : retiredHover}
+        _hover={fighterData.status === FighterStatus.ACTIVE ? activeHover : retiredHover}
         h="max-content"
         w="fit-content"
         py="24px"
@@ -118,7 +116,7 @@ export default function FighterTile({
           </Box>
 
           <SkeletonText isLoaded={!loadingGymFitghers}>
-            <FighterData isTile fighterInfo={fighterData} fighterType={fighterType} />
+            <FighterData isTile fighterInfo={fighterData} />
           </SkeletonText>
         </Grid>
       </Box>

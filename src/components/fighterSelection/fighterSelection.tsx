@@ -62,7 +62,7 @@ export default function FighterSelection({ gymFighters, loadingGymFitghers }: Fi
           >
             {!loadingGymFitghers ? (
               gymFighters.map((fighterData: FighterInfo) => (
-                <FighterTile key={fighterData.name} fighterData={fighterData} fighterType="active" />
+                <FighterTile key={fighterData.name} fighterData={fighterData} />
               ))
             ) : (
               <FighterTile loadingGymFitghers />

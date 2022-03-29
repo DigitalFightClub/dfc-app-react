@@ -9,7 +9,7 @@ import PagButton from '../pageButton/pagebutton';
 import FighterHistoryRow from './fighterHistoryRow';
 
 export interface FighterHistoryProps {
-  fighterData: FighterInfo;
+  fighterData: FighterInfo | null;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

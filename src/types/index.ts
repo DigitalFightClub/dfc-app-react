@@ -60,21 +60,19 @@ export type FighterInfo = {
 };
 
 export enum ChallengeState {
-  AVAILABLE,
-  CHALLENGED,
-  CHALLENGING,
-  COOLDOWN,
+  AVAILABLE = 'Available',
+  CHALLENGED = 'Challenged',
+  CHALLENGING = 'Challenging',
+  COOLDOWN = 'Cooldown',
 }
 
 export type FighterModalProps = {
-  fighterType: string;
   onClose: () => void;
-  fighterData: FighterInfo;
+  fighterData: FighterInfo | null;
 };
 
 export type FighterModalProps2 = {
-  fighterType: string;
-  fighterData: FighterInfo;
+  fighterData: FighterInfo | null;
   isHorizontal: boolean;
 };
 
@@ -95,6 +93,11 @@ export type FightingStyle = {
   description: string;
 };
 
+export enum FighterStatus {
+  ACTIVE = 'Active',
+  RETIRED = 'Retired',
+}
+
 export type GymTileData = {
   datanumber: string | number;
   dataname: string;
@@ -108,8 +111,8 @@ export type NftUris = {
 export type Stats = [string, number];
 
 export enum MatchResult {
-  WIN,
-  LOSS,
+  WIN = 'Win',
+  LOSS = 'Loss',
 }
 
 export type FightHistoryBrief = {

@@ -20,6 +20,7 @@ export default function PagButton(props: any) {
       _hover={!props.disabled && activeStyle}
       cursor={props.disabled && 'not-allowed'}
       {...(props.active && activeStyle)}
+      onClick={props.onClick}
     >
       {props.children}
     </Button>

@@ -118,8 +118,8 @@ export const countryMap = {
   Kenya: 'KE',
   Kiribati: 'KI',
   // eslint-disable-next-line quotes
-  "Korea (the Democratic People's Republic of)": 'KP',
-  'Korea (the Republic of)': 'KR',
+  "North Korea": 'KP',
+  'South Korea': 'KR',
   Kuwait: 'KW',
   Kyrgyzstan: 'KG',
   // eslint-disable-next-line quotes
@@ -183,7 +183,7 @@ export const countryMap = {
   Qatar: 'QA',
   'Republic of North Macedonia': 'MK',
   Romania: 'RO',
-  'Russian Federation': 'RU',
+  Russia: 'RU',
   Rwanda: 'RW',
   Réunion: 'RE',
   'Saint Barthélemy': 'BL',
@@ -237,7 +237,7 @@ export const countryMap = {
   'United Arab Emirates': 'AE',
   'United Kingdom': 'GB',
   'United States Minor Outlying Islands': 'UM',
-  'United States of America': 'US',
+  'United States': 'US',
   Uruguay: 'UY',
   Uzbekistan: 'UZ',
   Vanuatu: 'VU',

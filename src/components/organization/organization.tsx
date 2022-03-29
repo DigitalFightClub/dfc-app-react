@@ -25,9 +25,6 @@ export default function Organization() {
       if (selectedFighter) {
         const newSelectedFighter: FighterInfo = {
           ...selectedFighter,
-          fighterId: parseInt(selectedFighter.image.split('/')[4].split('.')[0]),
-          challengeState: ChallengeState.CHALLENGED,
-          isOwned: true,
         };
         setRenderSelectedFighter(newSelectedFighter);
 
@@ -64,6 +61,7 @@ export default function Organization() {
           {renderSelectedFighter ? (
             <VStack
               w="23.125rem"
+              h="106.75rem"
               px="2rem"
               bgGradient="linear(to-r, rgba(204, 204, 204, 0.1), rgba(204, 204, 204, 0.05))"
             >

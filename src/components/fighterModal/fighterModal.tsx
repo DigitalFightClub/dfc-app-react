@@ -6,7 +6,7 @@ import FighterStatList from '../fighterStats';
 import FighterHistory from '../fighterHistory';
 import getFighterStatistics from '../fighterStatistics/fighterStatistics';
 
-export default function FighterModal({ fighterType, onClose, fighterData }: FighterModalProps) {
+export default function FighterModal({ onClose, fighterData }: FighterModalProps) {
   const fighterStatistics: FighterStatistics = getFighterStatistics(fighterData);
 
   return (
@@ -37,7 +37,7 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
       {/* Desktop friendly tabbed layout */}
       <Grid templateColumns="2fr 1fr" w="100%" display={{ base: 'none', lg: 'flex' }}>
         <Grid templateRows="1fr 1.5fr">
-          <FighterModalHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={true} />
+          <FighterModalHeader fighterData={fighterData} isHorizontal={true} />
           <FighterStatList fighterStatistics={fighterStatistics} />
         </Grid>
 
@@ -47,7 +47,7 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
       {/* Tablet friendly tabbed layout */}
       <Grid templateColumns="1fr" w="100%" display={{ base: 'none', md: 'flex', lg: 'none' }}>
         <Stack w="100%">
-          <FighterModalHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={true} />
+          <FighterModalHeader fighterData={fighterData} isHorizontal={true} />
 
           <Tabs>
             <Center>
@@ -71,7 +71,7 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
 
       {/* Mobile friendly tabbed layout */}
       <VStack w="100%" display={{ base: 'flex', md: 'none' }}>
-        <FighterModalHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={false} />
+        <FighterModalHeader fighterData={fighterData} isHorizontal={false} />
 
         <Tabs>
           <Center>

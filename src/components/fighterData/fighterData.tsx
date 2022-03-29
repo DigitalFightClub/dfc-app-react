@@ -1,5 +1,5 @@
 import { chakra, Grid, Text, Heading, Flex, Tooltip, IconButton, Button } from '@chakra-ui/react';
-import { FighterInfo } from '../../types';
+import { FighterInfo, FighterStatus } from '../../types';
 import { PunchIcon } from '../dfcIcons/PunchIcon';
 import { FlexIcon } from '../dfcIcons/FlexIcon';
 import { useHistory } from 'react-router';
@@ -9,11 +9,10 @@ import { useDispatch } from 'react-redux';
 
 export interface FighterDataProps {
   isTile?: boolean;
-  fighterInfo: FighterInfo;
-  fighterType: string;
+  fighterInfo: FighterInfo | null;
 }
 
-export default function FighterData({ isTile = false, fighterInfo: fighterData, fighterType }: FighterDataProps) {
+export default function FighterData({ isTile = false, fighterInfo: fighterData }: FighterDataProps) {
   const history = useHistory();
 
   // connect redux saga
@@ -40,7 +39,7 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
         }}
         variant="header3"
       >
-        {fighterData.name}
+        {fighterData ? fighterData.name : ''}
         {fighterData && fighterData.countryCode ? (
           <chakra.span ml="10px" className={`fi fi-${fighterData.countryCode.toLowerCase()}`} />
         ) : null}
@@ -62,11 +61,11 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
           Record:
           <chakra.span display="inline" color="primary.500">
             &nbsp;
-            {fighterData.wins}
+            {fighterData ? fighterData.wins : 0}
           </chakra.span>
           {'-'}
           <chakra.span display="inline" color="secondary.500">
-            {fighterData.loses}
+            {fighterData ? fighterData.loses : 0}
           </chakra.span>
         </Heading>
 
@@ -144,28 +143,32 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
       >
         <Text variant="micro">
           HEIGHT:&nbsp;&nbsp;
-          <chakra.span display="inline">{fighterData.height}</chakra.span>
+          <chakra.span display="inline">{fighterData ? fighterData.height : ''}</chakra.span>
         </Text>
 
         <Text variant="micro">
           WEIGHT:&nbsp;&nbsp;
-          <chakra.span display="inline">{fighterData.weight}</chakra.span>
+          <chakra.span display="inline">{fighterData ? fighterData.weight : ''}</chakra.span>
         </Text>
 
         <Text variant="micro">
           GENDER:&nbsp;&nbsp;
-          <chakra.span display="inline">{fighterData.gender}</chakra.span>
+          <chakra.span display="inline">{fighterData ? fighterData.gender : ''}</chakra.span>
         </Text>
 
         <Text variant="micro">
           RECRUITED:&nbsp;&nbsp;
-          <chakra.span display="inline">{fighterData.recruited}</chakra.span>
+          <chakra.span display="inline">{fighterData ? fighterData.recruited : ''}</chakra.span>
         </Text>
 
         <Text variant="micro">
           STATUS:&nbsp;&nbsp;
-          <chakra.span display="inline" fontWeight="400" color={fighterType === 'active' ? 'green' : 'red'}>
-            {fighterData.status}
+          <chakra.span
+            display="inline"
+            fontWeight="400"
+            color={fighterData && fighterData.status === FighterStatus.ACTIVE ? 'green' : 'red'}
+          >
+            {fighterData ? fighterData.status : FighterStatus.RETIRED}
           </chakra.span>
         </Text>
       </Grid>
