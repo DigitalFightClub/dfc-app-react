@@ -38,10 +38,8 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useMoralis, useMoralisWeb3Api } from 'react-moralis';
 // import { useDispatch, useSelector } from 'react-redux';
 import { AppState, ChallengeState, FighterInfo, OrganizationInfo, TokenNFTResult } from '../../types';
-import { getDFCNFTs, transformFighterMetadata } from '../../utils/web3/moralis';
-import { EllipseIcon } from '../dfcIcons/EllipseIcon';
+import { getDFCNFTs } from '../../utils/web3/moralis';
 import FighterModal from '../fighterModal/fighterModal';
-import PagButton from '../pageButton/pagebutton';
 
 export interface OrgHeaderProps {
   orgData: OrganizationInfo | null;
@@ -54,6 +52,7 @@ export default function OrgDetails({ orgData, selectedFighterName, selectedFight
     bg: useColorModeValue('#252A34', '#EEF0F1'),
     color: useColorModeValue('white', 'black'),
   };
+  const greyColor = useColorModeValue('white', 'gray.800');
 
   // Web3 Hooks
   const { isInitialized, Moralis } = useMoralis();
@@ -138,6 +137,11 @@ export default function OrgDetails({ orgData, selectedFighterName, selectedFight
     setRenderOrgFighters([]);
     setIsDisabled(true);
     setPageSize(pageSize);
+  };
+
+  const handleOpponentClick = (fighterData: FighterInfo): void => {
+    setOppenentFighter(fighterData);
+    onOpen();
   };
 
   return (
@@ -264,7 +268,7 @@ export default function OrgDetails({ orgData, selectedFighterName, selectedFight
                         mx="1.5rem"
                         borderRadius="0"
                         disabled={fighter.isOwned}
-                        // onClick={selectFighter}
+                        onClick={() => handleOpponentClick(fighter)}
                       >
                         Challenge
                       </Button>
@@ -277,7 +281,7 @@ export default function OrgDetails({ orgData, selectedFighterName, selectedFight
                         mx="1.5rem"
                         borderRadius="0"
                         disabled={fighter.isOwned}
-                        // onClick={selectFighter}
+                        onClick={() => handleOpponentClick(fighter)}
                       >
                         Accept
                       </Button>
@@ -298,7 +302,7 @@ export default function OrgDetails({ orgData, selectedFighterName, selectedFight
             <chakra.span>
               {offset + 1}-{offset + pageSize} of {totalDFCSupply}
             </chakra.span>
-            <PaginationPrevious _hover={activeStyle} bg={useColorModeValue('white', 'gray.800')}>
+            <PaginationPrevious _hover={activeStyle} bg={greyColor}>
               <ArrowBackIcon />
             </PaginationPrevious>
             <PaginationPageGroup
@@ -313,12 +317,12 @@ export default function OrgDetails({ orgData, selectedFighterName, selectedFight
                   page={page}
                   fontSize="sm"
                   _hover={activeStyle}
-                  bg={useColorModeValue('white', 'gray.800')}
+                  bg={greyColor}
                   _current={activeStyle}
                 />
               ))}
             </PaginationPageGroup>
-            <PaginationNext _hover={activeStyle} bg={useColorModeValue('white', 'gray.800')}>
+            <PaginationNext _hover={activeStyle} bg={greyColor}>
               <ArrowForwardIcon />
             </PaginationNext>
             <chakra.span>

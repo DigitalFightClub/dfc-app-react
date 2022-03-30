@@ -1,11 +1,12 @@
 import { chakra, Grid, Text, Heading, Flex, Tooltip, IconButton, Button } from '@chakra-ui/react';
-import { FighterInfo, FighterStatus } from '../../types';
+import { AppState, FighterInfo, FighterStatus } from '../../types';
 import { PunchIcon } from '../dfcIcons/PunchIcon';
 import { FlexIcon } from '../dfcIcons/FlexIcon';
 import { useHistory } from 'react-router';
 import { dfcAction } from '../../types/actions';
 import { SET_SELECTED_FIGHTER } from '../../config/events';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import FighterDataButtons from './fighterDataButtons';
 
 export interface FighterDataProps {
   isTile?: boolean;
@@ -16,15 +17,20 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData }
   const history = useHistory();
 
   // connect redux saga
+  const { selectedFighter } = useSelector((state: AppState) => state.organizationState);
   const dispatch = useDispatch();
 
-  const selectFighter = () => {
+  const handleFight = () => {
     dispatch(
       dfcAction(SET_SELECTED_FIGHTER, {
         data: { fighterData },
       })
     );
     history.push('/orgs');
+  };
+
+  const handleChallenge = () => {
+    console.log('challenged, time to show challenge modal');
   };
 
   return (
@@ -69,65 +75,13 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData }
           </chakra.span>
         </Heading>
 
-        {/* Tablet and up buttons */}
-        <Flex justify="left" display={isTile ? 'none' : { base: 'none', md: 'flex' }}>
-          <Button
-            w="6rem"
-            h="2.375rem"
-            bg="#2ABB75"
-            color="white"
-            mx=".5rem"
-            borderRadius="0"
-            aria-label="Fight"
-            onClick={selectFighter}
-          >
-            Fight
-          </Button>
-          <Button
-            w="6rem"
-            h="2.375rem"
-            bg="#F26322"
-            color="white"
-            mx=".5rem"
-            aria-label="Improve"
-            borderRadius="0"
-            isDisabled
-          >
-            Improve
-          </Button>
-        </Flex>
-
-        {/* Mobile and Tile layout */}
-        <Flex justify="left" display={isTile ? 'flex' : { base: 'flex', md: 'none' }}>
-          <Tooltip hasArrow label="Fight" bg="gray.300" color="black">
-            <IconButton
-              w="38px"
-              h="38px"
-              bg="#2ABB75"
-              color="white"
-              mx=".5rem"
-              borderRadius="0"
-              aria-label="Fight"
-              onClick={selectFighter}
-            >
-              <PunchIcon w="1.5rem" h="1.5rem" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip hasArrow label="Improve" bg="gray.300" color="black">
-            <IconButton
-              w="38px"
-              h="38px"
-              bg="#F26322"
-              color="white"
-              mx=".5rem"
-              aria-label="Improve"
-              borderRadius="0"
-              isDisabled
-            >
-              <FlexIcon w="1.5rem" h="1.5rem" />
-            </IconButton>
-          </Tooltip>
-        </Flex>
+        <FighterDataButtons
+          isTile={isTile}
+          isOwned={fighterData ? fighterData.isOwned : false}
+          challengeState={fighterData ? fighterData.challengeState : null}
+          handleFight={handleFight}
+          handleChallenge={handleChallenge}
+        />
       </Flex>
 
       <Grid
