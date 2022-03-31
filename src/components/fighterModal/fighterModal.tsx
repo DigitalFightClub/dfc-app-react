@@ -1,13 +1,16 @@
-import { Flex, Button, Grid, Tabs, TabList, TabPanels, Tab, TabPanel, Stack, Center, VStack } from '@chakra-ui/react';
-import { FighterModalProps, FighterStatistics } from '../../types';
-import { FighterModalHeader } from './fighterModalHeader';
+import { Flex, Button } from '@chakra-ui/react';
+import { FighterModalProps, FighterModalState } from '../../types';
 import { CloseIcon } from '@chakra-ui/icons';
-import FighterStatList from '../fighterStats';
-import FighterHistory from '../fighterHistory';
-import getFighterStatistics from '../fighterStatistics/fighterStatistics';
+import FighterDetailsModal from './fighterDetailsModal';
+import { useState } from 'react';
+import FighterChallengeModal from './fighterChallengeModal';
 
 export default function FighterModal({ onClose, fighterData }: FighterModalProps) {
-  const fighterStatistics: FighterStatistics = getFighterStatistics(fighterData);
+  const [fighterModalState, setFighterModalState] = useState<FighterModalState>(FighterModalState.DETAILS);
+
+  const handleChallenge = () => {
+    setFighterModalState(FighterModalState.CHALLENGE);
+  };
 
   return (
     <Flex
@@ -34,63 +37,13 @@ export default function FighterModal({ onClose, fighterData }: FighterModalProps
         <CloseIcon />
       </Button>
 
-      {/* Desktop friendly tabbed layout */}
-      <Grid templateColumns="2fr 1fr" w="100%" display={{ base: 'none', lg: 'flex' }}>
-        <Grid templateRows="1fr 1.5fr">
-          <FighterModalHeader fighterData={fighterData} isHorizontal={true} />
-          <FighterStatList fighterStatistics={fighterStatistics} />
-        </Grid>
-
-        <FighterHistory fighterData={fighterData} />
-      </Grid>
-
-      {/* Tablet friendly tabbed layout */}
-      <Grid templateColumns="1fr" w="100%" display={{ base: 'none', md: 'flex', lg: 'none' }}>
-        <Stack w="100%">
-          <FighterModalHeader fighterData={fighterData} isHorizontal={true} />
-
-          <Tabs>
-            <Center>
-              <TabList>
-                <Tab>Fighter Stats</Tab>
-                <Tab>Fight History</Tab>
-              </TabList>
-            </Center>
-
-            <TabPanels minH="500px">
-              <TabPanel>
-                <FighterStatList fighterStatistics={fighterStatistics} />
-              </TabPanel>
-              <TabPanel>
-                <FighterHistory fighterData={fighterData} />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Stack>
-      </Grid>
-
-      {/* Mobile friendly tabbed layout */}
-      <VStack w="100%" display={{ base: 'flex', md: 'none' }}>
-        <FighterModalHeader fighterData={fighterData} isHorizontal={false} />
-
-        <Tabs>
-          <Center>
-            <TabList>
-              <Tab>Fighter Stats</Tab>
-              <Tab>Fight History</Tab>
-            </TabList>
-          </Center>
-
-          <TabPanels>
-            <TabPanel>
-              <FighterStatList fighterStatistics={fighterStatistics} slim />
-            </TabPanel>
-            <TabPanel>
-              <FighterHistory fighterData={fighterData} />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </VStack>
+      {FighterModalState.DETAILS === fighterModalState ? (
+        <FighterDetailsModal fighterData={fighterData} handleChallenge={handleChallenge} />
+      ) : fighterData ? (
+        <FighterChallengeModal opponentData={fighterData} />
+      ) : (
+        <p>Missing Fighter selection...</p>
+      )}
     </Flex>
   );
 }

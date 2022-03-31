@@ -40,14 +40,21 @@ import { useMoralis, useMoralisWeb3Api } from 'react-moralis';
 import { AppState, ChallengeState, FighterInfo, OrganizationInfo, TokenNFTResult } from '../../types';
 import { getDFCNFTs } from '../../utils/web3/moralis';
 import FighterModal from '../fighterModal/fighterModal';
+import { setContext } from 'redux-saga/effects';
 
 export interface OrgHeaderProps {
   orgData: OrganizationInfo | null;
+  selectedFighterId: number | undefined;
   selectedFighterName: string | undefined;
   selectedFighterCountryCode: string | undefined;
 }
 
-export default function OrgDetails({ orgData, selectedFighterName, selectedFighterCountryCode }: OrgHeaderProps) {
+export default function OrgDetails({
+  orgData,
+  selectedFighterId,
+  selectedFighterName,
+  selectedFighterCountryCode,
+}: OrgHeaderProps) {
   const activeStyle = {
     bg: useColorModeValue('#252A34', '#EEF0F1'),
     color: useColorModeValue('white', 'black'),
@@ -106,13 +113,17 @@ export default function OrgDetails({ orgData, selectedFighterName, selectedFight
   useEffect(() => {
     (async function () {
       console.log('Load org fighters Async');
-      if (isInitialized && isLoaded && selectedFighterName) {
+      if (isInitialized && isLoaded && selectedFighterId) {
         const web3Provider = await Moralis.enableWeb3();
         const signer = web3Provider.getSigner();
         const address: string = await signer.getAddress();
+
+        // add Moralis objects to saga context
+        setContext({ web3Address: address, Moralis, Web3Api });
+
         console.log('Org Details Account:', address);
         if (address) {
-          const nfts: TokenNFTResult = await getDFCNFTs(Web3Api, pageSize, offset, address);
+          const nfts: TokenNFTResult = await getDFCNFTs(Web3Api, pageSize, offset, address, selectedFighterId);
           // console.log('response org nfts', nfts);
           setTotalDFCSupply(nfts.total);
           setRenderOrgFighters([...nfts.result]);
@@ -120,7 +131,7 @@ export default function OrgDetails({ orgData, selectedFighterName, selectedFight
         }
       }
     })();
-  }, [isLoaded, selectedFighterName, currentPage, pageSize, offset]);
+  }, [isLoaded, selectedFighterId, currentPage, pageSize, offset]);
 
   // paging handlers
   const handlePageChange = (nextPage: number): void => {
@@ -272,7 +283,8 @@ export default function OrgDetails({ orgData, selectedFighterName, selectedFight
                       >
                         Challenge
                       </Button>
-                    ) : (
+                    ) : null}
+                    {fighter.challengeState === ChallengeState.CHALLENGING ? (
                       <Button
                         w="9rem"
                         h="2.8rem"
@@ -285,7 +297,12 @@ export default function OrgDetails({ orgData, selectedFighterName, selectedFight
                       >
                         Accept
                       </Button>
-                    )}
+                    ) : null}
+                    {fighter.challengeState === ChallengeState.CHALLENGED ? (
+                      <Button w="9rem" h="2.8rem" bg="gray.600" color="white" mx="1.5rem" borderRadius="0" disabled>
+                        Challenged
+                      </Button>
+                    ) : null}
                   </Flex>
                 );
               })

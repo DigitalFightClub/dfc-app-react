@@ -14,6 +14,7 @@ class GymApi {
   }
 
   public async transformFighterMetadata(fighterNFTs: MoralisNFT[], address: string): Promise<FighterInfo[]> {
+    console.log('gym api transform', fighterNFTs, address);
     return transformFighterMetadata(fighterNFTs, address);
   }
 }

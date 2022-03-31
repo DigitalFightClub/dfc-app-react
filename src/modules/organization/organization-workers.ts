@@ -1,18 +1,12 @@
-import { AppAction, FighterInfo, FightingStyle, OrganizationInfo } from '../../types';
-import { call, put } from 'redux-saga/effects';
+import { AppAction, FighterInfo, OrganizationInfo } from '../../types';
+import { call, getContext, put } from 'redux-saga/effects';
 import {
   GET_FIGHTER_INFO_IN_PROGRESS,
   GET_FIGHTER_INFO_FAILED,
   GET_FIGHTER_INFO_SUCCESS,
-  GET_FIGHTING_STYLES_IN_PROGRESS,
-  GET_FIGHTING_STYLES_SUCCESS,
-  GET_FIGHTING_STYLES_FAILED,
   SET_CHALLENGE_IN_PROGRESS,
   SET_CHALLENGE_SUCCESS,
   SET_CHALLENGE_FAILED,
-  SET_ACCEPT_CHALLENGE_IN_PROGRESS,
-  SET_ACCEPT_CHALLENGE_SUCCESS,
-  SET_ACCEPT_CHALLENGE_FAILED,
   GET_ORG_INFO_IN_PROGRESS,
   GET_ORG_INFO_SUCCESS,
   GET_ORG_INFO_FAILED,
@@ -23,6 +17,7 @@ import {
 import { organizationApi } from './organization-api';
 import { ErrorResponse } from '../../types/Errors';
 import { dfcAction } from '../../types/actions';
+import Moralis from 'moralis/types';
 
 export function* getFighterInfoWorker(action: AppAction) {
   try {
@@ -65,45 +60,6 @@ export function* getFighterInfoWorker(action: AppAction) {
 
     yield put(
       dfcAction(GET_FIGHTER_INFO_FAILED, {
-        msg,
-      })
-    );
-  }
-}
-
-export function* getFightingStylesWorker(action: AppAction) {
-  try {
-    const { data } = action.payload;
-    console.log('Organization Worker getFightingStyles...');
-    console.log(JSON.stringify(data));
-
-    yield put(
-      dfcAction(GET_FIGHTING_STYLES_IN_PROGRESS, {
-        msg: '',
-      })
-    );
-
-    // Get fighting styles
-    console.log('Fetch fighting styles');
-    const fightingStyles: FightingStyle[] = yield call(organizationApi.getFightingStyles);
-    console.log('Filled fighting styles', JSON.stringify(fightingStyles));
-
-    yield put(
-      dfcAction(GET_FIGHTING_STYLES_SUCCESS, {
-        data: fightingStyles,
-        msg: 'Get fighting styles successful',
-      })
-    );
-  } catch (error) {
-    console.error('Failed fetching fighting styles', JSON.stringify(error));
-
-    let msg = '';
-    if (error instanceof ErrorResponse) {
-      msg = error.message;
-    }
-
-    yield put(
-      dfcAction(GET_FIGHTING_STYLES_FAILED, {
         msg,
       })
     );
@@ -163,12 +119,19 @@ export function* setChallengeWorker(action: AppAction) {
 
     // Set challenge
     console.log('set Challenge');
-    yield call(organizationApi.challengeFighter, data.fighterId, data.opponentId, data.styleId, data.web3Api);
+    const Moralis: Moralis = yield getContext('Moralis');
+    const message: string = yield call(
+      organizationApi.challengeFighter,
+      data.fighterId,
+      data.opponentId,
+      data.fightingStyle,
+      Moralis
+    );
 
     yield put(
       dfcAction(SET_CHALLENGE_SUCCESS, {
         data,
-        msg: 'Set Challenge successful',
+        msg: message,
       })
     );
   } catch (error) {
@@ -181,44 +144,6 @@ export function* setChallengeWorker(action: AppAction) {
 
     yield put(
       dfcAction(SET_CHALLENGE_FAILED, {
-        msg,
-      })
-    );
-  }
-}
-
-export function* setAcceptChallengeWorker(action: AppAction) {
-  try {
-    const { data } = action.payload;
-    console.log('Organization Worker setAcceptChallenge...');
-    console.log(JSON.stringify(data));
-
-    yield put(
-      dfcAction(SET_ACCEPT_CHALLENGE_IN_PROGRESS, {
-        msg: '',
-      })
-    );
-
-    // Set challenge
-    console.log('set Accept Challenge');
-    yield call(organizationApi.acceptChallenge, data.fighterId, data.challengerId, data.styleId, data.web3Api);
-
-    yield put(
-      dfcAction(SET_ACCEPT_CHALLENGE_SUCCESS, {
-        data,
-        msg: 'Set Accept Challenge successful',
-      })
-    );
-  } catch (error) {
-    console.error('Failed set accept challenge', JSON.stringify(error));
-
-    let msg = '';
-    if (error instanceof ErrorResponse) {
-      msg = error.message;
-    }
-
-    yield put(
-      dfcAction(SET_ACCEPT_CHALLENGE_FAILED, {
         msg,
       })
     );
@@ -249,10 +174,11 @@ export function* getOrgFightersWorker(action: AppAction) {
       console.log('Fetch fighter NFTs');
       const orgFighters: FighterInfo[] = yield call(
         organizationApi.getOrgFighters,
-        data.total,
-        data.page,
+        data.web3Api,
         data.limit,
-        data.address
+        data.offset,
+        data.address,
+        data.nftId
       );
       console.log(JSON.stringify(orgFighters));
 

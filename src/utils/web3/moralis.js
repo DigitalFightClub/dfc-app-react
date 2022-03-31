@@ -48,7 +48,7 @@ export const signMessage = async (Moralis, message) => {
   return rawSignature;
 };
 
-export const getDFCNFTs = async (Web3Api, limit, offset, address) => {
+export const getDFCNFTs = async (Web3Api, limit, offset, address, fighterId) => {
   // Fetch a minted NFTs from DFC token contract through Moralis to find total supply
   const options = { address: ENV.NFT_CONTRACT_ADDRESS, chain: ENV.NET_NAME, limit: 1 };
   const NFTs = await Web3Api.token.getAllTokenIds(options);
@@ -62,11 +62,37 @@ export const getDFCNFTs = async (Web3Api, limit, offset, address) => {
   const userNFTIDs = polygonNFTs.result.map((nft) => parseInt(nft.token_id));
   console.log('user DFC nFT IDs', userNFTIDs);
 
+  // Get fighter challenges
+
+  //TODO: const challenges = await getFighterChallenges(fighterId);
+  const challenges = [
+    {
+      nftId: 2,
+      opponentId: 1,
+    },
+    {
+      nftId: 2,
+      opponentId: 3,
+    },
+    {
+      nftId: 2,
+      opponentId: 4,
+    },
+  ];
+  const opponentIDs = challenges.map((challenge) => challenge.opponentId);
+
   // Flag user NFTs
   const flaggedNFTs = pagedFighters.map((fighter) => {
+    // checked if fighter is owned by current user
     if (userNFTIDs.includes(fighter.fighterId)) {
       fighter.isOwned = true;
     }
+
+    // check if fighter is a challenger
+    if (opponentIDs.includes(fighter.fighterId)) {
+      fighter.challengeState = ChallengeState.CHALLENGING;
+    }
+
     return fighter;
   });
 
@@ -149,6 +175,17 @@ const appendJsonMetaData = async (nft) => {
   }
 };
 
+const getFighterChallenges = async (nftId) => {
+  try {
+    // console.log('appendJsonMetaData uri', nft.token_uri);
+    const response = await axios.get(ENV.FIGHTER_API_URL, { params: { nftId } });
+    // console.log('appendJsonMetaData response.data', response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const transformFighterMetadata = (fighters, address) => {
   console.log('Transforming fighter', fighters, address);
   const refinedFighters = fighters.map((fighter) => {
@@ -192,7 +229,12 @@ export const transformFighterMetadata = (fighters, address) => {
     refinedFighter.stats.sambo = parseInt(fighter.metadata.attributes[8].value);
     refinedFighter.stats.taekwondo = parseInt(fighter.metadata.attributes[9].value);
     refinedFighter.stats.wrestling = parseInt(fighter.metadata.attributes[10].value);
-    refinedFighter.isOwned = false;
+    console.log('isOwned transform', address, fighter);
+    if (fighter.owner_of) {
+      refinedFighter.isOwned = address.toLowerCase() === fighter.owner_of.toLowerCase();
+    } else {
+      refinedFighter.isOwned = false;
+    }
     refinedFighter.challengeState = ChallengeState.AVAILABLE;
     return refinedFighter;
   });

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { GET_ORG_INFO_REQUEST } from '../../config/events';
-import { AppState, ChallengeState, FighterInfo, OrganizationInfo } from '../../types';
+import { AppState, FighterInfo, OrganizationInfo } from '../../types';
 import { dfcAction } from '../../types/actions';
 import getFighterStatistics from '../fighterStatistics/fighterStatistics';
 import FighterStatList from '../fighterStats/fighterStats';
@@ -80,6 +80,7 @@ export default function Organization() {
           {/* Org Panel */}
           <OrgDetails
             orgData={renderSelectedOrg}
+            selectedFighterId={renderSelectedFighter?.fighterId}
             selectedFighterName={renderSelectedFighter?.name}
             selectedFighterCountryCode={renderSelectedFighter?.countryCode}
           />

@@ -1,23 +1,21 @@
-import { chakra, Grid, Text, Heading, Flex, Tooltip, IconButton, Button } from '@chakra-ui/react';
-import { AppState, FighterInfo, FighterStatus } from '../../types';
-import { PunchIcon } from '../dfcIcons/PunchIcon';
-import { FlexIcon } from '../dfcIcons/FlexIcon';
+import { chakra, Grid, Text, Heading, Flex, } from '@chakra-ui/react';
+import { FighterInfo, FighterStatus } from '../../types';
 import { useHistory } from 'react-router';
 import { dfcAction } from '../../types/actions';
 import { SET_SELECTED_FIGHTER } from '../../config/events';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import FighterDataButtons from './fighterDataButtons';
 
 export interface FighterDataProps {
   isTile?: boolean;
   fighterInfo: FighterInfo | null;
+  handleChallenge?: () => void;
 }
 
-export default function FighterData({ isTile = false, fighterInfo: fighterData }: FighterDataProps) {
+export default function FighterData({ isTile = false, fighterInfo: fighterData, handleChallenge }: FighterDataProps) {
   const history = useHistory();
 
   // connect redux saga
-  const { selectedFighter } = useSelector((state: AppState) => state.organizationState);
   const dispatch = useDispatch();
 
   const handleFight = () => {
@@ -27,10 +25,6 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData }
       })
     );
     history.push('/orgs');
-  };
-
-  const handleChallenge = () => {
-    console.log('challenged, time to show challenge modal');
   };
 
   return (

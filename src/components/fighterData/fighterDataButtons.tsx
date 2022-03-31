@@ -8,7 +8,7 @@ export interface FighterDataButtonProps {
   isOwned: boolean;
   challengeState: ChallengeState | null;
   handleFight: () => void;
-  handleChallenge: () => void;
+  handleChallenge?: () => void;
 }
 
 export default function FighterDataButtons({
@@ -55,7 +55,7 @@ export default function FighterDataButtons({
           color="white"
           mx=".5rem"
           borderRadius="0"
-          aria-label="Fight"
+          aria-label="Challenge"
           onClick={handleChallenge}
           display={!isOwned && ChallengeState.AVAILABLE === challengeState ? 'flex' : 'none'}
         >
@@ -68,7 +68,7 @@ export default function FighterDataButtons({
           color="white"
           mx=".5rem"
           borderRadius="0"
-          aria-label="Fight"
+          aria-label="Accept"
           onClick={handleChallenge}
           display={!isOwned && ChallengeState.CHALLENGING === challengeState ? 'flex' : 'none'}
         >

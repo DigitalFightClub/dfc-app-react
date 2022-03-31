@@ -4,7 +4,7 @@ import { FighterModalProps2 as FighterModalProps } from '../../types';
 import FighterData from '../fighterData';
 
 // This is where the fighter image and basic data appears
-export const FighterModalHeader = ({ fighterData, isHorizontal }: FighterModalProps) => {
+export const FighterModalHeader = ({ fighterData, isHorizontal, handleChallenge }: FighterModalProps) => {
   return (
     <Box boxSizing="border-box" transition="ease-in-out 0.4s" w="100%" py="24px" px="32px" alignContent="center">
       {isHorizontal ? (
@@ -13,7 +13,7 @@ export const FighterModalHeader = ({ fighterData, isHorizontal }: FighterModalPr
             <Image boxSize="225px" src={fighterData ? fighterData.image : undefined} />
           </Box>
 
-          <FighterData fighterInfo={fighterData} />
+          <FighterData fighterInfo={fighterData} handleChallenge={handleChallenge} />
         </Grid>
       ) : (
         <VStack marginBottom="30px">
@@ -30,7 +30,7 @@ export const FighterModalHeader = ({ fighterData, isHorizontal }: FighterModalPr
             <Image boxSize="225px" src={fighterData ? fighterData.image : undefined} />
           </Box>
 
-          <FighterData fighterInfo={fighterData} />
+          <FighterData fighterInfo={fighterData} handleChallenge={handleChallenge} />
         </VStack>
       )}
     </Box>

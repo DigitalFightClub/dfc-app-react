@@ -59,11 +59,21 @@ export type FighterInfo = {
   challengeState: ChallengeState;
 };
 
+export type Challenge = {
+  nftId: number;
+  opponentId: number;
+};
+
 export enum ChallengeState {
   AVAILABLE = 'Available',
   CHALLENGED = 'Challenged',
   CHALLENGING = 'Challenging',
   COOLDOWN = 'Cooldown',
+}
+
+export enum FighterModalState {
+  DETAILS,
+  CHALLENGE,
 }
 
 export type FighterModalProps = {
@@ -74,6 +84,7 @@ export type FighterModalProps = {
 export type FighterModalProps2 = {
   fighterData: FighterInfo | null;
   isHorizontal: boolean;
+  handleChallenge: () => void;
 };
 
 export type FighterStats = {
@@ -135,6 +146,7 @@ export type OrganizationState = {
   selectedFighter: FighterInfo | null;
   selectedOrg: OrganizationInfo | null;
   orgFighters: FighterInfo[] | null;
+  fightingStyles: FightingStyle[];
 };
 
 export type FighterHistoryState = {

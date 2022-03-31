@@ -39,6 +39,7 @@ const DEFAULT_OBJ = {
 // Mainnet
 const FIGHTER_IMAGE_URL = 'https://mainnet.api.digitalfightclub.io/renderedFighter';
 const FIGHTER_METADATA_URL = 'https://mainnet.api.digitalfightclub.io/metadata';
+const FIGHTER_API_URL = 'https://api.digitalfightclub.io';
 // const WEBOOK_AUTOTASK_BACKUP_1 =
 // const WEBOOK_AUTOTASK_BACKUP_0 =
 // const WEBOOK_AUTOTASK_PRIMARY =
@@ -73,6 +74,7 @@ const MAINNET_OBJ = {
 // Testnet
 const TEST_FIGHTER_IMAGE_URL = 'https://testnet.api.digitalfightclub.io/renderedFighter';
 const TEST_FIGHTER_METADATA_URL = 'https://testnet.api.digitalfightclub.io/metadata';
+const TEST_FIGHTER_API_URL = 'https://testapi.digitalfightclub.io';
 // const TEST_MUMBAI_WEBOOK_AUTOTASK_BACKUP_0 =
 // const TEST_MUMBAI_WEBOOK_AUTOTASK_BACKUP_1 = TEST_MUMBAI_WEBOOK_AUTOTASK_BACKUP_0
 // const TEST_MUMBAI_WEBOOK_AUTOTASK_PRIMARY =
@@ -105,6 +107,7 @@ export const ENV_CONFG = () => {
         TARGET_NET: MAINNET,
         FIGHTER_IMAGE_URL,
         FIGHTER_METADATA_URL,
+        FIGHTER_API_URL,
         ...MAINNET_OBJ,
       };
     default:
@@ -115,6 +118,7 @@ export const ENV_CONFG = () => {
         TARGET_NET: TESTNET,
         FIGHTER_IMAGE_URL: TEST_FIGHTER_IMAGE_URL,
         FIGHTER_METADATA_URL: TEST_FIGHTER_METADATA_URL,
+        FIGHTER_API_URL: TEST_FIGHTER_API_URL,
         ...TESTNET_OBJ,
       };
   }
