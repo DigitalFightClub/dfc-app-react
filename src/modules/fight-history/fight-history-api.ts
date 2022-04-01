@@ -10,63 +10,51 @@ class FightHistoryApi {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async getFighterHistory(fighterData: FighterInfo): Promise<FightHistoryBrief[]> {
-    const fighterId: number = parseInt(fighterData.image.split('/')[4].split('.')[0]);
+    // const response = await axios.get(`${ENV.FIGHTER_API_URL}/fightHistory`, {
+    //   params: {
+    //     nftId: fighterData.fighterId,
+    //   },
+    // });
+
+    const response = {
+      data: [
+        {
+          uuid: '09a19bfb-3810-4776-8bce-741e39c43d3b',
+          nftId: 2,
+          opponentId: 1,
+          rounds: [
+            {
+              2: 9,
+              1: 10,
+            },
+            {
+              2: 10,
+              1: 9,
+            },
+            {
+              2: 10,
+              1: 9,
+            },
+          ],
+          outcome: '3rd Round Stoppage',
+        },
+      ],
+    };
+
+    //TODO: tansform into this the following FightHistoryBrief structure
+
     return [
       {
-        matchId: '1',
+        matchId: response.data[0].uuid,
         challengerName: fighterData.name,
-        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${fighterId}.png`,
-        opponentName: 'Rosangela Chumpitaz',
-        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/25.png`,
-        matchResult: MatchResult.WIN,
-        matchDetails: '2nd Round Stoppage',
-      },
-      {
-        matchId: '2',
-        challengerName: fighterData.name,
-        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${fighterId}.png`,
-        opponentName: 'Rosangela Chumpitaz',
-        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/25.png`,
-        matchResult: MatchResult.WIN,
-        matchDetails: '2nd Round Stoppage',
-      },
-      {
-        matchId: '3',
-        challengerName: fighterData.name,
-        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${fighterId}.png`,
-        opponentName: 'Rosangela Chumpitaz',
-        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/25.png`,
-        matchResult: MatchResult.WIN,
-        matchDetails: '2nd Round Stoppage',
-      },
-      {
-        matchId: '4',
-        challengerName: fighterData.name,
-        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${fighterId}.png`,
-        opponentName: 'Rosangela Chumpitaz',
-        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/25.png`,
-        matchResult: MatchResult.LOSS,
-        matchDetails: '2nd Round Stoppage',
-      },
-      {
-        matchId: '5',
-        challengerName: fighterData.name,
-        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${fighterId}.png`,
-        opponentName: 'Rosangela Chumpitaz',
-        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/25.png`,
-        matchResult: MatchResult.WIN,
-        matchDetails: '2nd Round Stoppage',
-      },
-      {
-        matchId: '6',
-        challengerName: fighterData.name,
-        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${fighterId}.png`,
-        opponentName: 'Rosangela Chumpitaz',
-        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/25.png`,
-        matchResult: MatchResult.WIN,
-        matchDetails: '2nd Round Stoppage',
+        challengerImage: `${ENV.FIGHTER_IMAGE_URL}/${response.data[0].nftId}.png`,
+        opponentName: 'Opponent', // fill name here
+        opponentImage: `${ENV.FIGHTER_IMAGE_URL}/${response.data[0].opponentId}.png`,
+        matchResult: MatchResult.WIN, // if nftId is winner/loser
+        matchDetails: response.data[0].outcome,
       },
     ];
+    //TODO: fill opponent names, need metadata cache... selectors in saga workers
   }
 }
 

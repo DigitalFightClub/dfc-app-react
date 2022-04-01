@@ -27,7 +27,7 @@ class GymApi {
     console.log('gym api getfighterChallenges', fighter.fighterId);
     try {
       // console.log('appendJsonMetaData uri', nft.token_uri);
-      // const response = await axios.get(ENV.FIGHTER_API_URL, { params: { nftId: fighter.fighterId } });
+      //const response = await axios.get(`${ENV.FIGHTER_API_URL}/challenges`, { params: { nftId: fighter.fighterId } });
       // console.log('appendJsonMetaData response.data', response.data);
 
       const response = {

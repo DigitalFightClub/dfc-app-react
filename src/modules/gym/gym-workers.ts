@@ -60,11 +60,11 @@ export function* getGymFightersWorker(action: AppAction) {
         })
       );
     }
-  } catch (error) {
+  } catch (error:any) {
     console.error('Failed fetching gym fighters', JSON.stringify(error));
 
     let msg = '';
-    if (error instanceof ErrorResponse) {
+    if (error && error.message) {
       msg = error.message;
     }
 

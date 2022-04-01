@@ -155,7 +155,14 @@ export default function OrgDetails({
   return (
     <>
       {isOpen && (
-        <Modal size={modalSize} isCentered={centered} isOpen={isOpen} onClose={onClose} scrollBehavior="outside">
+        <Modal
+          closeOnOverlayClick={false}
+          size={modalSize}
+          isCentered={centered}
+          isOpen={isOpen}
+          onClose={onClose}
+          scrollBehavior="outside"
+        >
           <ModalOverlay />
           <ModalContent>
             <FighterModal onClose={onClose} fighterData={oppenentFighter} />

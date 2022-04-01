@@ -6,7 +6,6 @@ import {
   GET_FIGHTER_HISTORY_SUCCESS,
 } from '../../config/events';
 import { fightHistoryApi } from './fight-history-api';
-import { ErrorResponse } from '../../types/Errors';
 import { dfcAction } from '../../types/actions';
 
 export function* getFighterHistoryWorker(action: AppAction) {
@@ -40,11 +39,11 @@ export function* getFighterHistoryWorker(action: AppAction) {
         })
       );
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed fetching fighter history', JSON.stringify(error));
 
     let msg = '';
-    if (error instanceof ErrorResponse) {
+    if (error && error.message) {
       msg = error.message;
     }
 

@@ -21,10 +21,7 @@ export interface FighterTileProps {
   loadingGymFitghers?: boolean;
 }
 
-export default function FighterTile({
-  fighterData = {} as FighterInfo,
-  loadingGymFitghers = false,
-}: FighterTileProps) {
+export default function FighterTile({ fighterData = {} as FighterInfo, loadingGymFitghers = false }: FighterTileProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalSize = useBreakpointValue({ base: 'xs', md: '2xl', lg: '5xl' });
   const centered = useBreakpointValue({ base: false, md: true });
@@ -42,7 +39,14 @@ export default function FighterTile({
   return (
     <>
       {isOpen && (
-        <Modal size={modalSize} isCentered={centered} isOpen={isOpen} onClose={onClose} scrollBehavior="outside">
+        <Modal
+          closeOnOverlayClick={false}
+          size={modalSize}
+          isCentered={centered}
+          isOpen={isOpen}
+          onClose={onClose}
+          scrollBehavior="outside"
+        >
           <ModalOverlay />
           <ModalContent>
             <FighterModal onClose={onClose} fighterData={fighterData} />
