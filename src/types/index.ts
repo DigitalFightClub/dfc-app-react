@@ -146,6 +146,9 @@ export type OrganizationState = {
   selectedFighter: FighterInfo | null;
   selectedOrg: OrganizationInfo | null;
   orgFighters: FighterInfo[] | null;
+  challengeMsg?: string;
+  challengeInProgress: boolean;
+  errorMsg?: string;
   fightingStyles: FightingStyle[];
 };
 

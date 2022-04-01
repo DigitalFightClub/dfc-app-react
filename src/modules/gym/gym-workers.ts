@@ -1,5 +1,5 @@
 import { AccountNFTResult, AppAction, FighterInfo } from '../../types';
-import { call, delay, put } from 'redux-saga/effects';
+import { all, call, CallEffect, delay, put } from 'redux-saga/effects';
 import {
   GET_GYM_FIGHTERS_SUCCESS,
   GET_GYM_FIGHTERS_FAILED,
@@ -42,9 +42,20 @@ export function* getGymFightersWorker(action: AppAction) {
         refinedFighters = yield call(gymApi.transformFighterMetadata, fighterNFTs.result, data.address);
       }
 
+      // Add challengeState
+      let finalFighters: FighterInfo[] | null = null;
+      if (refinedFighters && refinedFighters.length > 0) {
+        console.log('Fill fighter challenge state');
+        const fighterChallengedCalls: CallEffect<FighterInfo>[] = refinedFighters.map((fighter) =>
+          call(gymApi.getFigherChallenged, fighter)
+        );
+        finalFighters = yield all(fighterChallengedCalls);
+        console.log('filled with challenge state', finalFighters);
+      }
+
       yield put(
         dfcAction(GET_GYM_FIGHTERS_SUCCESS, {
-          data: refinedFighters,
+          data: finalFighters ? finalFighters : refinedFighters,
           msg: 'Get gym fighters successful',
         })
       );

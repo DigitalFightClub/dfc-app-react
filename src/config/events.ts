@@ -63,3 +63,8 @@ export const GET_ORG_FIGHTERS_SUCCESS = '@Organization/GET-org-fighters-success'
 export type GET_ORG_FIGHTERS_SUCCESS = typeof GET_ORG_FIGHTERS_SUCCESS;
 export const GET_ORG_FIGHTERS_FAILED = '@Organization/GET-org-fighters-failed';
 export type GET_ORG_FIGHTERS_FAILED = typeof GET_ORG_FIGHTERS_FAILED;
+
+export const CLEAR_CHALLENGE_MSG = '@Organization/DELETE-clear-challenge-msg';
+export type CLEAR_CHALLENGE_MSG = typeof CLEAR_CHALLENGE_MSG;
+export const CLEAR_ERROR_MSG = '@Organization/DELETE-clear-error-msg';
+export type CLEAR_ERROR_MSG = typeof CLEAR_ERROR_MSG;

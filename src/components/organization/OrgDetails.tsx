@@ -37,10 +37,9 @@ import Moralis from 'moralis/types';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useMoralis, useMoralisWeb3Api } from 'react-moralis';
 // import { useDispatch, useSelector } from 'react-redux';
-import { AppState, ChallengeState, FighterInfo, OrganizationInfo, TokenNFTResult } from '../../types';
+import { ChallengeState, FighterInfo, OrganizationInfo, TokenNFTResult } from '../../types';
 import { getDFCNFTs } from '../../utils/web3/moralis';
 import FighterModal from '../fighterModal/fighterModal';
-import { setContext } from 'redux-saga/effects';
 
 export interface OrgHeaderProps {
   orgData: OrganizationInfo | null;
@@ -66,7 +65,7 @@ export default function OrgDetails({
   const Web3Api: Moralis.Web3API = useMoralisWeb3Api();
 
   // Redux Hooks
-  // const { orgFighters } = useSelector((state: AppState) => state.organizationState);
+  // const { challengeMsg, errorMsg } = useSelector((state: AppState) => state.organizationState);
   // const dispatch = useDispatch();
 
   const [renderOrgFighters, setRenderOrgFighters] = useState<FighterInfo[]>([]);
@@ -102,6 +101,7 @@ export default function OrgDetails({
     }
   }, [isInitialized]);
 
+  // TODO: fetch org fighters through redux-saga
   // useEffect(() => {
   //   if (orgFighters) {
   //     console.log('Got Org Fighters', JSON.stringify(orgFighters));
@@ -117,9 +117,6 @@ export default function OrgDetails({
         const web3Provider = await Moralis.enableWeb3();
         const signer = web3Provider.getSigner();
         const address: string = await signer.getAddress();
-
-        // add Moralis objects to saga context
-        setContext({ web3Address: address, Moralis, Web3Api });
 
         console.log('Org Details Account:', address);
         if (address) {

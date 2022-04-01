@@ -1,5 +1,5 @@
 import { AppAction, FighterInfo, OrganizationInfo } from '../../types';
-import { call, getContext, put } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import {
   GET_FIGHTER_INFO_IN_PROGRESS,
   GET_FIGHTER_INFO_FAILED,
@@ -17,7 +17,6 @@ import {
 import { organizationApi } from './organization-api';
 import { ErrorResponse } from '../../types/Errors';
 import { dfcAction } from '../../types/actions';
-import Moralis from 'moralis/types';
 
 export function* getFighterInfoWorker(action: AppAction) {
   try {
@@ -119,26 +118,35 @@ export function* setChallengeWorker(action: AppAction) {
 
     // Set challenge
     console.log('set Challenge');
-    const Moralis: Moralis = yield getContext('Moralis');
-    const message: string = yield call(
+    console.log('Got Moralis from saga context', data.Moralis);
+    const response: { status: number; message: string } = yield call(
       organizationApi.challengeFighter,
       data.fighterId,
       data.opponentId,
       data.fightingStyle,
-      Moralis
+      data.Moralis,
     );
 
-    yield put(
-      dfcAction(SET_CHALLENGE_SUCCESS, {
-        data,
-        msg: message,
-      })
-    );
-  } catch (error) {
+    if (200 === response.status) {
+      yield put(
+        dfcAction(SET_CHALLENGE_SUCCESS, {
+          data: response,
+          msg: response.message,
+        })
+      );
+    } else {
+      yield put(
+        dfcAction(SET_CHALLENGE_FAILED, {
+          data: response,
+          msg: response.message,
+        })
+      );
+    }
+  } catch (error: any) {
     console.error('Failed set challenge', JSON.stringify(error));
 
     let msg = '';
-    if (error instanceof ErrorResponse) {
+    if (error && error.message) {
       msg = error.message;
     }
 

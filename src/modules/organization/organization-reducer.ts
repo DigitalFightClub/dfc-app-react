@@ -1,11 +1,23 @@
 import { AppAction, OrganizationState } from '../../types';
 import { Reducer } from 'redux';
-import { GET_ORG_FIGHTERS_SUCCESS, GET_ORG_INFO_SUCCESS, SET_SELECTED_FIGHTER } from '../../config/events';
+import {
+  CLEAR_CHALLENGE_MSG,
+  CLEAR_ERROR_MSG,
+  GET_ORG_FIGHTERS_SUCCESS,
+  GET_ORG_INFO_SUCCESS,
+  SET_CHALLENGE_FAILED,
+  SET_CHALLENGE_IN_PROGRESS,
+  SET_CHALLENGE_SUCCESS,
+  SET_SELECTED_FIGHTER,
+} from '../../config/events';
 
 export const initOrganizationState: OrganizationState = {
   selectedFighter: null,
   selectedOrg: null,
   orgFighters: [],
+  challengeMsg: undefined,
+  challengeInProgress: false,
+  errorMsg: undefined,
   fightingStyles: [
     {
       styleId: 0,
@@ -175,6 +187,48 @@ function getOrgFightersSuccess(state: OrganizationState, action: AppAction): Org
   };
 }
 
+function clearChallengeMsg(state: OrganizationState, action: AppAction): OrganizationState {
+  return {
+    ...state,
+    challengeMsg: undefined,
+    challengeInProgress: false,
+  };
+}
+
+function clearErrorMsg(state: OrganizationState, action: AppAction): OrganizationState {
+  return {
+    ...state,
+    errorMsg: undefined,
+    challengeInProgress: false,
+  };
+}
+
+function setChallengeInProgress(state: OrganizationState, action: AppAction): OrganizationState {
+  return {
+    ...state,
+    challengeInProgress: true,
+  };
+}
+
+function setChallengeSuccess(state: OrganizationState, action: AppAction): OrganizationState {
+  const { msg } = action.payload;
+
+  return {
+    ...state,
+    challengeMsg: msg,
+  };
+}
+
+function setChallengeFailed(state: OrganizationState, action: AppAction): OrganizationState {
+  const { msg } = action.payload;
+  console.log('set challenge failed message reducer', msg);
+
+  return {
+    ...state,
+    errorMsg: msg,
+  };
+}
+
 export const organizationReducer: Reducer<OrganizationState, AppAction> = (
   state: OrganizationState = initOrganizationState,
   action: AppAction
@@ -186,6 +240,16 @@ export const organizationReducer: Reducer<OrganizationState, AppAction> = (
       return setOrgInfoSuccess(state, action);
     case GET_ORG_FIGHTERS_SUCCESS:
       return getOrgFightersSuccess(state, action);
+    case SET_CHALLENGE_SUCCESS:
+      return setChallengeSuccess(state, action);
+    case SET_CHALLENGE_FAILED:
+      return setChallengeFailed(state, action);
+    case SET_CHALLENGE_IN_PROGRESS:
+      return setChallengeInProgress(state, action);
+    case CLEAR_CHALLENGE_MSG:
+      return clearChallengeMsg(state, action);
+    case CLEAR_ERROR_MSG:
+      return clearErrorMsg(state, action);
     default:
       return { ...state };
   }

@@ -40,7 +40,7 @@ export default function FighterModal({ onClose, fighterData }: FighterModalProps
       {FighterModalState.DETAILS === fighterModalState ? (
         <FighterDetailsModal fighterData={fighterData} handleChallenge={handleChallenge} />
       ) : fighterData ? (
-        <FighterChallengeModal opponentData={fighterData} />
+        <FighterChallengeModal opponentData={fighterData} onClose={onClose} />
       ) : (
         <p>Missing Fighter selection...</p>
       )}

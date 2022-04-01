@@ -21,14 +21,15 @@ class OrganizationApi {
     opponentId: number,
     fightingStyle: number,
     Moralis: Moralis
-  ): Promise<string> {
+  ): Promise<{ status: number; message: string }> {
     console.log('OrganizationApi challengeFighter called');
 
     const web3Provider = await Moralis.enableWeb3();
     const signer = web3Provider.getSigner();
     const msg = `nft_id: ${nftId}\nfighting_style: ${fightingStyle}\nopponent_id: ${opponentId}`;
     const sig = await signer.signMessage(msg);
-    try {
+    console.log('Challenge sig', sig);
+    if (sig) {
       // console.log('appendJsonMetaData uri', nft.token_uri);
       const response = await axios.post(ENV.FIGHTER_API_URL, {
         nftId,
@@ -45,11 +46,10 @@ class OrganizationApi {
       // console.log('appendJsonMetaData response.data', response.data);
       const message = response && response.data && response.data.message ? response.data.message : '';
       return message;
-    } catch (error) {
-      console.error(error);
-      //TODO: better error handling display
+    } else {
+      console.log('signature was cancelled or failed');
     }
-    return '';
+    return { status: 500, message: 'Something went wrong...'};
   }
 
   public async getOrgInfo(orgId: number): Promise<OrganizationInfo> {
