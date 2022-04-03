@@ -1,5 +1,4 @@
 /* eslint-disable indent */
-import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import {
   chakra,
   Center,
@@ -13,26 +12,15 @@ import {
   VStack,
   Box,
   Spacer,
-  Select,
   Button,
   Modal,
   ModalOverlay,
   ModalContent,
   useBreakpointValue,
   useDisclosure,
-  useColorModeValue,
   Skeleton,
 } from '@chakra-ui/react';
-import {
-  Pagination,
-  usePagination,
-  PaginationNext,
-  PaginationPage,
-  PaginationPrevious,
-  PaginationContainer,
-  PaginationPageGroup,
-  PaginationSeparator,
-} from '@ajna/pagination';
+import { usePagination } from '@ajna/pagination';
 import Moralis from 'moralis/types';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useMoralis, useMoralisWeb3Api } from 'react-moralis';
@@ -40,6 +28,7 @@ import { useMoralis, useMoralisWeb3Api } from 'react-moralis';
 import { ChallengeState, FighterInfo, OrganizationInfo, TokenNFTResult } from '../../types';
 import { getDFCNFTs } from '../../utils/web3/moralis';
 import FighterModal from '../fighterModal/fighterModal';
+import OrgPagination from './OrgPagination';
 
 export interface OrgHeaderProps {
   orgData: OrganizationInfo | null;
@@ -54,12 +43,6 @@ export default function OrgDetails({
   selectedFighterName,
   selectedFighterCountryCode,
 }: OrgHeaderProps) {
-  const activeStyle = {
-    bg: useColorModeValue('#252A34', '#EEF0F1'),
-    color: useColorModeValue('white', 'black'),
-  };
-  const greyColor = useColorModeValue('white', 'gray.800');
-
   // Web3 Hooks
   const { isInitialized, Moralis } = useMoralis();
   const Web3Api: Moralis.Web3API = useMoralisWeb3Api();
@@ -119,12 +102,16 @@ export default function OrgDetails({
         const address: string = await signer.getAddress();
 
         console.log('Org Details Account:', address);
-        if (address) {
+        console.log(`Load org fighters page=[${currentPage - 1}] <= pagesCount=[${pagesCount}]`);
+        if (address && currentPage - 1 <= pagesCount) {
+          window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
           const nfts: TokenNFTResult = await getDFCNFTs(Web3Api, pageSize, offset, address, selectedFighterId);
           // console.log('response org nfts', nfts);
           setTotalDFCSupply(nfts.total);
           setRenderOrgFighters([...nfts.result]);
           setIsDisabled(false);
+        } else if (currentPage - 1 > pagesCount) {
+          setCurrentPage(pagesCount);
         }
       }
     })();
@@ -234,6 +221,17 @@ export default function OrgDetails({
           <Checkbox colorScheme="green">Default All</Checkbox>
         </Center>
         <Divider />
+        <OrgPagination
+          pagesCount={pagesCount}
+          currentPage={currentPage}
+          offset={offset}
+          pageSize={pageSize}
+          totalItems={totalDFCSupply ? totalDFCSupply : 0}
+          pages={pages}
+          isDisabled={isDisabled}
+          handlePageChange={handlePageChange}
+          handlePageSizeChange={handlePageSizeChange}
+        />
         {renderOrgFighters.length === 0 && isDisabled && selectedFighterName ? <Skeleton height="146px" /> : null}
         <VStack w="100%" maxH="102.1875rem" mt="1rem" overflow="hidden" overflowY="scroll">
           {renderOrgFighters
@@ -312,50 +310,17 @@ export default function OrgDetails({
               })
             : null}
         </VStack>
-        {/* <Flex opacity="none" pt={15} pb={5} w="100%" alignItems="center" justifyContent="center"> */}
-        <Pagination
+        <OrgPagination
           pagesCount={pagesCount}
           currentPage={currentPage}
+          offset={offset}
+          pageSize={pageSize}
+          totalItems={totalDFCSupply ? totalDFCSupply : 0}
+          pages={pages}
           isDisabled={isDisabled}
-          onPageChange={handlePageChange}
-        >
-          <PaginationContainer align="center" justify="space-between" p={4} w="full">
-            <chakra.span>
-              {offset + 1}-{offset + pageSize} of {totalDFCSupply}
-            </chakra.span>
-            <PaginationPrevious _hover={activeStyle} bg={greyColor}>
-              <ArrowBackIcon />
-            </PaginationPrevious>
-            <PaginationPageGroup
-              isInline
-              align="center"
-              separator={<PaginationSeparator isDisabled bg="gray.800" fontSize="sm" w={7} jumpSize={11} />}
-            >
-              {pages.map((page: number) => (
-                <PaginationPage
-                  w={8}
-                  key={`pagination_page_${page}`}
-                  page={page}
-                  fontSize="sm"
-                  _hover={activeStyle}
-                  bg={greyColor}
-                  _current={activeStyle}
-                />
-              ))}
-            </PaginationPageGroup>
-            <PaginationNext _hover={activeStyle} bg={greyColor}>
-              <ArrowForwardIcon />
-            </PaginationNext>
-            <chakra.span>
-              Per Page:
-              <Select w="60px" variant="unstyled" colorScheme="green" onChange={handlePageSizeChange}>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-              </Select>
-            </chakra.span>
-          </PaginationContainer>
-        </Pagination>
+          handlePageChange={handlePageChange}
+          handlePageSizeChange={handlePageSizeChange}
+        />
       </Flex>
     </>
   );
