@@ -11,6 +11,7 @@ import {
   Wrap,
   useToast,
   Skeleton,
+  Spacer,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useMoralis } from 'react-moralis';
@@ -18,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CLEAR_CHALLENGE_MSG, CLEAR_ERROR_MSG, SET_CHALLENGE_REQUEST } from '../../config/events';
 import { AppState, ChallengeState, FighterInfo } from '../../types';
 import { dfcAction } from '../../types/actions';
+import FighterVerticalDetails from './fighterVerticalDetails';
 
 export interface FighterChallengeModalProps {
   opponentData: FighterInfo;
@@ -92,72 +94,20 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
   };
 
   return (
-    <>
+    <Box position="relative" overflow="hidden" w="1024px" h="733">
+      <Image zIndex="-25" position="absolute" top="115px" right="315px" src="/assets/vs.svg" />
       {selectedFighter ? (
         <VStack>
           <HStack>
-            <VStack marginBottom="1.5rem">
-              <Box
-                maxH="312px"
-                minH="312px"
-                minW="312px"
-                justifySelf="center"
-                alignSelf="center"
-                pos="relative"
-                pr="1rem"
-                marginBottom="10px"
-              >
-                <Image boxSize="312px" src={selectedFighter.image} />
-              </Box>
-
-              <Flex flexDirection="column" textAlign="center" gap="11px" w="100%">
-                <Text
-                  textAlign={{
-                    xl: 'left',
-                    lg: 'left',
-                    md: 'left',
-                    sm: 'center',
-                    base: 'center',
-                  }}
-                  fontFamily="Sora"
-                  fontWeight="semibold"
-                  fontSize="24px"
-                >
-                  {selectedFighter.name}
-                  {selectedFighter && selectedFighter.countryCode ? (
-                    <chakra.span ml="10px" className={`fi fi-${selectedFighter.countryCode.toLowerCase()}`} />
-                  ) : null}
-                </Text>
-
-                <Flex direction="row" justify={{ base: 'center', md: 'left' }} mb="10px">
-                  <Text
-                    fontFamily="Sora"
-                    fontWeight="normal"
-                    fontSize="24px"
-                    mr=".5rem"
-                    textAlign={{
-                      xl: 'left',
-                      lg: 'left',
-                      md: 'left',
-                      sm: 'center',
-                      base: 'center',
-                    }}
-                    whiteSpace="nowrap"
-                  >
-                    Record:
-                    <chakra.span display="inline" color="primary.500">
-                      &nbsp;
-                      {selectedFighter.wins}
-                    </chakra.span>
-                    {'-'}
-                    <chakra.span display="inline" color="secondary.500">
-                      {selectedFighter.loses}
-                    </chakra.span>
-                  </Text>
-                </Flex>
-              </Flex>
-            </VStack>
-            <VStack alignContent="center" gap="1.5rem">
+            <FighterVerticalDetails
+              fighterImage={selectedFighter.image}
+              fighterName={selectedFighter.name}
+              fighterCountryCode={selectedFighter.countryCode}
+              fighterWins={selectedFighter.wins}
+              fighterLosses={selectedFighter.loses}
+              isCentered={true}
+            />
+            <VStack alignContent="center" gap="1.5rem" w="17rem">
               <Text>Proving Grounds</Text>
               <Text>Middleweight Category</Text>
               <Text>3 Rounds</Text>
@@ -192,67 +142,14 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
                 </Button>
               </Skeleton>
             </VStack>
-            <VStack marginBottom="1.5rem">
-              <Box
-                maxH="312px"
-                minH="312px"
-                minW="312px"
-                justifySelf="center"
-                alignSelf="center"
-                pos="relative"
-                pr="1rem"
-                marginBottom="10px"
-              >
-                <Image boxSize="312px" src={opponentData.image} />
-              </Box>
-
-              <Flex flexDirection="column" textAlign="center" gap="11px" w="100%">
-                <Text
-                  textAlign={{
-                    xl: 'left',
-                    lg: 'left',
-                    md: 'left',
-                    sm: 'center',
-                    base: 'center',
-                  }}
-                  fontFamily="Sora"
-                  fontWeight="semibold"
-                  fontSize="24px"
-                >
-                  {opponentData.name}
-                  {opponentData && opponentData.countryCode ? (
-                    <chakra.span ml="10px" className={`fi fi-${opponentData.countryCode.toLowerCase()}`} />
-                  ) : null}
-                </Text>
-
-                <Flex direction="row" justify={{ base: 'center', md: 'left' }} mb="10px">
-                  <Text
-                    fontFamily="Sora"
-                    fontWeight="normal"
-                    fontSize="24px"
-                    mr=".5rem"
-                    textAlign={{
-                      xl: 'left',
-                      lg: 'left',
-                      md: 'left',
-                      sm: 'center',
-                      base: 'center',
-                    }}
-                    whiteSpace="nowrap"
-                  >
-                    Record:
-                    <chakra.span display="inline" color="primary.500">
-                      &nbsp;
-                      {opponentData.wins}
-                    </chakra.span>
-                    {'-'}
-                    <chakra.span display="inline" color="secondary.500">
-                      {opponentData.loses}
-                    </chakra.span>
-                  </Text>
-                </Flex>
-              </Flex>
-            </VStack>
+            <FighterVerticalDetails
+              fighterImage={opponentData.image}
+              fighterName={opponentData.name}
+              fighterCountryCode={opponentData.countryCode}
+              fighterWins={opponentData.wins}
+              fighterLosses={opponentData.loses}
+              isCentered={true}
+            />
           </HStack>
           <Skeleton isLoaded={!challengeInProgress}>
             <Wrap pb="1rem" spacing="1rem" justify="center">
@@ -284,6 +181,6 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
           </Skeleton>
         </VStack>
       ) : null}
-    </>
+    </Box>
   );
 }

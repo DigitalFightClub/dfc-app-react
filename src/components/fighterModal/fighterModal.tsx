@@ -32,6 +32,7 @@ export default function FighterModal({ onClose, fighterData }: FighterModalProps
         right="-10px"
         size="sm"
         p="0px"
+        zIndex="200"
         onClick={onClose}
       >
         <CloseIcon />

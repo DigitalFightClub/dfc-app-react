@@ -11,7 +11,7 @@ import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { chakra, Select, useColorModeValue } from '@chakra-ui/react';
 import { ChangeEvent } from 'react';
 
-export interface OrgPaginationProps {
+export interface DfcPaginationProps {
   pagesCount: number;
   currentPage: number;
   offset: number;
@@ -23,7 +23,7 @@ export interface OrgPaginationProps {
   handlePageSizeChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export default function OrgPagination({
+export default function DfcPagination({
   pagesCount,
   currentPage,
   offset,
@@ -33,7 +33,7 @@ export default function OrgPagination({
   isDisabled,
   handlePageChange,
   handlePageSizeChange,
-}: OrgPaginationProps) {
+}: DfcPaginationProps) {
   const activeStyle = {
     bg: useColorModeValue('#252A34', '#EEF0F1'),
     color: useColorModeValue('white', 'black'),

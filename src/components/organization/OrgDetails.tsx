@@ -28,7 +28,7 @@ import { useMoralis, useMoralisWeb3Api } from 'react-moralis';
 import { ChallengeState, FighterInfo, OrganizationInfo, TokenNFTResult } from '../../types';
 import { getDFCNFTs } from '../../utils/web3/moralis';
 import FighterModal from '../fighterModal/fighterModal';
-import OrgPagination from './OrgPagination';
+import DfcPagination from '../pagination/DfcPagination';
 
 export interface OrgHeaderProps {
   orgData: OrganizationInfo | null;
@@ -221,7 +221,7 @@ export default function OrgDetails({
           <Checkbox colorScheme="green">Default All</Checkbox>
         </Center>
         <Divider />
-        <OrgPagination
+        <DfcPagination
           pagesCount={pagesCount}
           currentPage={currentPage}
           offset={offset}
@@ -310,7 +310,7 @@ export default function OrgDetails({
               })
             : null}
         </VStack>
-        <OrgPagination
+        <DfcPagination
           pagesCount={pagesCount}
           currentPage={currentPage}
           offset={offset}
