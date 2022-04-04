@@ -34,12 +34,9 @@ function setGymFighters(state: GymState, action: AppAction<string, FighterInfo[]
 }
 
 function setLoadingGymFighters(state: GymState, action: AppAction<string, boolean>): GymState {
-  const { data = true } = action.payload;
-  console.log('loading gym fightersin progress', data);
-
   return {
     ...state,
-    loadingGymFighters: data,
+    loadingGymFighters: true,
     getGymFightersError: null,
   };
 }
@@ -66,11 +63,9 @@ function setTotalTko(state: GymState, action: AppAction<string, string>): GymSta
 }
 
 function setLoadingTotalTko(state: GymState, action: AppAction<string, boolean>): GymState {
-  const { data = true } = action.payload;
-
   return {
     ...state,
-    loadingTotalTko: data,
+    loadingTotalTko: true,
     getTotalTkoError: null,
   };
 }

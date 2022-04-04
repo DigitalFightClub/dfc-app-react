@@ -1,4 +1,5 @@
-export const countryMap = {
+const countryObj =
+{
   Albania: 'AL',
   'Åland Islands': 'AX',
   Algeria: 'DZ',
@@ -251,3 +252,10 @@ export const countryMap = {
   Zambia: 'ZM',
   Zimbabwe: 'ZW',
 };
+
+const countryMap: Map<string, string> = new Map();
+Object.entries(countryObj).forEach(([key, value]) => {
+  countryMap.set(key, value);
+});
+
+export default countryMap;

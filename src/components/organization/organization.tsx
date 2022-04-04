@@ -12,7 +12,7 @@ import OrgDetails from './OrgDetails';
 
 export default function Organization() {
   // Redux Hooks
-  const { selectedFighter, selectedOrg } = useSelector((state: AppState) => state.organizationState);
+  const { selectedFighter, selectedOrg, loadingOrg } = useSelector((state: AppState) => state.organizationState);
   const dispatch = useDispatch();
 
   const [renderSelectedFighter, setRenderSelectedFighter] = useState<FighterInfo | null>(null);
@@ -80,6 +80,7 @@ export default function Organization() {
           {/* Org Panel */}
           <OrgDetails
             orgData={renderSelectedOrg}
+            loadingOrg={loadingOrg}
             selectedFighterId={renderSelectedFighter?.fighterId}
             selectedFighterName={renderSelectedFighter?.name}
             selectedFighterCountryCode={renderSelectedFighter?.countryCode}

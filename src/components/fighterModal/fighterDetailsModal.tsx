@@ -7,10 +7,9 @@ import { FighterModalHeader } from './fighterModalHeader';
 
 export interface FighterDetailsModalProps {
   fighterData: FighterInfo | null;
-  handleChallenge: () => void;
 }
 
-export default function FighterDetailsModal({ fighterData, handleChallenge }: FighterDetailsModalProps) {
+export default function FighterDetailsModal({ fighterData }: FighterDetailsModalProps) {
   const fighterStatistics: FighterStatistics = getFighterStatistics(fighterData);
 
   return (
@@ -18,7 +17,7 @@ export default function FighterDetailsModal({ fighterData, handleChallenge }: Fi
       {/* Desktop friendly tabbed layout */}
       <Grid templateColumns="2fr 1fr" w="100%" display={{ base: 'none', lg: 'flex' }}>
         <Grid templateRows="1fr 1.5fr">
-          <FighterModalHeader fighterData={fighterData} isHorizontal={true} handleChallenge={handleChallenge} />
+          <FighterModalHeader fighterData={fighterData} isHorizontal={true} />
           <FighterStatList fighterStatistics={fighterStatistics} />
         </Grid>
 
@@ -28,7 +27,7 @@ export default function FighterDetailsModal({ fighterData, handleChallenge }: Fi
       {/* Tablet friendly tabbed layout */}
       <Grid templateColumns="1fr" w="100%" display={{ base: 'none', md: 'flex', lg: 'none' }}>
         <Stack w="100%">
-          <FighterModalHeader fighterData={fighterData} isHorizontal={true} handleChallenge={handleChallenge} />
+          <FighterModalHeader fighterData={fighterData} isHorizontal={true} />
 
           <Tabs>
             <Center>
@@ -52,7 +51,7 @@ export default function FighterDetailsModal({ fighterData, handleChallenge }: Fi
 
       {/* Mobile friendly tabbed layout */}
       <VStack w="100%" display={{ base: 'flex', md: 'none' }}>
-        <FighterModalHeader fighterData={fighterData} isHorizontal={false} handleChallenge={handleChallenge} />
+        <FighterModalHeader fighterData={fighterData} isHorizontal={false} />
 
         <Tabs>
           <Center>

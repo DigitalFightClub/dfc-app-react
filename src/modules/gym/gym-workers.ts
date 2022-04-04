@@ -7,7 +7,6 @@ import {
   GET_GYM_FIGHTERS_IN_PROGRESS,
 } from '../../config/events';
 import { gymApi } from './gym-api';
-import { ErrorResponse } from '../../types/Errors';
 import { dfcAction } from '../../types/actions';
 
 export function* getGymFightersWorker(action: AppAction) {

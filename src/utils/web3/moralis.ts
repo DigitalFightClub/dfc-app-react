@@ -1,21 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Contract } from 'ethers';
-import axios from 'axios';
-import { nftABI } from '../../abi/dfcNft';
+import axios, { AxiosResponse } from 'axios';
 import { ENV_CONFG } from '../../config';
 import { TKO_ABI } from './tko-abi.js';
-import { countryMap } from '../helpers/country-lookup';
-import { ChallengeState } from '../../types';
+import { AccountNFTResult, Challenge, ChallengeState, FighterInfo, MoralisNFT, TokenNFTResult } from '../../types';
+import Moralis from 'moralis/types';
+import countryMap from '../helpers/country-lookup';
 
 const ENV = ENV_CONFG();
 
-export const getNFTContract = (provider) => {
-  const nftContract = new Contract(ENV.NFT_CONTRACT_ADDRESS, nftABI, provider);
-  return nftContract;
-};
-
-export const getNFTs = async (Web3Api, address) => {
-  const polygonNFTs = await getUserDFCNFTs(Web3Api, address);
+export const getNFTs = async (Web3Api: any, address: string): Promise<AccountNFTResult> => {
+  const polygonNFTs: AccountNFTResult = await getUserDFCNFTs(Web3Api, address);
   console.log(polygonNFTs);
 
   if (polygonNFTs.total === 0) {
@@ -26,123 +20,148 @@ export const getNFTs = async (Web3Api, address) => {
     return getNFTs(Web3Api, ENV.MULTI_SIG);
   }
 
-  const sortedFlaggedNFTs = await fillMissingMetadata(polygonNFTs.result);
+  const sortedFlaggedNFTs: MoralisNFT[] = await fillMissingMetadata(polygonNFTs.result);
   return { ...polygonNFTs, result: [...sortedFlaggedNFTs] };
 };
 
-export const getTKOBalance = async (Moralis, address) => {
+export const getTKOBalance = async (Moralis: Moralis, address: string): Promise<string> => {
   const ethers = Moralis.web3Library;
   const web3Provider = await Moralis.enableWeb3();
-  const TKO_ADDRESS = ENV.TKO_CONTRACT_ADDRESS;
+  const TKO_ADDRESS: string = ENV.TKO_CONTRACT_ADDRESS;
   const TKO_CONTRACT = new ethers.Contract(TKO_ADDRESS, TKO_ABI, web3Provider);
 
-  const balance = await TKO_CONTRACT.balanceOf(address ? address : ENV.MULTI_SIG);
+  const balance: string = await TKO_CONTRACT.balanceOf(address ? address : ENV.MULTI_SIG);
   // console.log(balance);
   return balance;
 };
 
-export const signMessage = async (Moralis, message) => {
+export const signMessage = async (Moralis: Moralis, message: string): Promise<string> => {
   const web3Provider = await Moralis.enableWeb3();
   const signer = web3Provider.getSigner();
-  const rawSignature = await signer.signMessage(message);
+  const rawSignature: string = await signer.signMessage(message);
   return rawSignature;
 };
 
-export const getDFCNFTs = async (Web3Api, limit, offset, address, fighterId) => {
+export const getDFCNFTs = async (
+  Web3Api: any,
+  limit: number,
+  offset: number,
+  address: string,
+  fighterId: number
+): Promise<TokenNFTResult> => {
   // Fetch a minted NFTs from DFC token contract through Moralis to find total supply
   const options = { address: ENV.NFT_CONTRACT_ADDRESS, chain: ENV.NET_NAME, limit: 1 };
-  const NFTs = await Web3Api.token.getAllTokenIds(options);
+  const NFTs: TokenNFTResult = await Web3Api.token.getAllTokenIds(options);
   console.log(`Fetched DFT total supply ${NFTs.total}`, JSON.stringify(NFTs));
 
   // Get paged metadata
-  const pagedFighters = await getMetadataByPage(NFTs.total, limit, offset, address);
+  const pagedFighters: FighterInfo[] = await getMetadataByPage(NFTs.total, limit, offset, address);
 
   // Fetch user DFC NFT IDs
-  const polygonNFTs = await getUserDFCNFTs(Web3Api, address);
-  const userNFTIDs = polygonNFTs.result.map((nft) => parseInt(nft.token_id));
+  const polygonNFTs: AccountNFTResult = await getUserDFCNFTs(Web3Api, address);
+  const userNFTIDs = polygonNFTs.result.map((nft: MoralisNFT) => parseInt(nft.token_id));
   console.log('user DFC nFT IDs', userNFTIDs);
 
   // Get fighter challenges
+  const challengeList: Challenge[] = await getFighterChallenges(fighterId);
+  let challengers: number[] | null = null;
+  let challenges: number[] | null = null;
+  if (challengeList && challengeList.length > 0) {
+    challengers = challengeList.map((challenge: Challenge): number =>
+      fighterId === challenge.opponentId ? challenge.nftId : 0
+    );
 
-  //TODO: const challenges = await getFighterChallenges(fighterId);
-  const challenges = [
-    {
-      nftId: 2,
-      opponentId: 1,
-    },
-    {
-      nftId: 2,
-      opponentId: 3,
-    },
-    {
-      nftId: 2,
-      opponentId: 4,
-    },
-  ];
-  const opponentIDs = challenges.map((challenge) => challenge.opponentId);
+    challenges = challengeList.map((challenge: Challenge): number =>
+      fighterId === challenge.nftId ? challenge.opponentId : 0
+    );
+  }
 
   // Flag user NFTs
-  const flaggedNFTs = pagedFighters.map((fighter) => {
+  const flaggedNFTs: FighterInfo[] = pagedFighters.map((fighter: FighterInfo): FighterInfo => {
     // checked if fighter is owned by current user
     if (userNFTIDs.includes(fighter.fighterId)) {
       fighter.isOwned = true;
     }
 
     // check if fighter is a challenger
-    if (opponentIDs.includes(fighter.fighterId)) {
+    if (challengers && challengers.includes(fighter.fighterId)) {
       fighter.challengeState = ChallengeState.CHALLENGING;
+    }
+
+    // check if fighter is being challenged
+    if (challenges && challenges.includes(fighter.fighterId)) {
+      fighter.challengeState = ChallengeState.CHALLENGED;
     }
 
     return fighter;
   });
 
-  const sortedFlaggedNFTs = flaggedNFTs.sort((a, b) => {
-    return parseInt(a.fighterId) > parseInt(b.fighterId) ? 1 : -1;
+  const sortedFlaggedNFTs: FighterInfo[] = flaggedNFTs.sort((a: FighterInfo, b: FighterInfo) => {
+    return a.fighterId > b.fighterId ? 1 : -1;
   });
   console.log('org fighter paged list', sortedFlaggedNFTs);
   return { ...NFTs, result: [...sortedFlaggedNFTs] };
 };
 
-const getMetadataByPage = async (total, limit, offset, address) => {
+const getMetadataByPage = async (
+  total: number,
+  limit: number,
+  offset: number,
+  address: string
+): Promise<FighterInfo[]> => {
   // loop to create promises to fetch NFT metadata
-  const promises = [];
-  let currentNFT = offset + 1;
+  const promises: Promise<FighterInfo | null>[] = [];
+  let currentNFT: number = offset + 1;
   for (let i = 0; i < limit && currentNFT <= total; i++, currentNFT++) {
-    const metadataPromise = appendJsonMetaData({ token_uri: `${ENV.FIGHTER_METADATA_URL}/${currentNFT}` });
+    const metadataPromise: Promise<FighterInfo | null> = fetchJsonMetaData(`${ENV.FIGHTER_METADATA_URL}/${currentNFT}`);
     promises.push(metadataPromise);
   }
 
   // wait for all requests to return and collect results
-  const metadataList = await Promise.allSettled(promises).then((results) => results.map((result) => result.value));
-  // console.log('Paged figher metadata results', metadataList);
+  const metadataList: any[] = [];
+  await Promise.allSettled(promises).then((results) => {
+    results.forEach((result) => {
+      if (result.status === 'fulfilled') {
+        metadataList.push({ metadata: (result as PromiseFulfilledResult<FighterInfo>).value });
+      }
+    });
+  });
+  console.log('Paged figher metadata results', metadataList);
 
   // refine the fighter metadata
-  const fighters = transformFighterMetadata(metadataList, address);
+  const fighters: FighterInfo[] = transformFighterMetadata(metadataList, address);
   // console.log('Paged fighers refined', fighters);
 
   return fighters;
 };
 
-const fillMissingMetadata = async (NFTs) => {
+const fillMissingMetadata = async (NFTs: MoralisNFT[]): Promise<MoralisNFT[]> => {
   console.log('fillMissingMetadta', JSON.stringify(NFTs));
 
   // fetch missing metadata
-  const filledNFTs = [];
-  const promises = [];
-  NFTs.forEach((nft) => {
+  const filledNFTs: MoralisNFT[] = [];
+  const promises: Promise<MoralisNFT>[] = [];
+  NFTs.forEach((nft: MoralisNFT) => {
     if (nft.metadata) {
-      filledNFTs.push({ ...nft, metadata: JSON.parse(nft.metadata) });
+      filledNFTs.push({ ...nft, metadata: nft.metadata });
     } else {
       promises.push(appendJsonMetaData(nft));
     }
   });
 
   // wait for metadata to complete and add to filledResults array
-  await Promise.allSettled(promises).then((results) => results.forEach((result) => filledNFTs.push(result.value)));
+  await Promise.allSettled(promises).then((results) => {
+    results.forEach((result) => {
+      if (result.status === 'fulfilled') {
+        filledNFTs.push((result as PromiseFulfilledResult<MoralisNFT>).value);
+      }
+    });
+  });
+  // console.log('filled figher metadata results', filledNFTs);
 
   // sort NFTs
-  let sortedFlaggedNFTs = [];
-  sortedFlaggedNFTs = filledNFTs.sort((a, b) => {
+  let sortedFlaggedNFTs: MoralisNFT[] = [];
+  sortedFlaggedNFTs = filledNFTs.sort((a: MoralisNFT, b: MoralisNFT) => {
     return parseInt(a.token_id) > parseInt(b.token_id) ? 1 : -1;
   });
 
@@ -151,7 +170,7 @@ const fillMissingMetadata = async (NFTs) => {
   return sortedFlaggedNFTs;
 };
 
-const getUserDFCNFTs = async (Web3Api, address) => {
+const getUserDFCNFTs = async (Web3Api: any, address: string): Promise<AccountNFTResult> => {
   if (!address) {
     console.log('Wallet not connected!');
   }
@@ -160,36 +179,50 @@ const getUserDFCNFTs = async (Web3Api, address) => {
     address: address,
     token_address: ENV.NFT_CONTRACT_ADDRESS,
   };
-  const polygonNFTs = await Web3Api.account.getNFTsForContract(options);
+  const polygonNFTs: AccountNFTResult = await Web3Api.account.getNFTsForContract(options);
   return polygonNFTs;
 };
 
-const appendJsonMetaData = async (nft) => {
+const appendJsonMetaData = async (nft: MoralisNFT): Promise<MoralisNFT> => {
   try {
     // console.log('appendJsonMetaData uri', nft.token_uri);
-    const response = await axios.get(nft.token_uri);
+    const response: AxiosResponse = await axios.get(nft.token_uri);
     // console.log('appendJsonMetaData response.data', response.data);
     return { ...nft, metadata: response.data };
   } catch (error) {
     console.error(error);
   }
+  return nft;
 };
 
-const getFighterChallenges = async (nftId) => {
+export const fetchJsonMetaData = async (uri: string): Promise<FighterInfo | null> => {
   try {
     // console.log('appendJsonMetaData uri', nft.token_uri);
-    const response = await axios.get(`${ENV.FIGHTER_API_URL}/challenges`, { params: { nftId } });
+    const response: AxiosResponse = await axios.get(uri);
     // console.log('appendJsonMetaData response.data', response.data);
     return response.data;
   } catch (error) {
     console.error(error);
   }
+  return null;
 };
 
-export const transformFighterMetadata = (fighters, address) => {
+const getFighterChallenges = async (nftId: number): Promise<Challenge[]> => {
+  try {
+    // console.log('appendJsonMetaData uri', nft.token_uri);
+    const response: AxiosResponse = await axios.get(`${ENV.FIGHTER_API_URL}/challenges`, { params: { nftId } });
+    // console.log('appendJsonMetaData response.data', response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+  return [];
+};
+
+export const transformFighterMetadata = (fighters: any[], address: string): FighterInfo[] => {
   console.log('Transforming fighter', fighters, address);
-  const refinedFighters = fighters.map((fighter) => {
-    const refinedFighter = {};
+  const refinedFighters: FighterInfo[] = fighters.map((fighter: any) => {
+    const refinedFighter: any = {};
 
     // console.log(fighter.name);
     refinedFighter.fighterId = parseInt(fighter.metadata.image.split('/')[4].split('.')[0]);
@@ -207,7 +240,7 @@ export const transformFighterMetadata = (fighters, address) => {
     refinedFighter.gender = fighter.metadata.attributes[16].value;
     refinedFighter.height = fighter.metadata.attributes[17].value;
     refinedFighter.country = fighter.metadata.attributes[18].value;
-    refinedFighter.countryCode = countryMap[refinedFighter.country];
+    refinedFighter.countryCode = countryMap.get(refinedFighter.country);
     refinedFighter.weight = fighter.metadata.attributes[22].value;
 
     refinedFighter.stats = {};

@@ -6,6 +6,7 @@ export interface FighterVerticalDetailsProps {
   fighterCountryCode: string;
   fighterWins: string;
   fighterLosses: string;
+  fighterImageSize?: number;
   isCentered?: boolean;
 }
 
@@ -15,21 +16,22 @@ export default function FighterVerticalDetails({
   fighterCountryCode,
   fighterWins,
   fighterLosses,
+  fighterImageSize = 225,
   isCentered = false,
 }: FighterVerticalDetailsProps) {
   return (
     <VStack marginBottom="1.5rem">
       <Box
-        maxH="225px"
-        minH="225px"
-        minW="225px"
+        maxH={fighterImageSize}
+        minH={fighterImageSize}
+        minW={fighterImageSize}
         justifySelf="center"
         alignSelf="center"
         pos="relative"
         pr="1rem"
         marginBottom="10px"
       >
-        <Image boxSize="225px" src={fighterImage} />
+        <Image boxSize={fighterImageSize} src={fighterImage} />
       </Box>
 
       <Flex flexDirection="column" alignItems={isCentered ? 'center' : 'fles-start'} gap="11px" w="100%">

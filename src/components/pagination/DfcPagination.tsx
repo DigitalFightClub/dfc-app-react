@@ -20,7 +20,7 @@ export interface DfcPaginationProps {
   pages: number[];
   isDisabled: boolean;
   handlePageChange: (nextPage: number) => void;
-  handlePageSizeChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  handlePageSizeChange: ((event: ChangeEvent<HTMLSelectElement>) => void) | null;
 }
 
 export default function DfcPagination({
@@ -48,9 +48,11 @@ export default function DfcPagination({
       onPageChange={handlePageChange}
     >
       <PaginationContainer align="center" justify="space-between" p={4} w="full">
-        <chakra.span>
-          {offset + 1}-{offset + pageSize} of {totalItems}
-        </chakra.span>
+        {handlePageSizeChange !== null ? (
+          <chakra.span>
+            {offset + 1}-{offset + pageSize} of {totalItems}
+          </chakra.span>
+        ) : null}
         <PaginationPrevious _hover={activeStyle} bg={greyColor}>
           <ArrowBackIcon />
         </PaginationPrevious>
@@ -74,14 +76,16 @@ export default function DfcPagination({
         <PaginationNext _hover={activeStyle} bg={greyColor}>
           <ArrowForwardIcon />
         </PaginationNext>
-        <chakra.span>
-          Per Page:
-          <Select w="60px" variant="unstyled" colorScheme="green" value={pageSize} onChange={handlePageSizeChange}>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-          </Select>
-        </chakra.span>
+        {handlePageSizeChange !== null ? (
+          <chakra.span>
+            Per Page:
+            <Select w="60px" variant="unstyled" colorScheme="green" value={pageSize} onChange={handlePageSizeChange}>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+            </Select>
+          </chakra.span>
+        ) : null}
       </PaginationContainer>
     </Pagination>
   );

@@ -24,6 +24,7 @@
     "axios": "^0.25.0",
     "flag-icons": "^6.1.1",
     "framer-motion": "^4.1.17",
+    "lodash": "^4.17.21",
     "magic-sdk": "7.0.0",
     "moralis": "^1.5.5",
     "patch-package": "^6.4.7",

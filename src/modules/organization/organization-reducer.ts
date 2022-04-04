@@ -4,16 +4,19 @@ import {
   CLEAR_CHALLENGE_MSG,
   CLEAR_ERROR_MSG,
   GET_ORG_FIGHTERS_SUCCESS,
+  GET_ORG_INFO_IN_PROGRESS,
   GET_ORG_INFO_SUCCESS,
   SET_CHALLENGE_FAILED,
   SET_CHALLENGE_IN_PROGRESS,
   SET_CHALLENGE_SUCCESS,
   SET_SELECTED_FIGHTER,
 } from '../../config/events';
+import { StatHelpText } from '@chakra-ui/react';
 
 export const initOrganizationState: OrganizationState = {
   selectedFighter: null,
   selectedOrg: null,
+  loadingOrg: false,
   orgFighters: [],
   challengeMsg: undefined,
   challengeInProgress: false,
@@ -169,12 +172,20 @@ function setSelectedFighter(state: OrganizationState, action: AppAction): Organi
   };
 }
 
+function setLoadingOrg(state: OrganizationState, action: AppAction): OrganizationState {
+  return {
+    ...state,
+    loadingOrg: true,
+  };
+}
+
 function setOrgInfoSuccess(state: OrganizationState, action: AppAction): OrganizationState {
   const { data } = action.payload;
 
   return {
     ...state,
     selectedOrg: { ...data },
+    loadingOrg: false,
   };
 }
 
@@ -238,6 +249,8 @@ export const organizationReducer: Reducer<OrganizationState, AppAction> = (
       return setSelectedFighter(state, action);
     case GET_ORG_INFO_SUCCESS:
       return setOrgInfoSuccess(state, action);
+    case GET_ORG_INFO_IN_PROGRESS:
+      return setLoadingOrg(state, action);
     case GET_ORG_FIGHTERS_SUCCESS:
       return getOrgFightersSuccess(state, action);
     case SET_CHALLENGE_SUCCESS:

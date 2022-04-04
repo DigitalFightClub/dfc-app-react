@@ -68,3 +68,14 @@ export const CLEAR_CHALLENGE_MSG = '@Organization/DELETE-clear-challenge-msg';
 export type CLEAR_CHALLENGE_MSG = typeof CLEAR_CHALLENGE_MSG;
 export const CLEAR_ERROR_MSG = '@Organization/DELETE-clear-error-msg';
 export type CLEAR_ERROR_MSG = typeof CLEAR_ERROR_MSG;
+
+export const SET_FIGHT_RESULTS = '@FighterHistory/SET-fight-results';
+export type SET_FIGHT_RESULTS = typeof SET_FIGHT_RESULTS;
+export const SET_FIGHT_RESULTS_SUCCESS = '@FighterHistory/SET-fight-results-success';
+export type SET_FIGHT_RESULTS_SUCCESS = typeof SET_FIGHT_RESULTS_SUCCESS;
+export const SET_FIGHT_RESULTS_IN_PROGRESS = '@FighterHistory/SET-fight-results-in-progress';
+export type SET_FIGHT_RESULTS_IN_PROGRESS = typeof SET_FIGHT_RESULTS_IN_PROGRESS;
+export const SET_FIGHTER_CHALLENGE = '@FighterHistory/SET-fighter-challenge';
+export type SET_FIGHTER_CHALLENGE = typeof SET_FIGHTER_CHALLENGE;
+export const SET_FIGHTER_DETAILS = '@FighterHistory/SET-fighter-details';
+export type SET_FIGHTER_DETAILS = typeof SET_FIGHTER_DETAILS;

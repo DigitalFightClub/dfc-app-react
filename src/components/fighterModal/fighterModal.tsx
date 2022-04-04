@@ -1,16 +1,50 @@
-import { Flex, Button } from '@chakra-ui/react';
-import { FighterModalProps, FighterModalState } from '../../types';
+import { Flex, Button, Center, Skeleton } from '@chakra-ui/react';
+import { AppState, FighterModalProps, FighterModalState } from '../../types';
 import { CloseIcon } from '@chakra-ui/icons';
 import FighterDetailsModal from './fighterDetailsModal';
-import { useState } from 'react';
 import FighterChallengeModal from './fighterChallengeModal';
+import FighterResultModal from './fighterResultModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { dfcAction } from '../../types/actions';
+import { SET_FIGHTER_DETAILS } from '../../config/events';
 
 export default function FighterModal({ onClose, fighterData }: FighterModalProps) {
-  const [fighterModalState, setFighterModalState] = useState<FighterModalState>(FighterModalState.DETAILS);
+  const { fighterModalState } = useSelector((state: AppState) => state.fightHistoryState);
+  const dispatch = useDispatch();
 
-  const handleChallenge = () => {
-    setFighterModalState(FighterModalState.CHALLENGE);
-  };
+  const [isReset, setIsReset] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log('Rest modal', fighterModalState);
+    dispatch(dfcAction(SET_FIGHTER_DETAILS, {}));
+  }, []);
+
+  useEffect(() => {
+    if (FighterModalState.DETAILS === fighterModalState) {
+      setIsReset(true);
+    }
+  }, [fighterModalState]);
+
+  let modalView: React.ReactElement | null = null;
+  switch (fighterModalState) {
+    case FighterModalState.DETAILS:
+      modalView = <FighterDetailsModal fighterData={fighterData} />;
+      break;
+    case FighterModalState.CHALLENGE:
+      if (fighterData) {
+        modalView = <FighterChallengeModal opponentData={fighterData} onClose={onClose} />;
+      } else {
+        modalView = (
+          <Center>
+            <p>Missing Fighter selection...</p>
+          </Center>
+        );
+      }
+      break;
+    case FighterModalState.RESULTS:
+      modalView = <FighterResultModal />;
+  }
 
   return (
     <Flex
@@ -37,14 +71,7 @@ export default function FighterModal({ onClose, fighterData }: FighterModalProps
       >
         <CloseIcon />
       </Button>
-
-      {FighterModalState.DETAILS === fighterModalState ? (
-        <FighterDetailsModal fighterData={fighterData} handleChallenge={handleChallenge} />
-      ) : fighterData ? (
-        <FighterChallengeModal opponentData={fighterData} onClose={onClose} />
-      ) : (
-        <p>Missing Fighter selection...</p>
-      )}
+      <Skeleton isLoaded={isReset}>{modalView}</Skeleton>
     </Flex>
   );
 }

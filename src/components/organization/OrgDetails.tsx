@@ -32,6 +32,7 @@ import DfcPagination from '../pagination/DfcPagination';
 
 export interface OrgHeaderProps {
   orgData: OrganizationInfo | null;
+  loadingOrg: boolean;
   selectedFighterId: number | undefined;
   selectedFighterName: string | undefined;
   selectedFighterCountryCode: string | undefined;
@@ -39,6 +40,7 @@ export interface OrgHeaderProps {
 
 export default function OrgDetails({
   orgData,
+  loadingOrg,
   selectedFighterId,
   selectedFighterName,
   selectedFighterCountryCode,
@@ -165,60 +167,59 @@ export default function OrgDetails({
         gap="1rem"
         bgGradient="linear(to-r, rgba(204, 204, 204, 0.1), rgba(204, 204, 204, 0.05))"
       >
-        <Center>
-          {orgData && orgData.orgIcon ? (
-            <Image h="3.375rem" w="3.375rem" display="inline" src={orgData.orgIcon} mr="1rem" />
-          ) : null}
-          <Text fontSize="42px" fontWeight="semibold">
-            {orgData && orgData.orgName ? orgData.orgName : ''}
-          </Text>
-        </Center>
-        <Center>
-          <Text fontSize="24px" fontWeight="normal">
-            {orgData && orgData.orgCategory ? orgData.orgCategory : ''}
-          </Text>
-        </Center>
-
-        <Center>
-          {selectedFighterName ? (
-            <Text fontSize="24px" fontWeight="normal">
-              {selectedFighterName}
-              {selectedFighterCountryCode ? (
-                <chakra.span ml="10px" className={`fi fi-${selectedFighterCountryCode.toLowerCase()}`} />
+        <Skeleton isLoaded={!loadingOrg}>
+          <VStack>
+            <Center>
+              {orgData && orgData.orgIcon ? (
+                <Image h="3.375rem" w="3.375rem" display="inline" src={orgData.orgIcon} mr="1rem" />
               ) : null}
-            </Text>
-          ) : (
-            <Text fontSize="16px" fontWeight="normal" fontStyle="italic">
-              No Fighter Selected
-            </Text>
-          )}
-        </Center>
+              <Text fontSize="42px" fontWeight="semibold">
+                {orgData && orgData.orgName ? orgData.orgName : ''}
+              </Text>
+            </Center>
+            <Center>
+              <Text fontSize="24px" fontWeight="normal">
+                {orgData && orgData.orgCategory ? orgData.orgCategory : ''}
+              </Text>
+            </Center>
+
+            <Center>
+              {selectedFighterName ? (
+                <Text fontSize="24px" fontWeight="normal">
+                  {selectedFighterName}
+                  {selectedFighterCountryCode ? (
+                    <chakra.span ml="10px" className={`fi fi-${selectedFighterCountryCode.toLowerCase()}`} />
+                  ) : null}
+                </Text>
+              ) : (
+                <Text fontSize="16px" fontWeight="normal" fontStyle="italic">
+                  No Fighter Selected
+                </Text>
+              )}
+            </Center>
+          </VStack>
+        </Skeleton>
 
         {/* TODO: Dispatch filter state */}
         <Center flexWrap="wrap" gap="40px">
           <HStack>
             <Text color={selectAvailable ? 'grey' : 'white'}>All</Text>
-            <Switch
-              colorScheme="green"
-              size="md"
-              defaultChecked
-              onChange={() => setSelectAvailable(!selectAvailable)}
-            />
+            <Switch disabled colorScheme="green" size="md" onChange={() => setSelectAvailable(!selectAvailable)} />
             <Text color={!selectAvailable ? 'grey' : 'white'}>Available</Text>
           </HStack>
           <HStack>
             <Text color={selectOnlineOnly ? 'grey' : 'white'}>All</Text>
-            <Switch colorScheme="green" size="md" onChange={() => setSelectOnlineOnly(!selectOnlineOnly)} />
+            <Switch disabled colorScheme="green" size="md" onChange={() => setSelectOnlineOnly(!selectOnlineOnly)} />
             <Text wordBreak="keep-all" color={!selectOnlineOnly ? 'grey' : 'white'}>
               Online Only
             </Text>
           </HStack>
           <HStack>
             <Text color={selectChallengers ? 'grey' : 'white'}>All</Text>
-            <Switch colorScheme="green" size="md" onChange={() => setSelectChallengers(!selectChallengers)} />
+            <Switch disabled colorScheme="green" size="md" onChange={() => setSelectChallengers(!selectChallengers)} />
             <Text color={!selectChallengers ? 'grey' : 'white'}>Challengers</Text>
           </HStack>
-          <Checkbox colorScheme="green">Default All</Checkbox>
+          <Checkbox disabled colorScheme="green">Default All</Checkbox>
         </Center>
         <Divider />
         <DfcPagination

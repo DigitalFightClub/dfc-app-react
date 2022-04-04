@@ -1,15 +1,23 @@
-import { AppAction, FighterHistoryState, FightHistoryBrief } from '../../types';
+import { AppAction, FighterHistoryState, FighterModalState, FightHistoryBrief } from '../../types';
 import { Reducer } from 'redux';
+import _ from 'lodash';
 import {
   GET_FIGHTER_HISTORY_SUCCESS,
   GET_FIGHTER_HISTORY_FAILED,
   GET_FIGHTER_HISTORY_IN_PROGRESS,
+  SET_FIGHTER_CHALLENGE,
+  SET_FIGHTER_DETAILS,
+  SET_FIGHT_RESULTS_IN_PROGRESS,
+  SET_FIGHT_RESULTS_SUCCESS,
 } from '../../config/events';
 
 export const initFighterHistoryState: FighterHistoryState = {
   fighterHistory: [],
+  selectedFightHistoryBrief: null,
+  loadingFightResult: false,
   getFighterHistoryError: null,
   loadingFighterHistory: false,
+  fighterModalState: FighterModalState.DETAILS,
 };
 
 /**
@@ -30,13 +38,10 @@ function setFighterHistory(
   };
 }
 
-function setLoadingFighterHistory(state: FighterHistoryState, action: AppAction<string, boolean>): FighterHistoryState {
-  const { data = true } = action.payload;
-  console.log('loading fight history in progress', data);
-
+function setLoadingFighterHistory(state: FighterHistoryState): FighterHistoryState {
   return {
     ...state,
-    loadingFighterHistory: data,
+    loadingFighterHistory: true,
     getFighterHistoryError: null,
   };
 }
@@ -50,7 +55,45 @@ function setGetFighterHistoryFailed(
   return {
     ...state,
     loadingFighterHistory: false,
+    loadingFightResult: false,
     getFighterHistoryError: msg ? msg : null,
+  };
+}
+
+
+function setFighterDetails(state: FighterHistoryState): FighterHistoryState {
+  return {
+    ...state,
+    fighterModalState: FighterModalState.DETAILS,
+    selectedFightHistoryBrief: null,
+  };
+}
+
+function setFighterChallenge(state: FighterHistoryState): FighterHistoryState {
+  return {
+    ...state,
+    fighterModalState: FighterModalState.CHALLENGE,
+    selectedFightHistoryBrief: null,
+  };
+}
+
+function setFightResultsSuccess(state: FighterHistoryState, action: AppAction): FighterHistoryState {
+  const { data } = action.payload;
+
+  const copyData: FightHistoryBrief = _.cloneDeep(data);
+
+  return {
+    ...state,
+    selectedFightHistoryBrief: copyData,
+    fighterModalState: FighterModalState.RESULTS,
+    loadingFightResult: false,
+  };
+}
+
+function setFightResultsInProgress(state: FighterHistoryState): FighterHistoryState {
+  return {
+    ...state,
+    loadingFightResult: true,
   };
 }
 
@@ -64,7 +107,15 @@ export const FightHistoryReducer: Reducer<FighterHistoryState, AppAction> = (
     case GET_FIGHTER_HISTORY_FAILED:
       return setGetFighterHistoryFailed(state, action);
     case GET_FIGHTER_HISTORY_IN_PROGRESS:
-      return setLoadingFighterHistory(state, action);
+      return setLoadingFighterHistory(state);
+    case SET_FIGHTER_DETAILS:
+      return setFighterDetails(state);
+    case SET_FIGHTER_CHALLENGE:
+      return setFighterChallenge(state);
+    case SET_FIGHT_RESULTS_SUCCESS:
+      return setFightResultsSuccess(state, action);
+    case SET_FIGHT_RESULTS_IN_PROGRESS:
+      return setFightResultsInProgress(state);
     default:
       return { ...state };
   }

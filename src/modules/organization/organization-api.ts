@@ -1,7 +1,6 @@
-import Web3Api from 'moralis/types/generated/web3Api';
 import axios from 'axios';
 import { getDFCNFTs, transformFighterMetadata } from '../../utils/web3/moralis';
-import { ChallengeState, FighterInfo, FighterNFT, OrganizationInfo } from '../../types';
+import { ChallengeState, FighterInfo, FighterNFT, OrganizationInfo, TokenNFTResult } from '../../types';
 import { ENV_CONFG } from './../../config';
 import Moralis from 'moralis/types';
 
@@ -62,13 +61,14 @@ class OrganizationApi {
   }
 
   public async getOrgFighters(
-    web3Api: Web3Api,
+    web3Api: any,
     limit: number,
     offset: number,
     address: string,
     nftId: number
   ): Promise<FighterInfo[]> {
-    return await getDFCNFTs(web3Api, limit, offset, address, nftId);
+    const result: TokenNFTResult = await getDFCNFTs(web3Api, limit, offset, address, nftId);
+    return result.result;
   }
 
   public async getFighterInfo(fighterData: FighterInfo): Promise<FighterInfo> {
@@ -79,7 +79,7 @@ class OrganizationApi {
     };
   }
 
-  private async transformFighterMetadata(fighterNFTs: FighterNFT[], address: string): Promise<FighterInfo> {
+  private async transformFighterMetadata(fighterNFTs: FighterNFT[], address: string): Promise<FighterInfo[]> {
     return transformFighterMetadata(fighterNFTs, address);
   }
 

@@ -5,7 +5,7 @@ export type BaseMoralisNFT = {
   token_id: string;
   contract_type: string;
   token_uri: string;
-  metadata: string;
+  metadata: FighterNFT;
   synced_at: string;
   amount: string;
   name: string;
@@ -74,6 +74,7 @@ export enum ChallengeState {
 export enum FighterModalState {
   DETAILS,
   CHALLENGE,
+  RESULTS,
 }
 
 export type FighterModalProps = {
@@ -84,7 +85,6 @@ export type FighterModalProps = {
 export type FighterModalProps2 = {
   fighterData: FighterInfo | null;
   isHorizontal: boolean;
-  handleChallenge: () => void;
 };
 
 export type FighterStats = {
@@ -128,12 +128,38 @@ export enum MatchResult {
 
 export type FightHistoryBrief = {
   matchId: string;
+  challengerId: number;
   challengerName: string;
   challengerImage: string;
+  challengerCountryCode?: string;
+  challengerWins?: number;
+  challengerLoses?: number;
+  opponentId: number;
   opponentName: string;
   opponentImage: string;
+  opponentCountryCode?: string;
+  opponentWins?: number;
+  opponentLoses?: number;
+  fightResults: FightResults;
+  winnerId: number;
   matchResult: MatchResult;
-  matchDetails: string;
+};
+
+export type FightResults = {
+  winner: string;
+  winner_style: string;
+  unanimous: boolean;
+  outcome: string;
+  rounds: Round[];
+};
+
+export type Round = {
+  roundNumber: number;
+  afterStoppage: boolean;
+  challengerScore: number;
+  opponentScore: number;
+  roundWinner: string;
+  stoppage: boolean;
 };
 
 export type OrganizationInfo = {
@@ -145,6 +171,7 @@ export type OrganizationInfo = {
 export type OrganizationState = {
   selectedFighter: FighterInfo | null;
   selectedOrg: OrganizationInfo | null;
+  loadingOrg: boolean;
   orgFighters: FighterInfo[] | null;
   challengeMsg?: string;
   challengeInProgress: boolean;
@@ -154,8 +181,11 @@ export type OrganizationState = {
 
 export type FighterHistoryState = {
   fighterHistory: FightHistoryBrief[];
+  selectedFightHistoryBrief: FightHistoryBrief | null;
+  loadingFightResult: boolean;
   loadingFighterHistory: boolean;
   getFighterHistoryError: string | null;
+  fighterModalState: FighterModalState;
 };
 
 export type GymState = {

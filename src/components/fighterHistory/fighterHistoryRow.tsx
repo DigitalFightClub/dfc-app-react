@@ -1,5 +1,8 @@
 import { Divider, Flex, Box, Text, Center, Spacer } from '@chakra-ui/react';
+import { useDispatch } from 'react-redux';
+import { SET_FIGHT_RESULTS } from '../../config/events';
 import { FightHistoryBrief, MatchResult } from '../../types';
+import { dfcAction } from '../../types/actions';
 import FighterAvatar from './fighterAvatar';
 
 export interface FighterHistoryRowProps {
@@ -7,8 +10,17 @@ export interface FighterHistoryRowProps {
 }
 
 export default function FighterHistoryRow({ fightHistoryBrief }: FighterHistoryRowProps) {
+  const dispatch = useDispatch();
+
+  const handleResults = () => {
+    dispatch(dfcAction(SET_FIGHT_RESULTS, {
+      data: fightHistoryBrief,
+      msg: '',
+    }));
+  };
+
   return (
-    <Flex w="100%" flexDir="column">
+    <Flex maxWidth="325px" flexDir="column">
       <div
         style={{
           width: '100%',
@@ -19,6 +31,7 @@ export default function FighterHistoryRow({ fightHistoryBrief }: FighterHistoryR
           // boxShadow: '0px 0px 40px -5px #2ABB75',
           borderWidth: '0px',
         }}
+        onClick={handleResults}
       >
         <Flex w="100%">
           <Box py="1" pl="1" pr="1">
@@ -55,7 +68,7 @@ export default function FighterHistoryRow({ fightHistoryBrief }: FighterHistoryR
         </Flex>
         <Center p="1">
           <Text size="sm" fontFamily="Sora" fontWeight="light" fontSize="14px">
-            DETAILS: {fightHistoryBrief.matchDetails}
+            DETAILS: {fightHistoryBrief && fightHistoryBrief.fightResults ? fightHistoryBrief.fightResults.outcome : ''}
           </Text>
         </Center>
       </div>

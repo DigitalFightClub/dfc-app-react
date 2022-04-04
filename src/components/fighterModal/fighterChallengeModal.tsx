@@ -95,7 +95,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
 
   return (
     <Box position="relative" overflow="hidden" w="1024px" h="733">
-      <Image zIndex="-25" position="absolute" top="115px" right="315px" src="/assets/vs.svg" />
+      <Image zIndex="-25" position="absolute" top="55px" right="350px" w="325px" src="/assets/vs.svg" />
       {selectedFighter ? (
         <VStack>
           <HStack>

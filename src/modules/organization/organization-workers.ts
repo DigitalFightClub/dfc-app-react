@@ -15,7 +15,6 @@ import {
   GET_ORG_FIGHTERS_SUCCESS,
 } from '../../config/events';
 import { organizationApi } from './organization-api';
-import { ErrorResponse } from '../../types/Errors';
 import { dfcAction } from '../../types/actions';
 
 export function* getFighterInfoWorker(action: AppAction) {
@@ -49,11 +48,11 @@ export function* getFighterInfoWorker(action: AppAction) {
         })
       );
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed fetching fighter info', JSON.stringify(error));
 
     let msg = '';
-    if (error instanceof ErrorResponse) {
+    if (error && error.message) {
       msg = error.message;
     }
 
@@ -88,11 +87,11 @@ export function* getOrgInfoWorker(action: AppAction) {
         msg: 'Get org info successful',
       })
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed fetching org info', JSON.stringify(error));
 
     let msg = '';
-    if (error instanceof ErrorResponse) {
+    if (error && error.message) {
       msg = error.message;
     }
 
@@ -197,11 +196,11 @@ export function* getOrgFightersWorker(action: AppAction) {
         })
       );
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed fetching org fighters', JSON.stringify(error));
 
     let msg = '';
-    if (error instanceof ErrorResponse) {
+    if (error && error.message) {
       msg = error.message;
     }
 
