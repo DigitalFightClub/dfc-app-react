@@ -79,3 +79,5 @@ export const SET_FIGHTER_CHALLENGE = '@FighterHistory/SET-fighter-challenge';
 export type SET_FIGHTER_CHALLENGE = typeof SET_FIGHTER_CHALLENGE;
 export const SET_FIGHTER_DETAILS = '@FighterHistory/SET-fighter-details';
 export type SET_FIGHTER_DETAILS = typeof SET_FIGHTER_DETAILS;
+export const CLEAR_FIGHT_HISTORY = '@FighterHistory/SET-clear-fight-history';
+export type CLEAR_FIGHT_HISTORY = typeof CLEAR_FIGHT_HISTORY;

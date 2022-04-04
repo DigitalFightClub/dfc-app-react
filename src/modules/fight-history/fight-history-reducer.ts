@@ -9,6 +9,7 @@ import {
   SET_FIGHTER_DETAILS,
   SET_FIGHT_RESULTS_IN_PROGRESS,
   SET_FIGHT_RESULTS_SUCCESS,
+  CLEAR_FIGHT_HISTORY,
 } from '../../config/events';
 
 export const initFighterHistoryState: FighterHistoryState = {
@@ -32,7 +33,7 @@ function setFighterHistory(
 
   return {
     ...state,
-    fighterHistory: data ? [...data] : state.fighterHistory,
+    fighterHistory: data ? [...data] : [],
     loadingFighterHistory: false,
     getFighterHistoryError: null,
   };
@@ -59,7 +60,6 @@ function setGetFighterHistoryFailed(
     getFighterHistoryError: msg ? msg : null,
   };
 }
-
 
 function setFighterDetails(state: FighterHistoryState): FighterHistoryState {
   return {
@@ -97,6 +97,13 @@ function setFightResultsInProgress(state: FighterHistoryState): FighterHistorySt
   };
 }
 
+function clearFightHistory(state: FighterHistoryState): FighterHistoryState {
+  return {
+    ...state,
+    fighterHistory: [],
+  };
+}
+
 export const FightHistoryReducer: Reducer<FighterHistoryState, AppAction> = (
   state: FighterHistoryState = initFighterHistoryState,
   action: AppAction
@@ -116,6 +123,8 @@ export const FightHistoryReducer: Reducer<FighterHistoryState, AppAction> = (
       return setFightResultsSuccess(state, action);
     case SET_FIGHT_RESULTS_IN_PROGRESS:
       return setFightResultsInProgress(state);
+    case CLEAR_FIGHT_HISTORY:
+      return clearFightHistory(state);
     default:
       return { ...state };
   }

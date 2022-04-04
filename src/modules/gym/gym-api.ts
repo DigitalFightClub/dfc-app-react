@@ -26,29 +26,19 @@ class GymApi {
   public async getFigherChallenged(fighter: FighterInfo): Promise<FighterInfo> {
     console.log('gym api getfighterChallenges', fighter.fighterId);
     try {
-      // console.log('appendJsonMetaData uri', nft.token_uri);
-      //const response = await axios.get(`${ENV.FIGHTER_API_URL}/challenges`, { params: { nftId: fighter.fighterId } });
-      // console.log('appendJsonMetaData response.data', response.data);
-
-      const response = {
-        data: [
-          {
-            nftId: 2,
-            opponentId: 1,
-          },
-          {
-            nftId: 2,
-            opponentId: 3,
-          },
-          {
-            nftId: 2,
-            opponentId: 4,
-          },
-        ],
-      };
+      const response = await axios.get(`${ENV.FIGHTER_API_URL}/challenges`, { params: { nftId: fighter.fighterId } });
+      console.log('getFigherChallenged response.data', response.data);
 
       if (response && response.data && response.data.length > 0) {
-        fighter.challengeState = ChallengeState.CHALLENGED;
+        // check if fighter is being challenged
+        for (let i = 0; i < response.data.length; i++) {
+          const challenge: any = response.data[i];
+          if (fighter.fighterId === challenge.opponentId) {
+            console.log(`fighter ${fighter.fighterId} is being challenged by ${challenge.nftId}`);
+            fighter.challengeState = ChallengeState.CHALLENGED;
+            break;
+          }
+        }
       }
 
       return fighter;

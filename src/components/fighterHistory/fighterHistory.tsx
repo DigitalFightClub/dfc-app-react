@@ -23,6 +23,7 @@ export default function FighterHistory({ fighterData }: FighterHistoryProps) {
 
   // component state
   const [renderFighterHistory, setRenderFighterHistory] = useState<FightHistoryBrief[]>([]);
+  const [initialized, setInitialized] = useState<boolean>(false);
 
   // paging state
   const { currentPage, setCurrentPage, pagesCount, pages, setIsDisabled, isDisabled, pageSize, offset } = usePagination(
@@ -39,12 +40,13 @@ export default function FighterHistory({ fighterData }: FighterHistoryProps) {
   useEffect(() => {
     (async function () {
       console.log('Fetch fighter history', fighterData);
-      if (fighterData) {
+      if (fighterData && !loadingFighterHistory && !initialized) {
         dispatch(
           dfcAction(GET_FIGHTER_HISTORY_REQUEST, {
             data: { fighterData },
           })
         );
+        setInitialized(true);
       }
     })();
   }, []);
