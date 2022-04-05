@@ -126,7 +126,7 @@ export const initOrganizationState: OrganizationState = {
     },
     {
       styleId: 18,
-      style: 'Stick and Move',
+      style: 'Stick & Move',
       description:
         'You\'ve got quick hands and quicker feet. Land as many punches as possible and move to the next position.',
     },
