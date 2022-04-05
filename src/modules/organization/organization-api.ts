@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { getDFCNFTs, transformFighterMetadata } from '../../utils/web3/moralis';
 import { ChallengeState, FighterInfo, FighterNFT, OrganizationInfo, TokenNFTResult } from '../../types';
 import { ENV_CONFG } from './../../config';
@@ -33,7 +33,7 @@ class OrganizationApi {
     if (sig) {
       // console.log('appendJsonMetaData uri', nft.token_uri);
       const signerAddress: string = await signer.getAddress();
-      const response = await axios.post(`${ENV.FIGHTER_API_URL}/challenges`, {
+      const response: AxiosResponse<string> = await axios.post(`${ENV.FIGHTER_API_URL}/challenges`, {
         nftId,
         fightingStyle,
         opponentId,
@@ -45,13 +45,14 @@ class OrganizationApi {
           signer: 'MEW',
         },
       });
-      console.log('appendJsonMetaData response.data', response.data);
-      const message = response && response.data && response.data.message ? response.data.message : '';
-      return message;
+      console.log('challengeFighter response', response);
+      if (response) {
+        return { status: response.status, message: response.data };
+      }
     } else {
       console.log('signature was cancelled or failed');
     }
-    return { status: 500, message: 'Something went wrong...'};
+    return { status: 500, message: 'Something went wrong...' };
   }
 
   public async getOrgInfo(orgId: number): Promise<OrganizationInfo> {

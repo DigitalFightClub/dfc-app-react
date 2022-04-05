@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import Web3Api from 'moralis/types/generated/web3Api';
+import _ from 'lodash';
 import { ENV_CONFG } from '../../config';
-import { AccountNFTResult, ChallengeState, FighterInfo, MoralisNFT } from '../../types';
+import { AccountNFTResult, ChallengeState, FighterInfo, FightRecordResponse, MoralisNFT } from '../../types';
 import { getNFTs, transformFighterMetadata } from '../../utils/web3/moralis';
 
 const ENV = ENV_CONFG();
@@ -21,7 +22,23 @@ class GymApi {
 
   public async transformFighterMetadata(fighterNFTs: MoralisNFT[], address: string): Promise<FighterInfo[]> {
     console.log('gym api transform', fighterNFTs, address);
-    return transformFighterMetadata(fighterNFTs, address);
+    const refinedFighters: FighterInfo[] = transformFighterMetadata(fighterNFTs, address);
+    for (let i = 0; i < refinedFighters.length; i++) {
+      const fighter: FighterInfo = refinedFighters[i];
+      try {
+        const response: AxiosResponse<FightRecordResponse> = await axios.get(`${ENV.FIGHTER_API_URL}/fightRecord`, {
+          params: {
+            nftId: fighter.fighterId,
+          },
+        });
+        fighter.wins = _.get(response, 'data.record.wins', 0);
+        fighter.loses = _.get(response, 'data.record.losses', 0);
+      } catch (error) {
+        console.error('failed filling results data for gym fighter', fighter.fighterId, error);
+      }
+    }
+
+    return refinedFighters;
   }
 
   public async getFigherChallenged(fighter: FighterInfo): Promise<FighterInfo> {

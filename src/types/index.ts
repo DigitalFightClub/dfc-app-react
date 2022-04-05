@@ -62,6 +62,7 @@ export type FighterInfo = {
 export type Challenge = {
   nftId: number;
   opponentId: number;
+  timestamp: number;
 };
 
 export enum ChallengeState {
@@ -143,6 +144,7 @@ export type FightHistoryBrief = {
   fightResults: FightResults;
   winnerId: number;
   matchResult: MatchResult;
+  timestamp: number;
 };
 
 export type FightResults = {
@@ -160,6 +162,15 @@ export type Round = {
   opponentScore: number;
   roundWinner: string;
   stoppage: boolean;
+};
+
+export type FightRecord = {
+  wins: number;
+  losses: number;
+};
+
+export type FightRecordResponse = {
+  record: FightRecord;
 };
 
 export type OrganizationInfo = {

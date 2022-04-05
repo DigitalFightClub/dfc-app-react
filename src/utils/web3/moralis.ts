@@ -1,9 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios, { AxiosResponse } from 'axios';
+import _ from 'lodash';
 import { ENV_CONFG } from '../../config';
 import { TKO_ABI } from './tko-abi.js';
-import { AccountNFTResult, Challenge, ChallengeState, FighterInfo, MoralisNFT, TokenNFTResult } from '../../types';
+import {
+  AccountNFTResult,
+  Challenge,
+  ChallengeState,
+  FighterInfo,
+  FightRecordResponse,
+  MoralisNFT,
+  TokenNFTResult,
+} from '../../types';
 import Moralis from 'moralis/types';
 import countryMap from '../helpers/country-lookup';
 
@@ -96,6 +105,22 @@ export const getDFCNFTs = async (
 
     return fighter;
   });
+
+  // fill fighter records
+  for (let i = 0; i < flaggedNFTs.length; i++) {
+    const fighter: FighterInfo = flaggedNFTs[i];
+    try {
+      const response: AxiosResponse<FightRecordResponse> = await axios.get(`${ENV.FIGHTER_API_URL}/fightRecord`, {
+        params: {
+          nftId: fighter.fighterId,
+        },
+      });
+      fighter.wins = _.get(response, 'data.record.wins', 0);
+      fighter.loses = _.get(response, 'data.record.losses', 0);
+    } catch (error) {
+      console.error('failed filling results data for gym fighter', fighter.fighterId, error);
+    }
+  }
 
   const sortedFlaggedNFTs: FighterInfo[] = flaggedNFTs.sort((a: FighterInfo, b: FighterInfo) => {
     return a.fighterId > b.fighterId ? 1 : -1;
@@ -271,8 +296,7 @@ export const transformFighterMetadata = (fighters: any[], address: string): any 
     });
     // console.log(refinedFighters);
     return refinedFighters;
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error);
   }
   return null;
