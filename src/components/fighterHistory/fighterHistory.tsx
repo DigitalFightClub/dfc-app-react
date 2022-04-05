@@ -15,6 +15,7 @@ export interface FighterHistoryProps {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function FighterHistory({ fighterData }: FighterHistoryProps) {
   // Redux Hooks
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { fighterHistory, loadingFighterHistory, getFighterHistoryError } = useSelector((state: AppState) => {
     console.log(state);
     return state.fightHistoryState;

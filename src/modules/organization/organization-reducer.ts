@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { AppAction, OrganizationState } from '../../types';
 import { Reducer } from 'redux';
 import {

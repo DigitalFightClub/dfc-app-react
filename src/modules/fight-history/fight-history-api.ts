@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse } from 'axios';
 import { FighterInfo, FightHistoryBrief, MatchResult, Round } from '../../types';
 import { fetchJsonMetaData, transformFighterMetadata } from '../../utils/web3/moralis';

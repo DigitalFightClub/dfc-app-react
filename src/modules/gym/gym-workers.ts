@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AccountNFTResult, AppAction, FighterInfo } from '../../types';
 import { all, call, CallEffect, delay, put } from 'redux-saga/effects';
 import {

@@ -1,7 +1,5 @@
 import {
-  chakra,
   Box,
-  Flex,
   Image,
   Text,
   VStack,
@@ -11,7 +9,6 @@ import {
   Wrap,
   useToast,
   Skeleton,
-  Spacer,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useMoralis } from 'react-moralis';
