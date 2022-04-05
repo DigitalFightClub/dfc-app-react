@@ -33,11 +33,16 @@ export function* getFighterHistoryWorker(action: AppAction) {
       // Get fighter history
       console.log('Fetch fighter history');
       const fighterHistory: FightHistoryBrief[] = yield call(fightHistoryApi.getFighterHistory, data.fighterData);
-      console.log('Filled fighter history', JSON.stringify(fighterHistory));
+
+      // Sort history Desc order
+      const orderedHistory: FightHistoryBrief[] = fighterHistory.sort((a: FightHistoryBrief, b: FightHistoryBrief) => {
+        return b.timestamp > a.timestamp ? 1 : -1;
+      });
+      console.log('Filled fighter history', JSON.stringify(orderedHistory));
 
       yield put(
         dfcAction(GET_FIGHTER_HISTORY_SUCCESS, {
-          data: fighterHistory,
+          data: orderedHistory,
           msg: 'Get fighter history successful',
         })
       );
