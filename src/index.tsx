@@ -1,21 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import ReactDOM from 'react-dom';
-// import configureStore from './configureStore';
-// import { Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import { MoralisProvider } from 'react-moralis';
 import { DAppProvider, Mumbai, Polygon, Mainnet } from '@usedapp/core';
 import { ENV_CONFG } from './config';
 import App from './App';
-// import { store } from './store';
+import { rootSagas } from './modules';
+import { store } from './store';
 import { theme } from './styles/theme';
 import './index.css';
 import '@fontsource/sora/variable.css';
 import '@fontsource/sora/400.css';
 
 const ENV = ENV_CONFG();
-// const store = configureStore();
+
+// Create store for Redux state management
+const theStore = store();
+
+// Start Redux Saga event/action management
+theStore.runSaga(rootSagas);
 
 const config = {
   readOnlyChainId: ENV.TARGET_NET.chainId,
@@ -33,14 +37,16 @@ const config = {
 
 ReactDOM.render(
   <React.StrictMode>
-    <DAppProvider config={config}>
-      <MoralisProvider appId={ENV.MORALIS_APP_ID} serverUrl={ENV.MORALIS_URL} initializeOnMount={true}>
-        <ChakraProvider theme={theme}>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <App />
-        </ChakraProvider>
-      </MoralisProvider>
-    </DAppProvider>
+    <Provider store={theStore}>
+      <DAppProvider config={config}>
+        <MoralisProvider appId={ENV.MORALIS_APP_ID} serverUrl={ENV.MORALIS_URL} initializeOnMount={true}>
+          <ChakraProvider theme={theme}>
+            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+            <App />
+          </ChakraProvider>
+        </MoralisProvider>
+      </DAppProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

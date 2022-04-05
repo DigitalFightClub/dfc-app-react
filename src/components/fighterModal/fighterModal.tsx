@@ -1,27 +1,53 @@
-import { Flex, Button, Grid, Tabs, TabList, TabPanels, Tab, TabPanel, Stack, Center, VStack } from '@chakra-ui/react';
-import { FighterModalProps, FighterStatistics } from '../../types';
-import { FighterHeader, FighterStats, FighterHistory } from './fighterModalComponents';
+import { Flex, Button, Center, Skeleton } from '@chakra-ui/react';
+import { AppState, FighterModalProps, FighterModalState } from '../../types';
 import { CloseIcon } from '@chakra-ui/icons';
+import FighterDetailsModal from './fighterDetailsModal';
+import FighterChallengeModal from './fighterChallengeModal';
+import FighterResultModal from './fighterResultModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { dfcAction } from '../../types/actions';
+import { CLEAR_CHALLENGE_MSG, CLEAR_ERROR_MSG, CLEAR_FIGHT_HISTORY, SET_FIGHTER_DETAILS } from '../../config/events';
 
-export default function FighterModal({ fighterType, onClose, fighterData }: FighterModalProps) {
-  const fighterStatistics: FighterStatistics = [
-    ['Power', fighterData.stats.power],
-    ['Kickboxing', fighterData.stats.kickboxing],
-    ['Speed', fighterData.stats.speed],
-    ['BJJ', fighterData.stats.bjj],
-    ['Strength', fighterData.stats.strength],
-    ['Karate', fighterData.stats.karate],
-    ['Flexibility', fighterData.stats.flexibility],
-    ['Wrestling', fighterData.stats.wrestling],
-    ['Conditioning', fighterData.stats.conditioning],
-    ['Judo', fighterData.stats.judo],
-    ['Balance', fighterData.stats.balance],
-    ['Muay Thai', fighterData.stats.mauyThai],
-    ['Reflex', fighterData.stats.reflex],
-    ['Taekwondo', fighterData.stats.taekwondo],
-    ['Footwork', fighterData.stats.footwork],
-    ['Sambo', fighterData.stats.sambo],
-  ];
+export default function FighterModal({ onClose, fighterData }: FighterModalProps) {
+  const { fighterModalState } = useSelector((state: AppState) => state.fightHistoryState);
+  const dispatch = useDispatch();
+
+  const [isReset, setIsReset] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log('Reset modal', fighterModalState);
+    dispatch(dfcAction(SET_FIGHTER_DETAILS, {}));
+    dispatch(dfcAction(CLEAR_FIGHT_HISTORY, {}));
+    dispatch(dfcAction(CLEAR_CHALLENGE_MSG, {}));
+    dispatch(dfcAction(CLEAR_ERROR_MSG, {}));
+  }, []);
+
+  useEffect(() => {
+    if (FighterModalState.DETAILS === fighterModalState) {
+      setIsReset(true);
+    }
+  }, [fighterModalState]);
+
+  let modalView: React.ReactElement | null = null;
+  switch (fighterModalState) {
+    case FighterModalState.DETAILS:
+      modalView = <FighterDetailsModal fighterData={fighterData} />;
+      break;
+    case FighterModalState.CHALLENGE:
+      if (fighterData) {
+        modalView = <FighterChallengeModal opponentData={fighterData} onClose={onClose} />;
+      } else {
+        modalView = (
+          <Center>
+            <p>Missing Fighter selection...</p>
+          </Center>
+        );
+      }
+      break;
+    case FighterModalState.RESULTS:
+      modalView = <FighterResultModal />;
+  }
 
   return (
     <Flex
@@ -39,72 +65,16 @@ export default function FighterModal({ fighterType, onClose, fighterData }: Figh
         _hover={{ color: 'white', bg: 'gray' }}
         transition="0.5s"
         position="absolute"
-        top="5px"
-        right="5px"
+        top="-10px"
+        right="-10px"
         size="sm"
         p="0px"
+        zIndex="200"
         onClick={onClose}
       >
         <CloseIcon />
       </Button>
-
-      {/* Desktop friendly tabbed layout */}
-      <Grid templateColumns="2fr 1fr" w="100%" display={{ base: 'none', lg: 'flex' }}>
-        <Grid templateRows="1fr 1.5fr">
-          <FighterHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={true} />
-          <FighterStats fighterStatistics={fighterStatistics} />
-        </Grid>
-
-        <FighterHistory />
-      </Grid>
-
-      {/* Tablet friendly tabbed layout */}
-      <Grid templateColumns="1fr" w="100%" display={{ base: 'none', md: 'flex', lg: 'none' }}>
-        <Stack w="100%">
-          <FighterHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={true} />
-
-          <Tabs>
-            <Center>
-              <TabList>
-                <Tab>Fighter Stats</Tab>
-                <Tab>Fight History</Tab>
-              </TabList>
-            </Center>
-
-            <TabPanels minH="500px">
-              <TabPanel>
-                <FighterStats fighterStatistics={fighterStatistics} />
-              </TabPanel>
-              <TabPanel>
-                <FighterHistory />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Stack>
-      </Grid>
-
-      {/* Mobile friendly tabbed layout */}
-      <VStack w="100%" display={{ base: 'flex', md: 'none' }}>
-        <FighterHeader fighterType={fighterType} fighterData={fighterData} isHorizontal={false} />
-
-        <Tabs>
-          <Center>
-            <TabList>
-              <Tab>Fighter Stats</Tab>
-              <Tab>Fight History</Tab>
-            </TabList>
-          </Center>
-
-          <TabPanels>
-            <TabPanel>
-              <FighterStats fighterStatistics={fighterStatistics} />
-            </TabPanel>
-            <TabPanel>
-              <FighterHistory />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </VStack>
+      <Skeleton isLoaded={isReset}>{modalView}</Skeleton>
     </Flex>
   );
 }
