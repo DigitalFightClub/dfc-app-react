@@ -1,26 +1,31 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
-import { Grid, Container, Stack, VStack, Box, Alert, AlertIcon } from '@chakra-ui/react';
-import { useMoralisWeb3Api, useMoralis, useERC20Balances } from 'react-moralis';
+import { Grid, Container, Stack, VStack, Box, Alert, AlertIcon, Skeleton } from '@chakra-ui/react';
+import { useMoralisWeb3Api, useMoralis } from 'react-moralis';
 import { useEthers } from '@usedapp/core';
 
-import LoadingScreen from 'react-loading-screen';
-
-import { getNFTs, transformFighterMetadata, getTKOBalance } from '../../utils/web3/moralis';
+import { getTKOBalance } from '../../utils/web3/moralis';
 
 import GymTile from '../gymTile';
 import GymHeader from '../gymHeader';
 import FighterSelection from '../fighterSelection';
-import Moralis from 'moralis/types';
+import { RouteComponentProps } from 'react-router';
+import { AppState, FighterInfo } from '../../types';
+import { GET_GYM_FIGHTERS_REQUEST } from '../../config/events';
+import { dfcAction } from '../../types/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Gym() {
   const { isInitialized, isInitializing, Moralis } = useMoralis();
-  const [ isLoaded, setIsLoaded ] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const { account } = useEthers();
   const Web3Api = useMoralisWeb3Api();
 
-  const [rawFightersMeta, setRawFightersMeta] = useState([]);
-  const [refinedFightersMeta, setRefinedFightersMeta] = useState([]);
+  // Redux Hooks
+  const { gymFighters, loadingGymFighters, getGymFightersError } = useSelector((state: AppState) => state.gymState);
+  const dispatch = useDispatch();
+
+  const [renderGymFighters, setRenderGymFighters] = useState<FighterInfo[]>([]);
   const [nftCount, setNftCount] = useState(0);
   const [activeFighters, setActiveFighters] = useState(0);
   const [retiredFighters, setRetiredFighters] = useState(0);
@@ -29,31 +34,31 @@ export default function Gym() {
   const [tkoTotal, setTkoTotal] = useState('0');
   const [championshipsHeld, setChampionshipsHeld] = useState(0);
 
-  const { fetchERC20Balances, data, isLoading, isFetching, error } = useERC20Balances();
-
   useEffect(() => {
     (async function () {
       if (isInitialized && account && !isLoaded) {
-        const nfts = await getNFTs(Web3Api, account);
+        dispatch(
+          dfcAction(GET_GYM_FIGHTERS_REQUEST, {
+            data: { web3Api: Web3Api, address: account },
+          })
+        );
+
         const tko = await getTKOBalance(Moralis, account);
         const tkoWei: number = +Moralis.Units.FromWei(tko.toString());
         setTkoTotal(Intl.NumberFormat('en-US').format(tkoWei));
-        setRawFightersMeta(nfts);
-        // console.log(nfts);
-        setNftCount(nfts.length);
         setIsLoaded(true);
       }
     })();
   }, [isInitialized, account]);
 
   useEffect(() => {
-    if (rawFightersMeta.length > 0) {
-      // console.log(rawFightersMeta);
-      const result = transformFighterMetadata(rawFightersMeta);
-      setRefinedFightersMeta(result);
-      // console.log(result);
+    if (gymFighters) {
+      console.log('Got Gym Fighters', JSON.stringify(gymFighters));
+      const newGymFighters: FighterInfo[] = [...gymFighters];
+      setRenderGymFighters(newGymFighters);
+      setNftCount(newGymFighters.length);
     }
-  }, [rawFightersMeta]);
+  }, [gymFighters]);
 
   return (
     <Box>
@@ -87,12 +92,24 @@ export default function Gym() {
               gap="30px"
               justifyContent="center"
             >
-              <GymTile datanumber={nftCount} dataname="Active Fighters" />
-              <GymTile datanumber={activeFightRecord} dataname="Active Fight Record" />
-              <GymTile datanumber={tkoTotal} dataname="$TKO Tokens" />
-              <GymTile datanumber={retiredFighters} dataname="Retired Fighters" />
-              <GymTile datanumber={overallFightRecord} dataname="Overall Fight Record" />
-              <GymTile datanumber={championshipsHeld} dataname="Championships Held" />
+              <Skeleton isLoaded={!loadingGymFighters}>
+                <GymTile datanumber={nftCount} dataname="Active Fighters" />
+              </Skeleton>
+              <Skeleton isLoaded={!loadingGymFighters}>
+                <GymTile datanumber={activeFightRecord} dataname="Active Fight Record" />
+              </Skeleton>
+              <Skeleton isLoaded={!loadingGymFighters}>
+                <GymTile datanumber={tkoTotal} dataname="$TKO Tokens" />
+              </Skeleton>
+              <Skeleton isLoaded={!loadingGymFighters}>
+                <GymTile datanumber={retiredFighters} dataname="Retired Fighters" />
+              </Skeleton>
+              <Skeleton isLoaded={!loadingGymFighters}>
+                <GymTile datanumber={overallFightRecord} dataname="Overall Fight Record" />
+              </Skeleton>
+              <Skeleton isLoaded={!loadingGymFighters}>
+                <GymTile datanumber={championshipsHeld} dataname="Championships Held" />
+              </Skeleton>
             </Grid>
 
             {/* <Stack spacing={3}>
@@ -118,7 +135,9 @@ export default function Gym() {
             </Stack> */}
 
             {/* Pass in refined fighter metadata */}
-            {refinedFightersMeta.length > 0 ? <FighterSelection refinedFightersMeta={refinedFightersMeta} /> : null}
+            {/* {renderGymFighters.length > 0 ? ( */}
+            <FighterSelection gymFighters={renderGymFighters} loadingGymFitghers={loadingGymFighters} />
+            {/* ) : null} */}
           </VStack>
         </Container>
       </div>

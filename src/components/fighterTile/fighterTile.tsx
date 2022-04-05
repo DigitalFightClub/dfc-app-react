@@ -1,98 +1,27 @@
 import {
   Box,
-  chakra,
   useDisclosure,
   Image,
   Grid,
-  Text,
-  Heading,
   Modal,
   ModalOverlay,
   ModalContent,
   useBreakpointValue,
+  Center,
+  Skeleton,
+  SkeletonText,
 } from '@chakra-ui/react';
-import { FighterType } from '../../types';
+import { ChallengeState, FighterInfo, FighterStatus } from '../../types';
+import { ChallengeIcon } from '../dfcIcons/ChallengeIcon';
+import FighterData from '../fighterData';
 import FighterModal from '../fighterModal/fighterModal';
 
-const FighterData = ({ fighterData, fighterType }: FighterType) => {
-  return (
-    <Grid templateRows="repeat(3, 30px)" textAlign="left" minH="180px" gap="11px">
-      <Heading
-        textAlign={{
-          xl: 'left',
-          lg: 'left',
-          md: 'left',
-          sm: 'center',
-          base: 'center',
-        }}
-        variant="header3"
-      >
-        {fighterData.name}
-      </Heading>
+export interface FighterTileProps {
+  fighterData?: FighterInfo;
+  loadingGymFitghers?: boolean;
+}
 
-      <Heading
-        variant="header4"
-        textAlign={{
-          xl: 'left',
-          lg: 'left',
-          md: 'left',
-          sm: 'center',
-          base: 'center',
-        }}
-      >
-        Record:
-        <Text display="inline" color="primary.500">
-          &nbsp;
-          {fighterData.wins}
-        </Text>
-        {'-'}
-        <chakra.span display="inline" color="secondary.500">
-          {fighterData.loses}
-        </chakra.span>
-      </Heading>
-
-      <Grid
-        templateColumns={{
-          xl: '1',
-          lg: '1fr',
-          md: '1fr',
-          sm: 'repeat(2, 1fr)',
-          base: 'repeat(2, 1fr)',
-        }}
-        gap="11px"
-      >
-        <Text variant="micro">
-          HEIGHT:&nbsp;&nbsp;
-          <chakra.span display="inline">{fighterData.height}</chakra.span>
-        </Text>
-
-        <Text variant="micro">
-          WEIGHT:&nbsp;&nbsp;
-          <chakra.span display="inline">{fighterData.weight}</chakra.span>
-        </Text>
-
-        <Text variant="micro">
-          GENDER:&nbsp;&nbsp;
-          <chakra.span display="inline">{fighterData.gender}</chakra.span>
-        </Text>
-
-        <Text variant="micro">
-          RECRUITED:&nbsp;&nbsp;
-          <chakra.span display="inline">{fighterData.recruited}</chakra.span>
-        </Text>
-
-        <Text variant="micro">
-          STATUS:&nbsp;&nbsp;
-          <chakra.span display="inline" fontWeight="400" color={fighterType === 'active' ? 'green' : 'red'}>
-            {fighterData.status}
-          </chakra.span>
-        </Text>
-      </Grid>
-    </Grid>
-  );
-};
-
-export default function FighterTile({ fighterData, fighterType }: FighterType) {
+export default function FighterTile({ fighterData = {} as FighterInfo, loadingGymFitghers = false }: FighterTileProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalSize = useBreakpointValue({ base: 'xs', md: '2xl', lg: '5xl' });
   const centered = useBreakpointValue({ base: false, md: true });
@@ -111,6 +40,7 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
     <>
       {isOpen && (
         <Modal
+          closeOnOverlayClick={false}
           size={modalSize}
           isCentered={centered}
           isOpen={isOpen}
@@ -119,16 +49,17 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
         >
           <ModalOverlay />
           <ModalContent>
-            <FighterModal fighterType={fighterType} onClose={onClose} fighterData={fighterData} />
+            <FighterModal onClose={onClose} fighterData={fighterData} />
           </ModalContent>
         </Modal>
       )}
 
       <Box
+        position="relative"
         boxSizing="border-box"
         bg="linear-gradient(95.1deg, rgba(204, 204, 204, 0.1) 0%, rgba(204, 204, 204, 0.05) 101.67%)"
         transition="ease-in-out 0.4s"
-        _hover={fighterType === 'active' ? activeHover : retiredHover}
+        _hover={fighterData.status === FighterStatus.ACTIVE ? activeHover : retiredHover}
         h="max-content"
         w="fit-content"
         py="24px"
@@ -136,6 +67,22 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
         alignContent="center"
         onClick={onOpen}
       >
+        <Center
+          position="absolute"
+          w="50px"
+          h="50px"
+          top="-20px"
+          right="-20px"
+          bg="#DF2151"
+          color="white"
+          boxShadow="-10px 10px 40px -5px #DF2151"
+          pr="0"
+          zIndex="10"
+          display={ChallengeState.CHALLENGED === fighterData.challengeState ? 'flex' : 'none'}
+        >
+          <ChallengeIcon w="2.1rem" h="2.1rem" />
+        </Center>
+
         <Grid
           templateColumns={{
             xl: '1fr 1fr',
@@ -167,10 +114,14 @@ export default function FighterTile({ fighterData, fighterType }: FighterType) {
             }}
             transition="0.5s"
           >
-            <Image boxSize="250px" src={fighterData.image} />
+            <Skeleton isLoaded={!loadingGymFitghers}>
+              <Image boxSize="250px" src={fighterData.image} />
+            </Skeleton>
           </Box>
 
-          <FighterData fighterData={fighterData} fighterType={fighterType} />
+          <SkeletonText isLoaded={!loadingGymFitghers}>
+            <FighterData isTile fighterInfo={fighterData} />
+          </SkeletonText>
         </Grid>
       </Box>
     </>
