@@ -45,8 +45,8 @@ class GymApi {
       return fighter;
     } catch (error: any) {
       console.error(error);
-      throw new Error(`${error.message}`);
     }
+    return fighter;
   }
 }
 

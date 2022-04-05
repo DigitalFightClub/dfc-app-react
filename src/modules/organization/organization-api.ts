@@ -32,19 +32,20 @@ class OrganizationApi {
     console.log('Challenge sig', sig);
     if (sig) {
       // console.log('appendJsonMetaData uri', nft.token_uri);
+      const signerAddress: string = await signer.getAddress();
       const response = await axios.post(`${ENV.FIGHTER_API_URL}/challenges`, {
         nftId,
         fightingStyle,
         opponentId,
         signedMessage: {
-          address: signer.getAddress(),
+          address: signerAddress,
           msg,
           sig,
           version: '3',
           signer: 'MEW',
         },
       });
-      // console.log('appendJsonMetaData response.data', response.data);
+      console.log('appendJsonMetaData response.data', response.data);
       const message = response && response.data && response.data.message ? response.data.message : '';
       return message;
     } else {
