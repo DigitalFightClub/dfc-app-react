@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import Web3Api from 'moralis/types/generated/web3Api';
 import { ENV_CONFG } from '../../config';

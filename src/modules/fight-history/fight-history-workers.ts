@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AppAction, FightHistoryBrief } from '../../types';
 import { call, put } from 'redux-saga/effects';
 import {

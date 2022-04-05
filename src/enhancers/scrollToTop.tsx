@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PropsWithChildren, useEffect } from 'react';
 import { useLocation } from 'react-router';
 
