@@ -45,7 +45,7 @@ class OrganizationApi {
           signer: 'MEW',
         },
       });
-      // console.log('appendJsonMetaData response.data', response.data);
+      console.log('appendJsonMetaData response.data', response.data);
       const message = response && response.data && response.data.message ? response.data.message : '';
       return message;
     } else {
