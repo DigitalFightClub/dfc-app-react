@@ -144,6 +144,7 @@ export function* setChallengeWorker(action: AppAction) {
     }
   } catch (error: any) {
     console.error('Failed set challenge', JSON.stringify(error));
+    console.log(error);
 
     let msg = '';
     if (error && error.message) {
