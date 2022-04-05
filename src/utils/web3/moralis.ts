@@ -142,11 +142,7 @@ const fillMissingMetadata = async (NFTs: MoralisNFT[]): Promise<MoralisNFT[]> =>
   const filledNFTs: MoralisNFT[] = [];
   const promises: Promise<MoralisNFT>[] = [];
   NFTs.forEach((nft: MoralisNFT) => {
-    if (nft.metadata) {
-      filledNFTs.push({ ...nft, metadata: nft.metadata });
-    } else {
-      promises.push(appendJsonMetaData(nft));
-    }
+    promises.push(appendJsonMetaData(nft));
   });
 
   // wait for metadata to complete and add to filledResults array
@@ -219,58 +215,64 @@ const getFighterChallenges = async (nftId: number): Promise<Challenge[]> => {
   return [];
 };
 
-export const transformFighterMetadata = (fighters: any[], address: string): FighterInfo[] => {
-  console.log('Transforming fighter', fighters, address);
-  const refinedFighters: FighterInfo[] = fighters.map((fighter: any) => {
-    const refinedFighter: any = {};
+export const transformFighterMetadata = (fighters: any[], address: string): any => {
+  try {
+    console.log('Transforming fighter', fighters, address);
+    const refinedFighters: FighterInfo[] = fighters.map((fighter: any) => {
+      const refinedFighter: any = {};
 
-    // console.log(fighter.name);
-    refinedFighter.fighterId = parseInt(fighter.metadata.image.split('/')[4].split('.')[0]);
-    refinedFighter.name = fighter.metadata.name;
-    refinedFighter.image = fighter.metadata.image;
+      console.log(fighter.name);
+      refinedFighter.fighterId = parseInt(fighter.metadata.image.split('/')[4].split('.')[0]);
+      refinedFighter.name = fighter.metadata.name;
+      refinedFighter.image = fighter.metadata.image;
 
-    refinedFighter.wins = '0';
-    refinedFighter.loses = '0';
-    refinedFighter.status = fighter.metadata.attributes[0].value;
-    refinedFighter.recruited = new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).format(parseInt(fighter.metadata.attributes[2].value) * 1000);
-    refinedFighter.gender = fighter.metadata.attributes[16].value;
-    refinedFighter.height = fighter.metadata.attributes[17].value;
-    refinedFighter.country = fighter.metadata.attributes[18].value;
-    refinedFighter.countryCode = countryMap.get(refinedFighter.country);
-    refinedFighter.weight = fighter.metadata.attributes[22].value;
+      refinedFighter.wins = '0';
+      refinedFighter.loses = '0';
+      refinedFighter.status = fighter.metadata.attributes[0].value;
+      refinedFighter.recruited = new Intl.DateTimeFormat('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      }).format(parseInt(fighter.metadata.attributes[2].value) * 1000);
+      refinedFighter.gender = fighter.metadata.attributes[16].value;
+      refinedFighter.height = fighter.metadata.attributes[17].value;
+      refinedFighter.country = fighter.metadata.attributes[18].value;
+      refinedFighter.countryCode = countryMap.get(refinedFighter.country);
+      refinedFighter.weight = fighter.metadata.attributes[22].value;
 
-    refinedFighter.stats = {};
-    refinedFighter.stats.power = parseInt(fighter.metadata.attributes[19].value);
-    refinedFighter.stats.speed = parseInt(fighter.metadata.attributes[20].value);
-    refinedFighter.stats.strength = parseInt(fighter.metadata.attributes[21].value);
+      refinedFighter.stats = {};
+      refinedFighter.stats.power = parseInt(fighter.metadata.attributes[19].value);
+      refinedFighter.stats.speed = parseInt(fighter.metadata.attributes[20].value);
+      refinedFighter.stats.strength = parseInt(fighter.metadata.attributes[21].value);
 
-    refinedFighter.stats.balance = parseInt(fighter.metadata.attributes[11].value);
-    refinedFighter.stats.conditioning = parseInt(fighter.metadata.attributes[12].value);
-    refinedFighter.stats.flexibility = parseInt(fighter.metadata.attributes[13].value);
-    refinedFighter.stats.reflex = parseInt(fighter.metadata.attributes[14].value);
-    refinedFighter.stats.footwork = parseInt(fighter.metadata.attributes[15].value);
+      refinedFighter.stats.balance = parseInt(fighter.metadata.attributes[11].value);
+      refinedFighter.stats.conditioning = parseInt(fighter.metadata.attributes[12].value);
+      refinedFighter.stats.flexibility = parseInt(fighter.metadata.attributes[13].value);
+      refinedFighter.stats.reflex = parseInt(fighter.metadata.attributes[14].value);
+      refinedFighter.stats.footwork = parseInt(fighter.metadata.attributes[15].value);
 
-    refinedFighter.stats.bjj = parseInt(fighter.metadata.attributes[3].value);
-    refinedFighter.stats.judo = parseInt(fighter.metadata.attributes[4].value);
-    refinedFighter.stats.karate = parseInt(fighter.metadata.attributes[5].value);
-    refinedFighter.stats.kickboxing = parseInt(fighter.metadata.attributes[6].value);
-    refinedFighter.stats.mauyThai = parseInt(fighter.metadata.attributes[7].value);
-    refinedFighter.stats.sambo = parseInt(fighter.metadata.attributes[8].value);
-    refinedFighter.stats.taekwondo = parseInt(fighter.metadata.attributes[9].value);
-    refinedFighter.stats.wrestling = parseInt(fighter.metadata.attributes[10].value);
-    console.log('isOwned transform', address, fighter);
-    if (fighter.owner_of) {
-      refinedFighter.isOwned = address.toLowerCase() === fighter.owner_of.toLowerCase();
-    } else {
-      refinedFighter.isOwned = false;
-    }
-    refinedFighter.challengeState = ChallengeState.AVAILABLE;
-    return refinedFighter;
-  });
-  // console.log(refinedFighters);
-  return refinedFighters;
+      refinedFighter.stats.bjj = parseInt(fighter.metadata.attributes[3].value);
+      refinedFighter.stats.judo = parseInt(fighter.metadata.attributes[4].value);
+      refinedFighter.stats.karate = parseInt(fighter.metadata.attributes[5].value);
+      refinedFighter.stats.kickboxing = parseInt(fighter.metadata.attributes[6].value);
+      refinedFighter.stats.mauyThai = parseInt(fighter.metadata.attributes[7].value);
+      refinedFighter.stats.sambo = parseInt(fighter.metadata.attributes[8].value);
+      refinedFighter.stats.taekwondo = parseInt(fighter.metadata.attributes[9].value);
+      refinedFighter.stats.wrestling = parseInt(fighter.metadata.attributes[10].value);
+      console.log('isOwned transform', address, fighter);
+      if (fighter.owner_of) {
+        refinedFighter.isOwned = address.toLowerCase() === fighter.owner_of.toLowerCase();
+      } else {
+        refinedFighter.isOwned = false;
+      }
+      refinedFighter.challengeState = ChallengeState.AVAILABLE;
+      return refinedFighter;
+    });
+    // console.log(refinedFighters);
+    return refinedFighters;
+  }
+  catch (error) {
+    console.error(error);
+  }
+  return null;
 };
