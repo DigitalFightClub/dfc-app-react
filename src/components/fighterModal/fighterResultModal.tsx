@@ -206,6 +206,9 @@ export default function FighterResultModal() {
               <Text fontFamily="Sora" fontWeight="semibold" fontSize="18px">
                 Winner By {selectedFightHistoryBrief.fightResults.outcome}
               </Text>
+              <Text fontFamily="Sora" fontWeight="normal" fontSize="16px">
+                Style: {selectedFightHistoryBrief.fightResults.winner_style}
+              </Text>
             </VStack>
             <FighterVerticalDetails
               fighterImage={selectedFightHistoryBrief.opponentImage}
