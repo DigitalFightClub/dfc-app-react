@@ -17,6 +17,7 @@ export const FighterDetails = ({ fighterData }: FighterDetailsProps) => {
           fighterImage={fighterData.image}
           fighterCountryCode={fighterData.countryCode}
           fighterName={fighterData.name}
+          fighterStyle={''}
           fighterWins={fighterData.wins}
           fighterLosses={fighterData.loses}
           fighterImageSize={312}

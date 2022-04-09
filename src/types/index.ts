@@ -135,12 +135,14 @@ export type FightHistoryBrief = {
   challengerCountryCode?: string;
   challengerWins?: number;
   challengerLoses?: number;
+  challengerStyle: string;
   opponentId: number;
   opponentName: string;
   opponentImage: string;
   opponentCountryCode?: string;
   opponentWins?: number;
   opponentLoses?: number;
+  opponentStyle: string;
   fightResults: FightResults;
   winnerId: number;
   matchResult: MatchResult;
