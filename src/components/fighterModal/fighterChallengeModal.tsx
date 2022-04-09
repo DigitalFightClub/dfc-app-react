@@ -99,6 +99,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
             <FighterVerticalDetails
               fighterImage={selectedFighter.image}
               fighterName={selectedFighter.name}
+              fighterStyle={''}
               fighterCountryCode={selectedFighter.countryCode}
               fighterWins={selectedFighter.wins}
               fighterLosses={selectedFighter.loses}
@@ -142,6 +143,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
             <FighterVerticalDetails
               fighterImage={opponentData.image}
               fighterName={opponentData.name}
+              fighterStyle={''}
               fighterCountryCode={opponentData.countryCode}
               fighterWins={opponentData.wins}
               fighterLosses={opponentData.loses}

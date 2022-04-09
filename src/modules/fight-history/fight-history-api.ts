@@ -121,6 +121,8 @@ class FightHistoryApi {
               fighterData.fighterId === historyRecord.nftId ? historyRecord.nftId : historyRecord.opponentId,
             challengerName:
               fighterData.fighterId === historyRecord.nftId ? historyRecord.nftName : historyRecord.opponentName,
+            challengerStyle:
+              fighterData.fighterId === historyRecord.nftId ? historyRecord.nftStyle : historyRecord.opponentStyle,
             challengerImage:
               fighterData.fighterId === historyRecord.nftId
                 ? `${ENV.FIGHTER_IMAGE_URL}/${historyRecord.nftId}.png`
@@ -128,6 +130,8 @@ class FightHistoryApi {
             opponentId: fighterData.fighterId === historyRecord.nftId ? historyRecord.opponentId : historyRecord.nftId,
             opponentName:
               fighterData.fighterId === historyRecord.nftId ? historyRecord.opponentName : historyRecord.nftName,
+            opponentStyle:
+              fighterData.fighterId === historyRecord.nftId ? historyRecord.opponentStyle : historyRecord.nftStyle,
             opponentImage:
               fighterData.fighterId === historyRecord.nftId
                 ? `${ENV.FIGHTER_IMAGE_URL}/${historyRecord.opponentId}.png`

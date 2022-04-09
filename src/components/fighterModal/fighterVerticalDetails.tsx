@@ -3,6 +3,7 @@ import { chakra, Box, Flex, Image, Text, VStack } from '@chakra-ui/react';
 export interface FighterVerticalDetailsProps {
   fighterImage: string;
   fighterName: string;
+  fighterStyle: string;
   fighterCountryCode: string;
   fighterWins: string;
   fighterLosses: string;
@@ -13,6 +14,7 @@ export interface FighterVerticalDetailsProps {
 export default function FighterVerticalDetails({
   fighterImage,
   fighterName,
+  fighterStyle,
   fighterCountryCode,
   fighterWins,
   fighterLosses,
@@ -77,6 +79,22 @@ export default function FighterVerticalDetails({
             <chakra.span display="inline" color="secondary.500">
               {fighterLosses}
             </chakra.span>
+          </Text>
+        </Flex>
+        <Flex direction="row" justify={{ base: 'center', md: 'left' }} mb="10px">
+          <Text
+            textAlign={{
+              xl: 'left',
+              lg: 'left',
+              md: 'left',
+              sm: 'center',
+              base: 'center',
+            }}
+            fontFamily="Sora"
+            fontWeight="semibold"
+            fontSize="18px"
+          >
+            Style: {fighterStyle}
           </Text>
         </Flex>
       </Flex>

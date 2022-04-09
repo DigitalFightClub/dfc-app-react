@@ -190,6 +190,7 @@ export default function FighterResultModal() {
             <FighterVerticalDetails
               fighterImage={selectedFightHistoryBrief.challengerImage}
               fighterName={selectedFightHistoryBrief.challengerName}
+              fighterStyle={selectedFightHistoryBrief.challengerStyle}
               fighterCountryCode={
                 selectedFightHistoryBrief.challengerCountryCode ? selectedFightHistoryBrief.challengerCountryCode : ''
               }
@@ -206,13 +207,14 @@ export default function FighterResultModal() {
               <Text fontFamily="Sora" fontWeight="semibold" fontSize="18px">
                 Winner By {selectedFightHistoryBrief.fightResults.outcome}
               </Text>
-              <Text fontFamily="Sora" fontWeight="normal" fontSize="16px">
+              {/* <Text fontFamily="Sora" fontWeight="normal" fontSize="16px">
                 Style: {selectedFightHistoryBrief.fightResults.winner_style}
-              </Text>
+              </Text> */}
             </VStack>
             <FighterVerticalDetails
               fighterImage={selectedFightHistoryBrief.opponentImage}
               fighterName={selectedFightHistoryBrief.opponentName}
+              fighterStyle={selectedFightHistoryBrief.opponentStyle}
               fighterCountryCode={
                 selectedFightHistoryBrief.opponentCountryCode ? selectedFightHistoryBrief.opponentCountryCode : ''
               }
