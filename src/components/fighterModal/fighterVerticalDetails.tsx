@@ -81,7 +81,7 @@ export default function FighterVerticalDetails({
             </chakra.span>
           </Text>
         </Flex>
-        <Flex direction="row" justify={{ base: 'center', md: 'left' }} mb="10px">
+        {fighterStyle && <Flex direction="row" justify={{ base: 'center', md: 'left' }} mb="10px">
           <Text
             textAlign={{
               xl: 'left',
@@ -96,7 +96,7 @@ export default function FighterVerticalDetails({
           >
             Style: {fighterStyle}
           </Text>
-        </Flex>
+        </Flex> }
       </Flex>
     </VStack>
   );
