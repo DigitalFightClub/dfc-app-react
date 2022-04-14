@@ -12,8 +12,20 @@ import { theme } from './styles/theme';
 import './index.css';
 import '@fontsource/sora/variable.css';
 import '@fontsource/sora/400.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const ENV = ENV_CONFG();
+
+// Setup React Query client
+const queryClient: QueryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+      staleTime: 5*60*1000, // may want to increase stale time to prevent refetch longer
+    },
+  },
+});
 
 // Create store for Redux state management
 const theStore = store();
@@ -38,14 +50,18 @@ const config = {
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={theStore}>
-      <DAppProvider config={config}>
-        <MoralisProvider appId={ENV.MORALIS_APP_ID} serverUrl={ENV.MORALIS_URL} initializeOnMount={true}>
-          <ChakraProvider theme={theme}>
-            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-            <App />
-          </ChakraProvider>
-        </MoralisProvider>
-      </DAppProvider>
+      {' '}
+      {/* Rdux will be replaced */}
+      <QueryClientProvider client={queryClient}>
+        <DAppProvider config={config}>
+          <MoralisProvider appId={ENV.MORALIS_APP_ID} serverUrl={ENV.MORALIS_URL} initializeOnMount={true}>
+            <ChakraProvider theme={theme}>
+              <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+              <App />
+            </ChakraProvider>
+          </MoralisProvider>
+        </DAppProvider>
+      </QueryClientProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

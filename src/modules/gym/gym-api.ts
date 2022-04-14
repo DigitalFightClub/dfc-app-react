@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse } from 'axios';
-import Web3Api from 'moralis/types/generated/web3Api';
 import _ from 'lodash';
 import { ENV_CONFG } from '../../config';
 import { AccountNFTResult, ChallengeState, FighterInfo, FightRecordResponse, MoralisNFT } from '../../types';
 import { getNFTs, transformFighterMetadata } from '../../utils/web3/moralis';
+import Moralis from 'moralis/types';
 
 const ENV = ENV_CONFG();
 
@@ -16,8 +16,43 @@ class GymApi {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async getGymFighterNFTs(web3Api: Web3Api, address: string): Promise<AccountNFTResult> {
-    return getNFTs(web3Api, address);
+  public async getGymFighterNFTs(web3Api: Moralis.Web3API, address: string | null): Promise<FighterInfo[]> {
+    if (null !== address) {
+      try {
+        const fighterNFTs: AccountNFTResult = await getNFTs(web3Api, address);
+
+        let refinedFighters: FighterInfo[] | null = null;
+        if (fighterNFTs && fighterNFTs.total > 0) {
+          // create fighter info array
+          console.log('transform fighter NFT metadata');
+          refinedFighters = await this.transformFighterMetadata(fighterNFTs.result, address);
+        }
+
+        // Add challengeState
+        const finalFighters: FighterInfo[] = [];
+        if (refinedFighters && refinedFighters.length > 0) {
+          console.log('Fill fighter challenge state');
+          const fighterChallengedPromises: Promise<FighterInfo>[] = refinedFighters.map((fighter) =>
+            this.getFigherChallenged(fighter)
+          );
+
+          await Promise.allSettled(fighterChallengedPromises).then((results) => {
+            results.forEach((result) => {
+              if (result.status === 'fulfilled') {
+                finalFighters.push((result as PromiseFulfilledResult<FighterInfo>).value);
+              }
+            });
+          });
+          console.log('filled with challenge state', finalFighters);
+          return finalFighters;
+        }
+      } catch (error: any) {
+        console.error('Failed fetching gym fighters');
+        console.error(error);
+      }
+    }
+
+    return [];
   }
 
   public async transformFighterMetadata(fighterNFTs: MoralisNFT[], address: string): Promise<FighterInfo[]> {
