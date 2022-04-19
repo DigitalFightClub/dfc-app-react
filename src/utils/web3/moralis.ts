@@ -93,34 +93,34 @@ export const getDFCNFTs = async (
       fighter.isOwned = true;
     }
 
-    // check if fighter is a challenger
-    if (challengers && challengers.includes(fighter.fighterId)) {
-      fighter.challengeState = ChallengeState.CHALLENGING;
-    }
+    // // check if fighter is a challenger
+    // if (challengers && challengers.includes(fighter.fighterId)) {
+    //   fighter.challengeState = ChallengeState.CHALLENGING;
+    // }
 
-    // check if fighter is being challenged
-    if (challenges && challenges.includes(fighter.fighterId)) {
-      fighter.challengeState = ChallengeState.CHALLENGED;
-    }
+    // // check if fighter is being challenged
+    // if (challenges && challenges.includes(fighter.fighterId)) {
+    //   fighter.challengeState = ChallengeState.CHALLENGED;
+    // }
 
     return fighter;
   });
 
   // fill fighter records
-  for (let i = 0; i < flaggedNFTs.length; i++) {
-    const fighter: FighterInfo = flaggedNFTs[i];
-    try {
-      const response: AxiosResponse<FightRecordResponse> = await axios.get(`${ENV.FIGHTER_API_URL}/fightRecord`, {
-        params: {
-          nftId: fighter.fighterId,
-        },
-      });
-      fighter.wins = _.get(response, 'data.record.wins', 0);
-      fighter.loses = _.get(response, 'data.record.losses', 0);
-    } catch (error) {
-      console.error('failed filling results data for gym fighter', fighter.fighterId, error);
-    }
-  }
+  // for (let i = 0; i < flaggedNFTs.length; i++) {
+  //   const fighter: FighterInfo = flaggedNFTs[i];
+  //   try {
+  //     const response: AxiosResponse<FightRecordResponse> = await axios.get(`${ENV.FIGHTER_API_URL}/fightRecord`, {
+  //       params: {
+  //         nftId: fighter.fighterId,
+  //       },
+  //     });
+  //     // fighter.wins = _.get(response, 'data.record.wins', 0);
+  //     // fighter.loses = _.get(response, 'data.record.losses', 0);
+  //   } catch (error) {
+  //     console.error('failed filling results data for gym fighter', fighter.fighterId, error);
+  //   }
+  // }
 
   const sortedFlaggedNFTs: FighterInfo[] = flaggedNFTs.sort((a: FighterInfo, b: FighterInfo) => {
     return a.fighterId > b.fighterId ? 1 : -1;

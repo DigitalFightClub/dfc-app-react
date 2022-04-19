@@ -1,6 +1,5 @@
 import { all } from 'redux-saga/effects';
-import { FightHistoryReducer, fightHistoryWatchers } from './fight-history';
-import { gymReducer, gymWatchers } from './gym';
+import { FightHistoryReducer } from './fight-history';
 import { organizationReducer, organizationWatchers } from './organization';
 
 /**
@@ -9,9 +8,9 @@ import { organizationReducer, organizationWatchers } from './organization';
  */
 function* rootSagas() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const watchers: any = [...gymWatchers, ...fightHistoryWatchers, ...organizationWatchers];
+  const watchers: any = [...organizationWatchers];
 
   yield all(watchers);
 }
 
-export { gymReducer, FightHistoryReducer, organizationReducer, rootSagas };
+export { FightHistoryReducer, organizationReducer, rootSagas };

@@ -49,7 +49,7 @@ const countryObj =
   'Cocos (Keeling) Islands': 'CC',
   Colombia: 'CO',
   Comoros: 'KM',
-  'Congo (the Democratic Republic of the)': 'CD',
+  'DR Congo': 'CD',
   Congo: 'CG',
   'Cook Islands': 'CK',
   'Costa Rica': 'CR',

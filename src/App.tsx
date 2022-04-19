@@ -6,12 +6,13 @@ import Gym from './components/gym';
 import Organization from './components/organization';
 import ScrollToTop from './enhancers/scrollToTop';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { useDFCFighters, useTotalDFCSupply } from './hooks/dfc.hooks';
+import { useTotalDFCSupply } from './hooks/dfc.hooks';
+import { useGymFighters } from './hooks/fighter.hooks';
 
 function App() {
   const { data: totalSupply, isLoading } = useTotalDFCSupply();
   console.log(`TOTAL DFC SUPPLY: ${totalSupply}`);
-  const { data: fighters } = useDFCFighters();
+  const { data: fighters } = useGymFighters();
   console.log('DFC fighters', fighters);
 
   return (

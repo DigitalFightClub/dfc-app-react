@@ -46,8 +46,8 @@ export type FighterInfo = {
   name: string;
   country: string;
   countryCode: string;
-  wins: string;
-  loses: string;
+  // wins: string;
+  // loses: string;
   height: string;
   weight: string;
   gender: string;
@@ -56,7 +56,7 @@ export type FighterInfo = {
   image: string;
   stats: Record<string, number>;
   isOwned: boolean; // indicates is owned by current wallet
-  challengeState: ChallengeState;
+  // challengeState: ChallengeState;
 };
 
 export type Challenge = {
@@ -80,11 +80,11 @@ export enum FighterModalState {
 
 export type FighterModalProps = {
   onClose: () => void;
-  fighterData: FighterInfo | null;
+  fighterData: FighterInfo;
 };
 
 export type FighterModalProps2 = {
-  fighterData: FighterInfo | null;
+  fighterData: FighterInfo;
   isHorizontal: boolean;
 };
 
@@ -133,15 +133,11 @@ export type FightHistoryBrief = {
   challengerName: string;
   challengerImage: string;
   challengerCountryCode?: string;
-  challengerWins?: number;
-  challengerLoses?: number;
   challengerStyle: string;
   opponentId: number;
   opponentName: string;
   opponentImage: string;
   opponentCountryCode?: string;
-  opponentWins?: number;
-  opponentLoses?: number;
   opponentStyle: string;
   fightResults: FightResults;
   winnerId: number;
@@ -193,26 +189,12 @@ export type OrganizationState = {
 };
 
 export type FighterHistoryState = {
-  fighterHistory: FightHistoryBrief[];
   selectedFightHistoryBrief: FightHistoryBrief | null;
-  loadingFightResult: boolean;
-  loadingFighterHistory: boolean;
-  getFighterHistoryError: string | null;
   fighterModalState: FighterModalState;
-};
-
-export type GymState = {
-  gymFighters: FighterInfo[];
-  loadingGymFighters: boolean;
-  getGymFightersError: string | null;
-  tkoTotal: string;
-  loadingTotalTko: boolean;
-  getTotalTkoError: string | null;
 };
 
 // Global app state aggregated from the Redux reducers
 export interface AppState {
-  gymState: GymState;
   fightHistoryState: FighterHistoryState;
   organizationState: OrganizationState;
 }

@@ -4,9 +4,6 @@ import { Reducer } from 'redux';
 import {
   CLEAR_CHALLENGE_MSG,
   CLEAR_ERROR_MSG,
-  GET_ORG_FIGHTERS_SUCCESS,
-  GET_ORG_INFO_IN_PROGRESS,
-  GET_ORG_INFO_SUCCESS,
   SET_CHALLENGE_FAILED,
   SET_CHALLENGE_IN_PROGRESS,
   SET_CHALLENGE_SUCCESS,
@@ -248,12 +245,6 @@ export const organizationReducer: Reducer<OrganizationState, AppAction> = (
   switch (action.type) {
     case SET_SELECTED_FIGHTER:
       return setSelectedFighter(state, action);
-    case GET_ORG_INFO_SUCCESS:
-      return setOrgInfoSuccess(state, action);
-    case GET_ORG_INFO_IN_PROGRESS:
-      return setLoadingOrg(state, action);
-    case GET_ORG_FIGHTERS_SUCCESS:
-      return getOrgFightersSuccess(state, action);
     case SET_CHALLENGE_SUCCESS:
       return setChallengeSuccess(state, action);
     case SET_CHALLENGE_FAILED:

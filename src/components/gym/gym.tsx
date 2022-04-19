@@ -1,51 +1,27 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useState } from 'react';
-import { Grid, Container, Stack, VStack, Box, Alert, AlertIcon, Skeleton } from '@chakra-ui/react';
+import { useState } from 'react';
+import { Grid, Container, Stack, VStack, Box, Skeleton } from '@chakra-ui/react';
 import { useMoralisWeb3Api, useMoralis } from 'react-moralis';
-import { useEthers } from '@usedapp/core';
-
-import { getTKOBalance } from '../../utils/web3/moralis';
 
 import GymTile from '../gymTile';
 import GymHeader from '../gymHeader';
 import FighterSelection from '../fighterSelection';
-import { FighterInfo } from '../../types';
-import { useQuery } from 'react-query';
-import { gymApi } from '../../modules/gym/gym-api';
 import Moralis from 'moralis/types';
+import { useTKOBalance } from '../../hooks/tko.hooks';
+import { useGymFighters } from '../../hooks/fighter.hooks';
 
 export default function Gym() {
-  const { isInitialized, isInitializing, Moralis, account: userAccount } = useMoralis();
-  const [isLoaded, setIsLoaded] = useState(false);
-  const { account } = useEthers();
+  const { isInitializing, account: userAccount } = useMoralis();
   const Web3Api: Moralis.Web3API = useMoralisWeb3Api();
 
   const [retiredFighters, setRetiredFighters] = useState(0);
   const [activeFightRecord, setActiveFightRecord] = useState('0-0');
   const [overallFightRecord, setOverallFightRecord] = useState('0-0');
-  const [tkoTotal, setTkoTotal] = useState('0');
   const [championshipsHeld, setChampionshipsHeld] = useState(0);
 
-  const { data: activeFighters, isLoading } = useQuery<FighterInfo[], Error>(
-    ['gymFighters', userAccount, { filter: 'active' }],
-    async () => {
-      const fighters: FighterInfo[] = await gymApi.getGymFighterNFTs(Web3Api, userAccount);
-      return fighters;
-    }
-  );
+  const { data: tko = 0, isLoading: isTKOLoading } = useTKOBalance();
+  const { data: activeFighters, isLoading: isGymFightersLoading } = useGymFighters();
   console.log('React Query Fighters: ', activeFighters);
-
-  useEffect(() => {
-    (async function () {
-      if (isInitialized && account && !isLoaded) {
-
-        const tko = await getTKOBalance(Moralis, account);
-        const tkoWei: number = +Moralis.Units.FromWei(tko.toString());
-        setTkoTotal(Intl.NumberFormat('en-US').format(tkoWei));
-        setIsLoaded(true);
-      }
-    })();
-  }, [isInitialized, account]);
 
   return (
     <Box>
@@ -67,22 +43,22 @@ export default function Gym() {
               gap="30px"
               justifyContent="center"
             >
-              <Skeleton isLoaded={!isLoading}>
+              <Skeleton isLoaded={!isGymFightersLoading}>
                 <GymTile datanumber={activeFighters ? activeFighters.length : 0} dataname="Active Fighters" />
               </Skeleton>
-              <Skeleton isLoaded={!isLoading}>
+              <Skeleton isLoaded={!isGymFightersLoading}>
                 <GymTile datanumber={activeFightRecord} dataname="Active Fight Record" />
               </Skeleton>
-              <Skeleton isLoaded={!isLoading}>
-                <GymTile datanumber={tkoTotal} dataname="$TKO Tokens" />
+              <Skeleton isLoaded={!isTKOLoading}>
+                <GymTile datanumber={tko} dataname="$TKO Tokens" />
               </Skeleton>
-              <Skeleton isLoaded={!isLoading}>
+              <Skeleton isLoaded={!isGymFightersLoading}>
                 <GymTile datanumber={retiredFighters} dataname="Retired Fighters" />
               </Skeleton>
-              <Skeleton isLoaded={!isLoading}>
+              <Skeleton isLoaded={!isGymFightersLoading}>
                 <GymTile datanumber={overallFightRecord} dataname="Overall Fight Record" />
               </Skeleton>
-              <Skeleton isLoaded={!isLoading}>
+              <Skeleton isLoaded={!isGymFightersLoading}>
                 <GymTile datanumber={championshipsHeld} dataname="Championships Held" />
               </Skeleton>
             </Grid>
@@ -90,7 +66,7 @@ export default function Gym() {
             {/* Pass in refined fighter metadata */}
             <FighterSelection
               gymFighters={activeFighters ? activeFighters : []}
-              loadingGymFitghers={isLoading}
+              loadingGymFitghers={isGymFightersLoading}
             />
           </VStack>
         </Container>

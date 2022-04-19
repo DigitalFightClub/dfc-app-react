@@ -1,18 +1,20 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import _ from 'lodash';
+
 import { chakra, Box, Text, VStack, HStack, Wrap, Center, Flex, Image } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_FIGHTER_DETAILS } from '../../config/events';
 import { AppState, MatchResult, Round } from '../../types';
 import { dfcAction } from '../../types/actions';
 import FighterVerticalDetails from './fighterVerticalDetails';
-
-// export interface FighterResultModalProps {
-//   fightBrief: FightHistoryBrief;
-// }
+import { useFighter } from '../../hooks/fighter.hooks';
 
 export default function FighterResultModal() {
   const { selectedFightHistoryBrief } = useSelector((state: AppState) => state.fightHistoryState);
   const dispatch = useDispatch();
+
+  const { data: challengerFighter } = useFighter(_.get(selectedFightHistoryBrief, ['challengerId'], 0));
+  const { data: opponentFighter } = useFighter(_.get(selectedFightHistoryBrief, ['opponentId'], 0));
 
   const handleBack = () => {
     dispatch(dfcAction(SET_FIGHTER_DETAILS, {}));
@@ -181,25 +183,26 @@ export default function FighterResultModal() {
           />
         </>
       )}
-      <Center w="40px" h="40px" m="5px" bg="white" color="black" onClick={handleBack}>
+      <Center
+        w="40px"
+        h="40px"
+        m="5px"
+        bg="white"
+        color="black"
+        _hover={{ color: 'white', bg: 'gray', cursor: 'pointer' }}
+        onClick={handleBack}
+      >
         <ArrowBackIcon />
       </Center>
       {selectedFightHistoryBrief ? (
         <VStack>
           <HStack>
             <FighterVerticalDetails
+              fighterId={selectedFightHistoryBrief.challengerId}
               fighterImage={selectedFightHistoryBrief.challengerImage}
               fighterName={selectedFightHistoryBrief.challengerName}
               fighterStyle={selectedFightHistoryBrief.challengerStyle}
-              fighterCountryCode={
-                selectedFightHistoryBrief.challengerCountryCode ? selectedFightHistoryBrief.challengerCountryCode : ''
-              }
-              fighterWins={
-                selectedFightHistoryBrief.challengerWins ? `${selectedFightHistoryBrief.challengerWins}` : '0'
-              }
-              fighterLosses={
-                selectedFightHistoryBrief.challengerLoses ? `${selectedFightHistoryBrief.challengerLoses}` : '0'
-              }
+              fighterCountryCode={_.get(challengerFighter, ['countryCode'], '')}
               isCentered={true}
             />
             <VStack alignContent="center" gap="1rem" w="17rem">
@@ -207,21 +210,13 @@ export default function FighterResultModal() {
               <Text fontFamily="Sora" fontWeight="semibold" fontSize="18px">
                 Winner By {selectedFightHistoryBrief.fightResults.outcome}
               </Text>
-              {/* <Text fontFamily="Sora" fontWeight="normal" fontSize="16px">
-                Style: {selectedFightHistoryBrief.fightResults.winner_style}
-              </Text> */}
             </VStack>
             <FighterVerticalDetails
+              fighterId={selectedFightHistoryBrief.opponentId}
               fighterImage={selectedFightHistoryBrief.opponentImage}
               fighterName={selectedFightHistoryBrief.opponentName}
               fighterStyle={selectedFightHistoryBrief.opponentStyle}
-              fighterCountryCode={
-                selectedFightHistoryBrief.opponentCountryCode ? selectedFightHistoryBrief.opponentCountryCode : ''
-              }
-              fighterWins={selectedFightHistoryBrief.opponentWins ? `${selectedFightHistoryBrief.opponentWins}` : '0'}
-              fighterLosses={
-                selectedFightHistoryBrief.opponentLoses ? `${selectedFightHistoryBrief.opponentLoses}` : '0'
-              }
+              fighterCountryCode={_.get(opponentFighter, ['countryCode'], '')}
               isCentered={true}
             />
           </HStack>

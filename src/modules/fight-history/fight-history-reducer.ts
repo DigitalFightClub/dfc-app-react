@@ -2,65 +2,19 @@ import { AppAction, FighterHistoryState, FighterModalState, FightHistoryBrief } 
 import { Reducer } from 'redux';
 import _ from 'lodash';
 import {
-  GET_FIGHTER_HISTORY_SUCCESS,
-  GET_FIGHTER_HISTORY_FAILED,
-  GET_FIGHTER_HISTORY_IN_PROGRESS,
   SET_FIGHTER_CHALLENGE,
   SET_FIGHTER_DETAILS,
-  SET_FIGHT_RESULTS_IN_PROGRESS,
-  SET_FIGHT_RESULTS_SUCCESS,
-  CLEAR_FIGHT_HISTORY,
+  SET_FIGHT_RESULTS,
 } from '../../config/events';
 
 export const initFighterHistoryState: FighterHistoryState = {
-  fighterHistory: [],
   selectedFightHistoryBrief: null,
-  loadingFightResult: false,
-  getFighterHistoryError: null,
-  loadingFighterHistory: false,
   fighterModalState: FighterModalState.DETAILS,
 };
 
 /**
  * Reducer Handlers
  */
-
-function setFighterHistory(
-  state: FighterHistoryState,
-  action: AppAction<string, FightHistoryBrief[]>
-): FighterHistoryState {
-  const { data } = action.payload;
-
-  return {
-    ...state,
-    fighterHistory: data ? [...data] : [],
-    loadingFighterHistory: false,
-    getFighterHistoryError: null,
-  };
-}
-
-function setLoadingFighterHistory(state: FighterHistoryState): FighterHistoryState {
-  return {
-    ...state,
-    loadingFighterHistory: true,
-    getFighterHistoryError: null,
-  };
-}
-
-function setGetFighterHistoryFailed(
-  state: FighterHistoryState,
-  action: AppAction<string, string>
-): FighterHistoryState {
-  const { msg } = action.payload;
-
-  return {
-    ...state,
-    loadingFighterHistory: false,
-    loadingFightResult: false,
-    getFighterHistoryError: msg ? msg : null,
-  };
-}
-
 function setFighterDetails(state: FighterHistoryState): FighterHistoryState {
   return {
     ...state,
@@ -77,7 +31,7 @@ function setFighterChallenge(state: FighterHistoryState): FighterHistoryState {
   };
 }
 
-function setFightResultsSuccess(state: FighterHistoryState, action: AppAction): FighterHistoryState {
+function setFightResults(state: FighterHistoryState, action: AppAction): FighterHistoryState {
   const { data } = action.payload;
 
   const copyData: FightHistoryBrief = _.cloneDeep(data);
@@ -86,21 +40,6 @@ function setFightResultsSuccess(state: FighterHistoryState, action: AppAction): 
     ...state,
     selectedFightHistoryBrief: copyData,
     fighterModalState: FighterModalState.RESULTS,
-    loadingFightResult: false,
-  };
-}
-
-function setFightResultsInProgress(state: FighterHistoryState): FighterHistoryState {
-  return {
-    ...state,
-    loadingFightResult: true,
-  };
-}
-
-function clearFightHistory(state: FighterHistoryState): FighterHistoryState {
-  return {
-    ...state,
-    fighterHistory: [],
   };
 }
 
@@ -109,22 +48,12 @@ export const FightHistoryReducer: Reducer<FighterHistoryState, AppAction> = (
   action: AppAction
 ): FighterHistoryState => {
   switch (action.type) {
-    case GET_FIGHTER_HISTORY_SUCCESS:
-      return setFighterHistory(state, action);
-    case GET_FIGHTER_HISTORY_FAILED:
-      return setGetFighterHistoryFailed(state, action);
-    case GET_FIGHTER_HISTORY_IN_PROGRESS:
-      return setLoadingFighterHistory(state);
     case SET_FIGHTER_DETAILS:
       return setFighterDetails(state);
     case SET_FIGHTER_CHALLENGE:
       return setFighterChallenge(state);
-    case SET_FIGHT_RESULTS_SUCCESS:
-      return setFightResultsSuccess(state, action);
-    case SET_FIGHT_RESULTS_IN_PROGRESS:
-      return setFightResultsInProgress(state);
-    case CLEAR_FIGHT_HISTORY:
-      return clearFightHistory(state);
+    case SET_FIGHT_RESULTS:
+      return setFightResults(state, action);
     default:
       return { ...state };
   }

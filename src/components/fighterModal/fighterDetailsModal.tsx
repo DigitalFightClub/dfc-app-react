@@ -6,7 +6,7 @@ import FighterStatList from '../fighterStats/fighterStats';
 import { FighterModalHeader } from './fighterModalHeader';
 
 export interface FighterDetailsModalProps {
-  fighterData: FighterInfo | null;
+  fighterData: FighterInfo;
 }
 
 export default function FighterDetailsModal({ fighterData }: FighterDetailsModalProps) {
@@ -21,7 +21,7 @@ export default function FighterDetailsModal({ fighterData }: FighterDetailsModal
           <FighterStatList fighterStatistics={fighterStatistics} />
         </Grid>
 
-        <FighterHistory fighterData={fighterData} />
+        <FighterHistory fighterId={fighterData.fighterId} />
       </Grid>
 
       {/* Tablet friendly tabbed layout */}
@@ -42,7 +42,7 @@ export default function FighterDetailsModal({ fighterData }: FighterDetailsModal
                 <FighterStatList fighterStatistics={fighterStatistics} />
               </TabPanel>
               <TabPanel>
-                <FighterHistory fighterData={fighterData} />
+                <FighterHistory fighterId={fighterData.fighterId} />
               </TabPanel>
             </TabPanels>
           </Tabs>
@@ -66,7 +66,7 @@ export default function FighterDetailsModal({ fighterData }: FighterDetailsModal
               <FighterStatList fighterStatistics={fighterStatistics} slim />
             </TabPanel>
             <TabPanel>
-              <FighterHistory fighterData={fighterData} />
+              <FighterHistory fighterId={fighterData.fighterId} />
             </TabPanel>
           </TabPanels>
         </Tabs>

@@ -5,15 +5,17 @@ import { dfcAction } from '../../types/actions';
 import { SET_SELECTED_FIGHTER } from '../../config/events';
 import { useDispatch } from 'react-redux';
 import FighterDataButtons from './fighterDataButtons';
+import { useFighterRecord } from '../../hooks/fighter.hooks';
 
 export interface FighterDataProps {
   isTile?: boolean;
-  fighterInfo: FighterInfo | null;
+  fighterInfo: FighterInfo;
   handleChallenge?: () => void;
 }
 
 export default function FighterData({ isTile = false, fighterInfo: fighterData, handleChallenge }: FighterDataProps) {
   const history = useHistory();
+  const { data: fighterRecord } = useFighterRecord(fighterData.fighterId);
 
   // connect redux saga
   const dispatch = useDispatch();
@@ -61,18 +63,19 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
           Record:
           <chakra.span display="inline" color="primary.500">
             &nbsp;
-            {fighterData ? fighterData.wins : 0}
+            {fighterRecord ? fighterRecord.wins : 0}
           </chakra.span>
           {'-'}
           <chakra.span display="inline" color="secondary.500">
-            {fighterData ? fighterData.loses : 0}
+            {fighterRecord ? fighterRecord.losses : 0}
           </chakra.span>
         </Heading>
 
+        
         <FighterDataButtons
           isTile={isTile}
-          isOwned={fighterData ? fighterData.isOwned : false}
-          challengeState={fighterData ? fighterData.challengeState : null}
+          isOwned={fighterData.isOwned}
+          fighterId={fighterData.fighterId}
           handleFight={handleFight}
           handleChallenge={handleChallenge}
         />

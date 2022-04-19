@@ -1,21 +1,12 @@
-import {
-  Box,
-  Image,
-  Text,
-  VStack,
-  HStack,
-  Button,
-  Tooltip,
-  Wrap,
-  useToast,
-  Skeleton,
-} from '@chakra-ui/react';
+import { Box, Image, Text, VStack, HStack, Button, Tooltip, Wrap, useToast, Skeleton } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useMoralis } from 'react-moralis';
 import { useDispatch, useSelector } from 'react-redux';
 import { CLEAR_CHALLENGE_MSG, CLEAR_ERROR_MSG, SET_CHALLENGE_REQUEST } from '../../config/events';
+import { useFighterChallenges } from '../../hooks/fighter.hooks';
 import { AppState, ChallengeState, FighterInfo } from '../../types';
 import { dfcAction } from '../../types/actions';
+import { getChallengeState } from '../../utils/helpers/fighter.helpers';
 import FighterVerticalDetails from './fighterVerticalDetails';
 
 export interface FighterChallengeModalProps {
@@ -31,6 +22,8 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
     (state: AppState) => state.organizationState
   );
   const dispatch = useDispatch();
+
+  const { data: fighterChallenges, isLoading } = useFighterChallenges(selectedFighter ? selectedFighter.fighterId : 0);
 
   const [selectedStyle, setSelectedStyle] = useState<number>(-1);
 
@@ -52,7 +45,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
         },
       });
     }
-  }, [challengeMsg]);
+  }, [challengeMsg, dispatch, onClose, toast]);
 
   // handle challenge error
   useEffect(() => {
@@ -68,7 +61,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
         },
       });
     }
-  }, [errorMsg]);
+  }, [errorMsg, dispatch, toast]);
 
   const handleChallenge = () => {
     if (selectedStyle >= 0) {
@@ -97,19 +90,18 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
         <VStack>
           <HStack>
             <FighterVerticalDetails
+              fighterId={selectedFighter.fighterId}
               fighterImage={selectedFighter.image}
               fighterName={selectedFighter.name}
               fighterStyle={''}
               fighterCountryCode={selectedFighter.countryCode}
-              fighterWins={selectedFighter.wins}
-              fighterLosses={selectedFighter.loses}
               isCentered={true}
             />
             <VStack alignContent="center" gap="1.5rem" w="17rem">
               <Text>Proving Grounds</Text>
               <Text>Middleweight Category</Text>
               <Text>3 Rounds</Text>
-              <Skeleton isLoaded={!challengeInProgress}>
+              <Skeleton isLoaded={!challengeInProgress && !isLoading}>
                 <Button
                   w="9rem"
                   h="2.2rem"
@@ -119,7 +111,11 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
                   borderRadius="0"
                   aria-label="Challenge"
                   onClick={handleChallenge}
-                  display={ChallengeState.AVAILABLE === opponentData.challengeState ? 'flex' : 'none'}
+                  display={
+                    ChallengeState.AVAILABLE === getChallengeState(opponentData.fighterId, false, fighterChallenges)
+                      ? 'flex'
+                      : 'none'
+                  }
                   disabled={selectedStyle < 0}
                 >
                   Challenge
@@ -133,7 +129,11 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
                   borderRadius="0"
                   aria-label="Accept"
                   onClick={handleChallenge}
-                  display={ChallengeState.CHALLENGING === opponentData.challengeState ? 'flex' : 'none'}
+                  display={
+                    ChallengeState.CHALLENGING === getChallengeState(opponentData.fighterId, false, fighterChallenges)
+                      ? 'flex'
+                      : 'none'
+                  }
                   disabled={selectedStyle < 0}
                 >
                   Accept
@@ -141,12 +141,11 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
               </Skeleton>
             </VStack>
             <FighterVerticalDetails
+              fighterId={opponentData.fighterId}
               fighterImage={opponentData.image}
               fighterName={opponentData.name}
               fighterStyle={''}
               fighterCountryCode={opponentData.countryCode}
-              fighterWins={opponentData.wins}
-              fighterLosses={opponentData.loses}
               isCentered={true}
             />
           </HStack>

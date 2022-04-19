@@ -13,14 +13,29 @@ export default function FighterHistoryRow({ fightHistoryBrief }: FighterHistoryR
   const dispatch = useDispatch();
 
   const handleResults = () => {
-    dispatch(dfcAction(SET_FIGHT_RESULTS, {
-      data: fightHistoryBrief,
-      msg: '',
-    }));
+    dispatch(
+      dfcAction(SET_FIGHT_RESULTS, {
+        data: fightHistoryBrief,
+        msg: '',
+      })
+    );
   };
 
+  // console.log('Fight timestamp', fightHistoryBrief.timestamp);
+  const fightDate: Date = new Date(fightHistoryBrief.timestamp * 1000);
+  const formatted_fightDate: string = fightDate.toLocaleString('en-US', {
+    timeZoneName: 'short',
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  // console.log('Fight Date', formatted_fightDate);
+
   return (
-    <Flex maxWidth="325px" flexDir="column">
+    <Flex maxWidth="325px" minWidth="325px" flexDir="column" _hover={{ cursor: 'pointer' }}>
       <div
         style={{
           width: '100%',
@@ -41,7 +56,7 @@ export default function FighterHistoryRow({ fightHistoryBrief }: FighterHistoryR
               isChallenger={true}
             />
           </Box>
-          <Center py="1" pl="1">
+          <Center py="1" pl="1" maxWidth="74px">
             <Text size="xs" fontFamily="Sora" fontWeight="regular" fontSize="14px">
               {fightHistoryBrief.challengerName}
             </Text>
@@ -53,7 +68,7 @@ export default function FighterHistoryRow({ fightHistoryBrief }: FighterHistoryR
             </Text>
           </Center>
           <Spacer />
-          <Center py="1" pr="1" textAlign="right">
+          <Center py="1" pr="1" textAlign="right" maxWidth="74px">
             <Text size="xs" fontFamily="Sora" fontWeight="regular" fontSize="14px">
               {fightHistoryBrief.opponentName}
             </Text>
@@ -66,11 +81,20 @@ export default function FighterHistoryRow({ fightHistoryBrief }: FighterHistoryR
             />
           </Box>
         </Flex>
-        <Center p="1">
-          <Text size="sm" fontFamily="Sora" fontWeight="light" fontSize="14px">
-            DETAILS: {fightHistoryBrief && fightHistoryBrief.fightResults ? fightHistoryBrief.fightResults.outcome : ''}
-          </Text>
-        </Center>
+        <Flex w="100%">
+          <Center p="1">
+            <Text size="sm" fontFamily="Sora" fontWeight="light" fontSize="14px">
+              {formatted_fightDate}
+            </Text>
+          </Center>
+          <Spacer />
+          <Center p="1">
+            <Text size="sm" fontFamily="Sora" fontWeight="light" fontSize="14px">
+              DETAILS:{' '}
+              {fightHistoryBrief && fightHistoryBrief.fightResults ? fightHistoryBrief.fightResults.outcome : ''}
+            </Text>
+          </Center>
+        </Flex>
       </div>
       <Divider pt="2px" />
     </Flex>

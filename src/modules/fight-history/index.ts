@@ -1,5 +1,3 @@
-import { fightHistoryWatchers } from './fight-history-watchers';
-import { fightHistoryApi } from './fight-history-api';
 import { FightHistoryReducer } from './fight-history-reducer';
 
 /**
@@ -9,4 +7,4 @@ import { FightHistoryReducer } from './fight-history-reducer';
  *
  * All gym framework components are exposed by this index.
  */
-export { fightHistoryApi, fightHistoryWatchers, FightHistoryReducer };
+export { FightHistoryReducer };

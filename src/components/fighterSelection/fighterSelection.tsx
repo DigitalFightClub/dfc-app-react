@@ -65,30 +65,11 @@ export default function FighterSelection({ gymFighters, loadingGymFitghers }: Fi
                 <FighterTile key={fighterData.name} fighterData={fighterData} />
               ))
             ) : (
-              <FighterTile loadingGymFitghers />
+              <FighterTile fighterData={{} as FighterInfo} loadingGymFitghers />
             )}
           </Grid>
         </Collapse>
 
-        {/* <Collapse in={!showActive} animateOpacity>
-          <Grid
-            templateColumns={{
-              xl: 'repeat(2, 518px)',
-              lg: 'repeat(2, 2fr)',
-              md: '1fr',
-              sm: '1fr',
-              base: '1fr',
-            }}
-            w="100%"
-            justifyItems="center"
-            gap="5rem 4rem"
-            pl={{ xl: '50px', lg: '50px', md: '0px', sm: '0px', base: '0px' }}
-          >
-            {gymFighters.map((fighterData: FighterInfo) => (
-              <FighterTile key={fighterData.name} fighterData={null} fighterType="inactive" />
-            ))}
-          </Grid>
-        </Collapse> */}
       </Grid>
     </Stack>
   );
