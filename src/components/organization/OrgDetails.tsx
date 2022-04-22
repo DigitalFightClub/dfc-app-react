@@ -224,7 +224,25 @@ export default function OrgDetails({
           handlePageSizeChange={handlePageSizeChange}
         />
         {renderOrgFighters.length === 0 && isDisabled && selectedFighterName ? <Skeleton height="146px" /> : null}
-        <VStack w="100%" maxH="102.1875rem" mt="1rem" overflow="hidden" overflowY="scroll">
+        <VStack
+          w="100%"
+          maxH="102.1875rem"
+          mt="1rem"
+          overflow="hidden"
+          overflowY="scroll"
+          css={{
+            '&::-webkit-scrollbar': {
+              width: '4px',
+            },
+            '&::-webkit-scrollbar-track': {
+              width: '6px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: '#FFFFFF',
+              borderRadius: '24px',
+            },
+          }}
+        >
           {renderOrgFighters
             ? renderOrgFighters.map((fighter) => {
                 return (
