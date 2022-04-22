@@ -6,9 +6,15 @@ export type FighterAvatarProps = {
   fighterImage: string;
   isWinner: boolean;
   isChallenger: boolean;
+  hideResult?: boolean;
 };
 
-export default function FighterAvatar({ fighterImage, isWinner, isChallenger }: FighterAvatarProps) {
+export default function FighterAvatar({
+  fighterImage,
+  isWinner,
+  isChallenger,
+  hideResult = false,
+}: FighterAvatarProps) {
   return (
     <div style={{ position: 'relative' }}>
       <div
@@ -17,7 +23,7 @@ export default function FighterAvatar({ fighterImage, isWinner, isChallenger }: 
           height: '54px',
           overflow: 'hidden',
           borderRadius: '50%',
-          borderColor: isWinner ? '#2ABB75' : '#DF2151',
+          borderColor: hideResult ? '#50545C' : isWinner ? '#2ABB75' : '#DF2151',
           borderWidth: '3px',
         }}
       >
@@ -34,9 +40,18 @@ export default function FighterAvatar({ fighterImage, isWinner, isChallenger }: 
           }}
         ></div>
       </div>
-      <Circle position="absolute" top="37px" right={isChallenger ? '1px' : '37px'} size="15px" zIndex="200" bg="white">
-        {isWinner ? <WinBadgeIcon w="18px" h="18px" /> : <LossBadgeIcon w="18px" h="18px" />}
-      </Circle>
+      {!hideResult ? (
+        <Circle
+          position="absolute"
+          top="37px"
+          right={isChallenger ? '1px' : '37px'}
+          size="15px"
+          zIndex="200"
+          bg="white"
+        >
+          {isWinner ? <WinBadgeIcon w="18px" h="18px" /> : <LossBadgeIcon w="18px" h="18px" />}
+        </Circle>
+      ) : null}
     </div>
   );
 }

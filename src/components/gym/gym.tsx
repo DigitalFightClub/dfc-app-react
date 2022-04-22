@@ -21,7 +21,7 @@ export default function Gym() {
 
   const { data: tko = 0, isLoading: isTKOLoading } = useTKOBalance();
   const { data: activeFighters, isLoading: isGymFightersLoading } = useGymFighters();
-  console.log('React Query Fighters: ', activeFighters);
+  // console.log('React Query Fighters: ', activeFighters);
 
   return (
     <Box>
