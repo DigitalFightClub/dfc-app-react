@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useEthers, shortenIfAddress } from '@usedapp/core';
 import {
+  chakra,
   useDisclosure,
   Menu,
   MenuButton,
@@ -18,15 +19,20 @@ import {
 } from '@chakra-ui/react';
 import { BellIcon, CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { verifyNetwork } from '../../utils/web3/connect';
+import { useTotalDFCSupply } from '../../hooks/dfc.hooks';
 
 const NavBar = (props: any) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const { data: totalSupply, isLoading } = useTotalDFCSupply();
 
   const toggle = () => setIsOpen(!isOpen);
 
   return (
     <NavBarContainer {...props}>
-      <Image h="3rem" display="inline" src="/assets/logo.svg"></Image>
+      <chakra.span verticalAlign="center">
+        <Image h="3rem" display="inline" src="/assets/logo.svg"></Image>
+        Total DFC Supply: {totalSupply}
+      </chakra.span>
       <WalletConnect base="block" md="none" />
       <MenuToggle toggle={toggle} isOpen={isOpen} />
       <MenuLinks isOpen={isOpen} />

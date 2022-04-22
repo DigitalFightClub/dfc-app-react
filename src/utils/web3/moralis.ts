@@ -285,7 +285,7 @@ export const transformFighterMetadata = (fighters: any[], address: string): any 
       refinedFighter.stats.sambo = parseInt(fighter.metadata.attributes[8].value);
       refinedFighter.stats.taekwondo = parseInt(fighter.metadata.attributes[9].value);
       refinedFighter.stats.wrestling = parseInt(fighter.metadata.attributes[10].value);
-      console.log('isOwned transform', address, fighter);
+      // console.log('isOwned transform', address, fighter);
       if (fighter.owner_of) {
         refinedFighter.isOwned = address.toLowerCase() === fighter.owner_of.toLowerCase();
       } else {

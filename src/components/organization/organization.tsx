@@ -1,4 +1,4 @@
-import { chakra, Box, Container, Flex, Heading, HStack, Skeleton, VStack } from '@chakra-ui/react';
+import { chakra, Box, Container, Flex, Heading, HStack, Skeleton, VStack, Divider } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_SELECTED_FIGHTER } from '../../config/events';
 import { useGymFighters } from '../../hooks/fighter.hooks';
@@ -17,7 +17,7 @@ export default function Organization() {
   const dispatch = useDispatch();
 
   const { data: orgDetails, isLoading: loadingOrg } = useDFCOrganization(1);
-  const { data: activeFighters, isLoading: isGymFightersLoading } = useGymFighters();
+  const { data: activeFighters, isLoading: isGymFightersLoading, isFetching } = useGymFighters();
 
   const handleFighterSelection = (fighter: FighterInfo) => {
     console.log('Selected Fighter', fighter);
@@ -56,11 +56,11 @@ export default function Organization() {
                 },
               }}
             >
-              <Skeleton isLoaded={!isGymFightersLoading}>
+              <Skeleton isLoaded={!isGymFightersLoading && !isFetching}>
                 <p>Select fighter:</p>
                 <HStack gap="5px">
-                  {activeFighters ? (
-                    activeFighters.map((fighter) => (
+                  {activeFighters
+                    ? activeFighters.map((fighter) => (
                       <chakra.div
                         key={fighter.fighterId}
                         _hover={{ cursor: 'pointer' }}
@@ -69,21 +69,23 @@ export default function Organization() {
                         <FighterAvatar
                           fighterImage={fighter.image}
                           hideResult={true}
+                          color={
+                            selectedFighter && fighter.fighterId === selectedFighter.fighterId ? '#2ABB75' : '#50545C'
+                          }
                           isWinner={true}
                           isChallenger={true}
                         />
                       </chakra.div>
                     ))
-                  ) : (
-                    <Heading>No active fighers...</Heading>
-                  )}
+                    : null}
                 </HStack>
               </Skeleton>
             </Box>
+            <Divider />
             {selectedFighter ? (
               <>
                 <FighterDetails fighterData={selectedFighter} />
-                <FighterStatList fighterStatistics={getFighterStatistics(selectedFighter)} slim />
+                <FighterStatList fighterStatistics={getFighterStatistics(selectedFighter).slim} slim />
               </>
             ) : null}
           </VStack>

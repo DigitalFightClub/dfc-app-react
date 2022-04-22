@@ -1,8 +1,8 @@
-import { Box, Grid, Heading, Progress, Text } from '@chakra-ui/react';
-import { FighterStatistics, Stats } from '../../types';
+import { Box, Divider, Grid, Heading, Progress, Text } from '@chakra-ui/react';
+import { Stats } from '../../types';
 
 export interface FighterStatsProps {
-  fighterStatistics: FighterStatistics;
+  fighterStatistics: Stats[];
   slim?: boolean;
 }
 
@@ -15,17 +15,40 @@ export default function FighterStatList({ fighterStatistics, slim = false }: Fig
       templateRows={slim ? 'repeat(16, 55px)' : 'repeat(8, 55px)'}
       w="100%"
     >
-      {fighterStatistics.map((stat: Stats) => (
-        <Box key={stat[0]} px={slim ? '5px' : '40px'}>
-          <Heading pt="8px" pb="8px" variant="header3" textAlign="left">
-            {stat[0]}
-            <Text display="inline" float="right">
-              {stat[1]}/100
-            </Text>
-          </Heading>
-          <Progress colorScheme={stat[1] >= 66 ? 'green' : stat[1] <= 33 ? 'red' : 'gray'} size="xs" value={stat[1]} />
-        </Box>
-      ))}
+      {!slim
+        ? fighterStatistics.map((stat: Stats) => (
+          <Box key={stat[0]} px={slim ? '5px' : '40px'}>
+            <Heading pt="8px" pb="8px" variant="header3" textAlign="left">
+              {stat[0]}
+              <Text display="inline" float="right">
+                {stat[1]}/100
+              </Text>
+            </Heading>
+            <Progress
+              colorScheme={stat[1] >= 66 ? 'green' : stat[1] <= 33 ? 'red' : 'gray'}
+              size="xs"
+              value={stat[1]}
+            />
+          </Box>
+        ))
+        : fighterStatistics.map((stat: Stats, index: number) => (
+          <>
+            <Box key={stat[0]} px={slim ? '5px' : '40px'}>
+              <Heading pt="8px" pb="8px" variant="header3" textAlign="left">
+                {stat[0]}
+                <Text display="inline" float="right">
+                  {stat[1]}/100
+                </Text>
+              </Heading>
+              <Progress
+                colorScheme={stat[1] >= 66 ? 'green' : stat[1] <= 33 ? 'red' : 'gray'}
+                size="xs"
+                value={stat[1]}
+              />
+            </Box>
+            {index === 7 ? <Divider mt="25px"/> : null}
+          </>
+        ))}
     </Grid>
   );
 }

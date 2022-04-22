@@ -53,6 +53,7 @@ const getUserDFCNFTs = async (Web3Api: any, address: string | null): Promise<Acc
     token_address: ENV.NFT_CONTRACT_ADDRESS,
   };
   const polygonNFTs: AccountNFTResult = await Web3Api.account.getNFTsForContract(options);
+  console.log('plyNFTs', polygonNFTs);
   return polygonNFTs;
 };
 
@@ -102,6 +103,7 @@ const transformFighterMetadata = (fighters: FighterNFT[]): FighterInfo[] => {
       refinedFighter.stats.sambo = parseInt(_.get(fighter, ['attributes', '8', 'value']));
       refinedFighter.stats.taekwondo = parseInt(_.get(fighter, ['attributes', '9', 'value']));
       refinedFighter.stats.wrestling = parseInt(_.get(fighter, ['attributes', '10', 'value']));
+      
       // console.log('isOwned transform', fighter);
       return refinedFighter;
     });

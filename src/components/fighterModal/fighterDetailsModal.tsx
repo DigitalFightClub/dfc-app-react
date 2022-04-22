@@ -18,7 +18,7 @@ export default function FighterDetailsModal({ fighterData }: FighterDetailsModal
       <Grid templateColumns="2fr 1fr" w="100%" display={{ base: 'none', lg: 'flex' }}>
         <Grid templateRows="1fr 1.5fr">
           <FighterModalHeader fighterData={fighterData} isHorizontal={true} />
-          <FighterStatList fighterStatistics={fighterStatistics} />
+          <FighterStatList fighterStatistics={fighterStatistics.wide} />
         </Grid>
 
         <FighterHistory fighterId={fighterData.fighterId} />
@@ -39,7 +39,7 @@ export default function FighterDetailsModal({ fighterData }: FighterDetailsModal
 
             <TabPanels minH="500px">
               <TabPanel>
-                <FighterStatList fighterStatistics={fighterStatistics} />
+                <FighterStatList fighterStatistics={fighterStatistics.wide} />
               </TabPanel>
               <TabPanel>
                 <FighterHistory fighterId={fighterData.fighterId} />
@@ -63,7 +63,7 @@ export default function FighterDetailsModal({ fighterData }: FighterDetailsModal
 
           <TabPanels>
             <TabPanel>
-              <FighterStatList fighterStatistics={fighterStatistics} slim />
+              <FighterStatList fighterStatistics={fighterStatistics.slim} slim />
             </TabPanel>
             <TabPanel>
               <FighterHistory fighterId={fighterData.fighterId} />

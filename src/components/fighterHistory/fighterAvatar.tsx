@@ -7,6 +7,7 @@ export type FighterAvatarProps = {
   isWinner: boolean;
   isChallenger: boolean;
   hideResult?: boolean;
+  color?: string;
 };
 
 export default function FighterAvatar({
@@ -14,6 +15,7 @@ export default function FighterAvatar({
   isWinner,
   isChallenger,
   hideResult = false,
+  color = '#50545C',
 }: FighterAvatarProps) {
   return (
     <div style={{ position: 'relative' }}>
@@ -23,7 +25,7 @@ export default function FighterAvatar({
           height: '54px',
           overflow: 'hidden',
           borderRadius: '50%',
-          borderColor: hideResult ? '#50545C' : isWinner ? '#2ABB75' : '#DF2151',
+          borderColor: hideResult ? color : isWinner ? '#2ABB75' : '#DF2151',
           borderWidth: '3px',
         }}
       >

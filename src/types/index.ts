@@ -92,7 +92,10 @@ export type FighterStats = {
   fighterStatistics: Stats[];
 };
 
-export type FighterStatistics = Stats[];
+export type FighterStatistics = {
+  wide: Stats[];
+  slim: Stats[];
+};
 
 export type FighterType = {
   fighterData: FighterInfo;
