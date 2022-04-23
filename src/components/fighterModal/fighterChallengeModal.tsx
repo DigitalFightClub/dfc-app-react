@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useMoralis } from 'react-moralis';
 import { useDispatch, useSelector } from 'react-redux';
 import { CLEAR_CHALLENGE_MSG, CLEAR_ERROR_MSG, SET_CHALLENGE_REQUEST } from '../../config/events';
-import { useFighterChallenges } from '../../hooks/fighter.hooks';
+import { useFighterChallenges, useGymFighters } from '../../hooks/fighter.hooks';
 import { AppState, ChallengeState, FighterInfo } from '../../types';
 import { dfcAction } from '../../types/actions';
 import { getChallengeState } from '../../utils/helpers/fighter.helpers';
@@ -23,6 +23,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
   );
   const dispatch = useDispatch();
 
+  const { data: gymFighters = [] } = useGymFighters();
   const { data: fighterChallenges, isLoading } = useFighterChallenges(selectedFighter ? selectedFighter.fighterId : 0);
 
   const [selectedStyle, setSelectedStyle] = useState<number>(-1);
@@ -112,7 +113,8 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
                   aria-label="Challenge"
                   onClick={handleChallenge}
                   display={
-                    ChallengeState.AVAILABLE === getChallengeState(opponentData.fighterId, false, fighterChallenges)
+                    ChallengeState.AVAILABLE ===
+                    getChallengeState(opponentData.fighterId, false, gymFighters, fighterChallenges)
                       ? 'flex'
                       : 'none'
                   }
@@ -130,7 +132,8 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
                   aria-label="Accept"
                   onClick={handleChallenge}
                   display={
-                    ChallengeState.CHALLENGING === getChallengeState(opponentData.fighterId, false, fighterChallenges)
+                    ChallengeState.CHALLENGING ===
+                    getChallengeState(opponentData.fighterId, false, gymFighters, fighterChallenges)
                       ? 'flex'
                       : 'none'
                   }

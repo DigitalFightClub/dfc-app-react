@@ -17,17 +17,16 @@ import {
   useDisclosure,
   Skeleton,
 } from '@chakra-ui/react';
+import _ from 'lodash';
 import { usePagination } from '@ajna/pagination';
-import Moralis from 'moralis/types';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useMoralis, useMoralisWeb3Api } from 'react-moralis';
-import { FighterInfo, OrganizationInfo, TokenNFTResult } from '../../types';
-import { getDFCNFTs } from '../../utils/web3/moralis';
+import { FighterInfo, OrganizationInfo } from '../../types';
 import FighterModal from '../fighterModal/fighterModal';
 import DfcPagination from '../pagination/DfcPagination';
-import { useFighterChallenges } from '../../hooks/fighter.hooks';
+import { useFighterChallenges, useGymFighters } from '../../hooks/fighter.hooks';
 import { getChallengeState } from '../../utils/helpers/fighter.helpers';
 import OrgFighterRow from './OrgFighterRow';
+import { useDFCFighters, useTotalDFCSupply } from '../../hooks/dfc.hooks';
 
 export interface OrgHeaderProps {
   orgData: OrganizationInfo;
@@ -44,21 +43,36 @@ export default function OrgDetails({
   selectedFighterName,
   selectedFighterCountryCode,
 }: OrgHeaderProps) {
-  // Web3 Hooks
-  const { isInitialized, Moralis } = useMoralis();
-  const Web3Api: Moralis.Web3API = useMoralisWeb3Api();
+  // Filter state
+  const [selectAvailable, setSelectAvailable] = useState<boolean>(false);
+  const [selectOnlineOnly, setSelectOnlineOnly] = useState<boolean>(false);
+  const [selectChallengers, setSelectChallengers] = useState<boolean>(false);
+
+  const { data: totalDFCSupply = 0 } = useTotalDFCSupply();
+  const { data: gymFighters = [] } = useGymFighters();
+  const { data: fighterChallenges } = useFighterChallenges(selectedFighterId);
+
+  const filterFunc = (data: FighterInfo[]): FighterInfo[] => {
+    return _.filter(data, ({ fighterId }) => {
+      if (selectChallengers) {
+        return (
+          _.findIndex(gymFighters, ({ fighterId: gymFighterId }) => gymFighterId === fighterId) === -1 &&
+          _.findIndex(fighterChallenges, ({ nftId }) => fighterId === nftId) >= 0
+        );
+      } else {
+        return true;
+      }
+    });
+  };
+  const { data: dfcFighters = [] } = useDFCFighters(filterFunc);
 
   const [renderOrgFighters, setRenderOrgFighters] = useState<FighterInfo[]>([]);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [totalDFCSupply, setTotalDFCSupply] = useState<number | undefined>(undefined);
   const [opponentFighter, setOpponentFighter] = useState<FighterInfo | null>(null);
-
-  const { data: fighterChallenges } = useFighterChallenges(selectedFighterId);
 
   // paging state
   const { currentPage, setCurrentPage, pagesCount, pages, setIsDisabled, isDisabled, pageSize, setPageSize, offset } =
     usePagination({
-      total: totalDFCSupply,
+      total: dfcFighters.length,
       limits: {
         outer: 1,
         inner: 3,
@@ -66,46 +80,18 @@ export default function OrgDetails({
       initialState: { pageSize: 10, isDisabled: true, currentPage: 1 },
     });
 
-  // Filter state
-  const [selectAvailable, setSelectAvailable] = useState<boolean>(false);
-  const [selectOnlineOnly, setSelectOnlineOnly] = useState<boolean>(false);
-  const [selectChallengers, setSelectChallengers] = useState<boolean>(false);
-
   // Modal state
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalSize = useBreakpointValue({ base: 'xs', md: '2xl', lg: '5xl' });
   const centered = useBreakpointValue({ base: false, md: true });
 
   useEffect(() => {
-    console.log('isInitialized');
-    if (isInitialized && !isLoaded) {
-      setIsLoaded(true);
+    if (dfcFighters) {
+      // console.log('Got Org Fighters', dfcFighters, fighterChallenges);
+      pageFighters();
+      setIsDisabled(false);
     }
-  }, [isInitialized, isLoaded]);
-
-  useEffect(() => {
-    (async function () {
-      console.log('Load org fighters Async');
-      if (isInitialized && isLoaded && selectedFighterId) {
-        const web3Provider = await Moralis.enableWeb3();
-        const signer = web3Provider.getSigner();
-        const address: string = await signer.getAddress();
-
-        console.log('Org Details Account:', address);
-        console.log(`Load org fighters page=[${currentPage - 1}] <= pagesCount=[${pagesCount}]`);
-        if (address && currentPage - 1 <= pagesCount) {
-          window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-          const nfts: TokenNFTResult = await getDFCNFTs(Web3Api, pageSize, offset, address, selectedFighterId);
-          // console.log('response org nfts', nfts);
-          setTotalDFCSupply(nfts.total);
-          setRenderOrgFighters([...nfts.result]);
-          setIsDisabled(false);
-        } else if (currentPage - 1 > pagesCount) {
-          setCurrentPage(pagesCount);
-        }
-      }
-    })();
-  }, [isLoaded, selectedFighterId, currentPage, pageSize, offset]);
+  }, [dfcFighters, currentPage, pageSize]);
 
   // paging handlers
   const handlePageChange = (nextPage: number): void => {
@@ -121,12 +107,29 @@ export default function OrgDetails({
 
     setRenderOrgFighters([]);
     setIsDisabled(true);
+    setCurrentPage(1);
     setPageSize(pageSize);
+  };
+
+  const pageFighters = () => {
+    const newFighterList: FighterInfo[] = [];
+    console.log(`page orgfighters ${offset} < ${currentPage} * ${pageSize}`);
+    for (let i = offset; i < currentPage * pageSize; i++) {
+      if (dfcFighters[i]) {
+        newFighterList.push({ ...dfcFighters[i] });
+      }
+    }
+    setRenderOrgFighters(newFighterList);
   };
 
   const handleOpponentClick = (fighterData: FighterInfo): void => {
     setOpponentFighter(fighterData);
     onOpen();
+  };
+
+  const handleSelectChallenged = () => {
+    setCurrentPage(1);
+    setSelectChallengers(!selectChallengers);
   };
 
   return (
@@ -163,6 +166,11 @@ export default function OrgDetails({
               ) : null}
               <Text fontSize="42px" fontWeight="semibold">
                 {orgData && orgData.orgName ? orgData.orgName : ''}
+              </Text>
+            </Center>
+            <Center>
+              <Text fontSize="16px" fontWeight="normal">
+                Org Members: {totalDFCSupply}
               </Text>
             </Center>
             <Center>
@@ -204,7 +212,7 @@ export default function OrgDetails({
           </HStack>
           <HStack>
             <Text color={selectChallengers ? 'grey' : 'white'}>All</Text>
-            <Switch disabled colorScheme="green" size="md" onChange={() => setSelectChallengers(!selectChallengers)} />
+            <Switch colorScheme="green" size="md" onChange={handleSelectChallenged} />
             <Text color={!selectChallengers ? 'grey' : 'white'}>Challengers</Text>
           </HStack>
           <Checkbox disabled colorScheme="green">
@@ -217,7 +225,7 @@ export default function OrgDetails({
           currentPage={currentPage}
           offset={offset}
           pageSize={pageSize}
-          totalItems={totalDFCSupply ? totalDFCSupply : 0}
+          totalItems={dfcFighters.length}
           pages={pages}
           isDisabled={isDisabled}
           handlePageChange={handlePageChange}
@@ -229,7 +237,7 @@ export default function OrgDetails({
           maxH="102.1875rem"
           mt="1rem"
           overflow="hidden"
-          overflowY="scroll"
+          overflowY="auto"
           css={{
             '&::-webkit-scrollbar': {
               width: '4px',
@@ -249,7 +257,12 @@ export default function OrgDetails({
                   <OrgFighterRow
                     key={fighter.fighterId}
                     fighter={fighter}
-                    fighterChallengeState={getChallengeState(fighter.fighterId, fighter.isOwned, fighterChallenges)}
+                    fighterChallengeState={getChallengeState(
+                      fighter.fighterId,
+                      fighter.isOwned,
+                      gymFighters,
+                      fighterChallenges
+                    )}
                     handleOpponentClick={handleOpponentClick}
                   />
                 );
@@ -261,7 +274,7 @@ export default function OrgDetails({
           currentPage={currentPage}
           offset={offset}
           pageSize={pageSize}
-          totalItems={totalDFCSupply ? totalDFCSupply : 0}
+          totalItems={dfcFighters.length}
           pages={pages}
           isDisabled={isDisabled}
           handlePageChange={handlePageChange}

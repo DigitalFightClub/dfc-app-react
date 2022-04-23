@@ -11,7 +11,7 @@ import {
   Skeleton,
   SkeletonText,
 } from '@chakra-ui/react';
-import { useFighterChallenges } from '../../hooks/fighter.hooks';
+import { useFighterChallenges, useGymFighters } from '../../hooks/fighter.hooks';
 import { ChallengeState, FighterInfo, FighterStatus } from '../../types';
 import { getChallengeState } from '../../utils/helpers/fighter.helpers';
 import { ChallengeIcon } from '../dfcIcons/ChallengeIcon';
@@ -27,6 +27,7 @@ export default function FighterTile({ fighterData, loadingGymFitghers = false }:
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalSize = useBreakpointValue({ base: 'xs', md: '2xl', lg: '5xl' });
   const centered = useBreakpointValue({ base: false, md: true });
+  const { data: gymFighters = [] } = useGymFighters();
   const { data: fighterChallenges } = useFighterChallenges(fighterData.fighterId);
 
   const activeHover = {
@@ -83,7 +84,7 @@ export default function FighterTile({ fighterData, loadingGymFitghers = false }:
           zIndex="10"
           display={
             ChallengeState.CHALLENGED ===
-            getChallengeState(fighterData.fighterId, fighterData.isOwned, fighterChallenges)
+            getChallengeState(fighterData.fighterId, fighterData.isOwned, gymFighters, fighterChallenges)
               ? 'flex'
               : 'none'
           }

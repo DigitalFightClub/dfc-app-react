@@ -2,7 +2,7 @@ import { Tooltip, IconButton, Button, Flex } from '@chakra-ui/react';
 import { PunchIcon } from '../dfcIcons/PunchIcon';
 import { FlexIcon } from '../dfcIcons/FlexIcon';
 import { ChallengeState } from '../../types';
-import { useFighterChallenges } from '../../hooks/fighter.hooks';
+import { useFighterChallenges, useGymFighters } from '../../hooks/fighter.hooks';
 import { getChallengeState } from '../../utils/helpers/fighter.helpers';
 
 export interface FighterDataButtonProps {
@@ -20,6 +20,7 @@ export default function FighterDataButtons({
   handleFight,
   handleChallenge,
 }: FighterDataButtonProps) {
+  const { data: gymFighters = [] } = useGymFighters();
   const { data: fighterChallenges, isLoading } = useFighterChallenges(fighterId);
 
   const challengeButtons = (
@@ -34,7 +35,7 @@ export default function FighterDataButtons({
         aria-label="Challenge"
         onClick={handleChallenge}
         display={
-          !isOwned && ChallengeState.AVAILABLE === getChallengeState(fighterId, isOwned, fighterChallenges)
+          !isOwned && ChallengeState.AVAILABLE === getChallengeState(fighterId, isOwned, gymFighters, fighterChallenges)
             ? 'flex'
             : 'none'
         }
@@ -51,7 +52,8 @@ export default function FighterDataButtons({
         aria-label="Accept"
         onClick={handleChallenge}
         display={
-          !isOwned && ChallengeState.CHALLENGING === getChallengeState(fighterId, isOwned, fighterChallenges)
+          !isOwned &&
+          ChallengeState.CHALLENGING === getChallengeState(fighterId, isOwned, gymFighters, fighterChallenges)
             ? 'flex'
             : 'none'
         }

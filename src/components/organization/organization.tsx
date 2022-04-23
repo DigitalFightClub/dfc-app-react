@@ -1,4 +1,4 @@
-import { chakra, Box, Container, Flex, Heading, HStack, Skeleton, VStack, Divider } from '@chakra-ui/react';
+import { chakra, Box, Container, Flex, HStack, Skeleton, VStack, Divider } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_SELECTED_FIGHTER } from '../../config/events';
 import { useGymFighters } from '../../hooks/fighter.hooks';
