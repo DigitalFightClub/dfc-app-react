@@ -58,7 +58,7 @@ export default function Organization() {
             >
               <Skeleton isLoaded={!isGymFightersLoading && !isFetching}>
                 <p>Select fighter:</p>
-                <HStack gap="5px">
+                <HStack gap="5px" justifyContent="center">
                   {activeFighters
                     ? activeFighters.map((fighter) => (
                       <chakra.div
