@@ -35,7 +35,7 @@ export default function FighterHistoryRow({ fightHistoryBrief }: FighterHistoryR
   // console.log('Fight Date', formatted_fightDate);
 
   return (
-    <Flex maxWidth="325px" minWidth="325px" flexDir="column" _hover={{ cursor: 'pointer' }}>
+    <Flex maxWidth="350px" minWidth="350px" flexDir="column" _hover={{ cursor: 'pointer' }}>
       <div
         style={{
           width: '100%',

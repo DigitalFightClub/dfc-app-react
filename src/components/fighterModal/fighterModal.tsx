@@ -74,7 +74,7 @@ export default function FighterModal({ onClose, fighterData }: FighterModalProps
       >
         <CloseIcon />
       </Button>
-      <Skeleton isLoaded={isReset}>{modalView}</Skeleton>
+      <Skeleton w="100%" isLoaded={isReset}>{modalView}</Skeleton>
     </Flex>
   );
 }

@@ -70,7 +70,13 @@ export default function FighterHistory({ fighterId }: FighterHistoryProps) {
   }
 
   return (
-    <Box bg="rgba(0, 0, 0, 0.3)" py="24px" px={{ base: '0px', md: '40px' }} minH={{ base: '835px', md: '472px' }}>
+    <Box
+      bg="rgba(0, 0, 0, 0.3)"
+      py="24px"
+      px={{ base: '0px', md: '10px' }}
+      minH={{ base: '835px', md: '472px' }}
+      w="100%"
+    >
       <Heading textAlign="center" variant="header3" fontWeight="semibold">
         Fight History
       </Heading>
