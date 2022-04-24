@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useMoralis } from 'react-moralis';
 import { useDispatch, useSelector } from 'react-redux';
 import { CLEAR_CHALLENGE_MSG, CLEAR_ERROR_MSG, SET_CHALLENGE_REQUEST } from '../../config/events';
-import { useFighterChallengeState } from '../../hooks/fighter.hooks';
+import { useChallengeFighter, useFighterChallengeState } from '../../hooks/fighter.hooks';
 import { AppState, ChallengeState, FighterInfo } from '../../types';
 import { dfcAction } from '../../types/actions';
 import FighterVerticalDetails from './fighterVerticalDetails';
@@ -14,58 +14,22 @@ export interface FighterChallengeModalProps {
 }
 
 export default function FighterChallengeModal({ opponentData, onClose }: FighterChallengeModalProps) {
-  const { Moralis } = useMoralis();
+  // const { Moralis } = useMoralis();
+
+  const [selectedStyle, setSelectedStyle] = useState<number>(-1);
 
   // redux hooks
   const { selectedFighter, fightingStyles, challengeInProgress, challengeMsg, errorMsg } = useSelector(
     (state: AppState) => state.organizationState
   );
-  const dispatch = useDispatch();
 
   const selectedFighterId: number = selectedFighter ? selectedFighter.fighterId : 0;
+  const challengeFighter = useChallengeFighter(selectedFighterId, opponentData.fighterId, selectedStyle);
   const { data: challengeState = ChallengeState.UNAVAILABLE } = useFighterChallengeState(
     selectedFighterId,
     opponentData.fighterId
   );
   console.log('Challenge Modal challengeState', challengeState, selectedFighterId, opponentData);
-
-  const [selectedStyle, setSelectedStyle] = useState<number>(-1);
-
-  // Chakra hooks
-  const toast = useToast();
-
-  // handle challenge feedback
-  useEffect(() => {
-    if (challengeMsg) {
-      console.log('Toast challenge feedback', challengeMsg);
-      toast({
-        description: `${challengeMsg}`,
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-        onCloseComplete(): void {
-          dispatch(dfcAction(CLEAR_CHALLENGE_MSG, {}));
-          onClose();
-        },
-      });
-    }
-  }, [challengeMsg, dispatch, onClose, toast]);
-
-  // handle challenge error
-  useEffect(() => {
-    if (errorMsg) {
-      console.log('Toast challenge feedback', errorMsg);
-      toast({
-        description: `${errorMsg}`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        onCloseComplete(): void {
-          dispatch(dfcAction(CLEAR_ERROR_MSG, {}));
-        },
-      });
-    }
-  }, [errorMsg, dispatch, toast]);
 
   const handleChallenge = () => {
     if (selectedStyle >= 0) {
@@ -74,16 +38,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
         `nft_id: ${selectedFighter?.fighterId}\nfighting_style: ${selectedStyle}\nopponent_id: ${opponentData.fighterId}`
       );
 
-      dispatch(
-        dfcAction(SET_CHALLENGE_REQUEST, {
-          data: {
-            fighterId: selectedFighter?.fighterId,
-            opponentId: opponentData.fighterId,
-            fightingStyle: selectedStyle,
-            Moralis,
-          },
-        })
-      );
+      challengeFighter.mutate();
     }
   };
 
@@ -116,7 +71,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
                   aria-label="Challenge"
                   onClick={handleChallenge}
                   display={ChallengeState.AVAILABLE === challengeState ? 'flex' : 'none'}
-                  disabled={selectedStyle < 0}
+                  disabled={selectedStyle < 0 || !selectedFighter}
                 >
                   Challenge
                 </Button>
@@ -130,7 +85,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
                   aria-label="Accept"
                   onClick={handleChallenge}
                   display={ChallengeState.CHALLENGING === challengeState ? 'flex' : 'none'}
-                  disabled={selectedStyle < 0}
+                  disabled={selectedStyle < 0 || !selectedFighter}
                 >
                   Accept
                 </Button>

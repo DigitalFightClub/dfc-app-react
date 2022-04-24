@@ -54,6 +54,20 @@ export default function FighterDataButtons({
       >
         Accept
       </Button>
+      <Button
+        w="9rem"
+        h="2.2rem"
+        bg="gray.600"
+        color="white"
+        mx=".5rem"
+        borderRadius="0"
+        aria-label="Accept"
+        onClick={handleChallenge}
+        display={ChallengeState.CHALLENGED === challengeState ? 'flex' : 'none'}
+        disabled
+      >
+        Challenged
+      </Button>
     </>
   );
 

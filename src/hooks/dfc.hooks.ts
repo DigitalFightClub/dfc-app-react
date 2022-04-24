@@ -121,8 +121,10 @@ const transformFighterMetadata = (fighters: FighterNFT[]): FighterInfo[] => {
  */
 
 export function useTotalDFCSupply() {
-  const { Moralis } = useMoralis();
-  return useQuery(['dfc', 'totalSupply'], () => getTotalDFCSupply(Moralis));
+  const { isInitialized, Moralis } = useMoralis();
+  return useQuery(['dfc', 'totalSupply'], () => getTotalDFCSupply(Moralis), {
+    enabled: !!isInitialized,
+  });
 }
 
 export function useAccountDFCFighters() {
@@ -130,7 +132,16 @@ export function useAccountDFCFighters() {
   const Web3Api: Moralis.Web3API = useMoralisWeb3Api();
 
   return useQuery(['dfc', walletAddress], () => getUserDFCNFTs(Web3Api, walletAddress), {
-    enabled: isInitialized,
+    enabled: !!isInitialized,
+  });
+}
+
+export function useAddressDFCFighters(address: string) {
+  const { isInitialized } = useMoralis();
+  const Web3Api: Moralis.Web3API = useMoralisWeb3Api();
+
+  return useQuery(['dfc', address], () => getUserDFCNFTs(Web3Api, address), {
+    enabled: !!isInitialized,
   });
 }
 
@@ -142,7 +153,7 @@ export function useOwnedFighter(fighterId: number) {
     ['dfc', walletAddress],
     () => getUserDFCNFTs(Web3Api, walletAddress),
     {
-      enabled: isInitialized,
+      enabled: !!isInitialized,
       select: (data: AccountNFTResult) => {
         const ownedNFTs: MoralisNFT[] = _.get(data, ['result'], []);
         return (

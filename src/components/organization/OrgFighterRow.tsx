@@ -1,7 +1,12 @@
 import { chakra, Box, Flex, Text, VStack, Image, Spacer, Button } from '@chakra-ui/react';
+import _ from 'lodash';
 import { useSelector } from 'react-redux';
+import { ENV_CONFG } from '../../config';
+import { useAddressDFCFighters } from '../../hooks/dfc.hooks';
 import { useFighterChallengeState, useFighterRecord } from '../../hooks/fighter.hooks';
-import { AppState, ChallengeState, FighterInfo } from '../../types';
+import { AppState, ChallengeState, FighterInfo, MoralisNFT } from '../../types';
+
+const ENV = ENV_CONFG();
 
 export interface OrgFighterRowProps {
   fighter: FighterInfo;
@@ -11,6 +16,9 @@ export interface OrgFighterRowProps {
 export default function OrgFighterRow({ fighter, handleOpponentClick }: OrgFighterRowProps) {
   const { selectedFighter } = useSelector((state: AppState) => state.organizationState);
   const selectedFighterId: number = selectedFighter ? selectedFighter.fighterId : 0;
+
+  const { data: autoFighters } = useAddressDFCFighters(ENV.MULTI_SIG);
+  const autoNFTs: MoralisNFT[] = _.get(autoFighters, ['result'], []);
 
   const { data: fighterRecord } = useFighterRecord(fighter.fighterId);
   const { data: challengeState = ChallengeState.UNAVAILABLE } = useFighterChallengeState(
@@ -52,6 +60,14 @@ export default function OrgFighterRow({ fighter, handleOpponentClick }: OrgFight
             </chakra.span>
           </Text>
         </Flex>
+        {_.findIndex(
+          autoNFTs,
+          ({ token_id: ownedFighterId }) => fighter.fighterId === _.parseInt(ownedFighterId, 10)
+        ) >= 0 ? (
+            <Text fontFamily="Sora" fontWeight="normal" fontSize="20px">
+              AUTO
+            </Text>
+          ) : null}
       </VStack>
       <Spacer />
       {challengeState === ChallengeState.AVAILABLE ? (
@@ -83,8 +99,21 @@ export default function OrgFighterRow({ fighter, handleOpponentClick }: OrgFight
         </Button>
       ) : null}
       {challengeState === ChallengeState.CHALLENGED ? (
-        <Button w="9rem" h="2.8rem" bg="gray.600" color="white" mx="1.5rem" borderRadius="0" disabled>
+        <Button
+          w="9rem"
+          h="2.8rem"
+          bg="gray.600"
+          color="white"
+          mx="1.5rem"
+          borderRadius="0"
+          onClick={() => handleOpponentClick(fighter)}
+        >
           Challenged
+        </Button>
+      ) : null}
+      {challengeState === ChallengeState.UNAVAILABLE ? (
+        <Button w="9rem" h="2.8rem" bg="gray.600" color="white" mx="1.5rem" borderRadius="0" disabled>
+          Owned
         </Button>
       ) : null}
     </Flex>
