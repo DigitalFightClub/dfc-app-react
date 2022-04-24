@@ -1,15 +1,22 @@
 import { chakra, Box, Flex, Text, VStack, Image, Spacer, Button } from '@chakra-ui/react';
-import { useFighterRecord } from '../../hooks/fighter.hooks';
-import { ChallengeState, FighterInfo } from '../../types';
+import { useSelector } from 'react-redux';
+import { useFighterChallengeState, useFighterRecord } from '../../hooks/fighter.hooks';
+import { AppState, ChallengeState, FighterInfo } from '../../types';
 
 export interface OrgFighterRowProps {
   fighter: FighterInfo;
-  fighterChallengeState: ChallengeState;
   handleOpponentClick: (fighterData: FighterInfo) => void;
 }
 
-export default function OrgFighterRow({ fighter, fighterChallengeState, handleOpponentClick }: OrgFighterRowProps) {
+export default function OrgFighterRow({ fighter, handleOpponentClick }: OrgFighterRowProps) {
+  const { selectedFighter } = useSelector((state: AppState) => state.organizationState);
+  const selectedFighterId: number = selectedFighter ? selectedFighter.fighterId : 0;
+
   const { data: fighterRecord } = useFighterRecord(fighter.fighterId);
+  const { data: challengeState = ChallengeState.UNAVAILABLE } = useFighterChallengeState(
+    selectedFighterId,
+    fighter.fighterId
+  );
 
   return (
     <Flex key={fighter.fighterId} w="100%" h="146px" bgImage="/assets/background.svg" alignItems="center">
@@ -47,7 +54,7 @@ export default function OrgFighterRow({ fighter, fighterChallengeState, handleOp
         </Flex>
       </VStack>
       <Spacer />
-      {fighterChallengeState === ChallengeState.AVAILABLE ? (
+      {challengeState === ChallengeState.AVAILABLE ? (
         <Button
           w="9rem"
           h="2.8rem"
@@ -61,7 +68,7 @@ export default function OrgFighterRow({ fighter, fighterChallengeState, handleOp
           Challenge
         </Button>
       ) : null}
-      {fighterChallengeState === ChallengeState.CHALLENGING ? (
+      {challengeState === ChallengeState.CHALLENGING ? (
         <Button
           w="9rem"
           h="2.8rem"
@@ -75,7 +82,7 @@ export default function OrgFighterRow({ fighter, fighterChallengeState, handleOp
           Accept
         </Button>
       ) : null}
-      {fighterChallengeState === ChallengeState.CHALLENGED ? (
+      {challengeState === ChallengeState.CHALLENGED ? (
         <Button w="9rem" h="2.8rem" bg="gray.600" color="white" mx="1.5rem" borderRadius="0" disabled>
           Challenged
         </Button>

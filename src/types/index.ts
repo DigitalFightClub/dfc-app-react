@@ -70,6 +70,7 @@ export enum ChallengeState {
   CHALLENGED = 'Challenged',
   CHALLENGING = 'Challenging',
   COOLDOWN = 'Cooldown',
+  UNAVAILABLE= 'Unavailable',
 }
 
 export enum FighterModalState {

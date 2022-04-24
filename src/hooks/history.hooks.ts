@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import _ from 'lodash';
 import { useQuery } from 'react-query';
 import { ENV_CONFG } from '../config';
 import { FightHistoryBrief, MatchResult, Round } from '../types';
@@ -15,7 +16,8 @@ const getFightHistory = async (fighterId: number): Promise<FightHistoryBrief[]> 
     // console.log('history axios response', response.data);
 
     // transform results into fighthistorybrief type
-    const briefs = response.data.fightHistory.map((historyRecord: any) => {
+    const fightHistory = _.get(response, ['data', 'fightHistory'], []);
+    const briefs: FightHistoryBrief[] = fightHistory.map((historyRecord: any) => {
       if (historyRecord.uuid) {
         // build Rounds
         const rounds: Round[] = [];

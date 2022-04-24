@@ -1,13 +1,13 @@
 import { Tooltip, IconButton, Button, Flex } from '@chakra-ui/react';
 import { PunchIcon } from '../dfcIcons/PunchIcon';
 import { FlexIcon } from '../dfcIcons/FlexIcon';
-import { ChallengeState } from '../../types';
-import { useFighterChallenges, useGymFighters } from '../../hooks/fighter.hooks';
-import { getChallengeState } from '../../utils/helpers/fighter.helpers';
+import { AppState, ChallengeState } from '../../types';
+import { useFighterChallengeState } from '../../hooks/fighter.hooks';
+import { useSelector } from 'react-redux';
+import { useOwnedFighter } from '../../hooks/dfc.hooks';
 
 export interface FighterDataButtonProps {
   isTile: boolean;
-  isOwned: boolean;
   fighterId: number;
   handleFight: () => void;
   handleChallenge?: () => void;
@@ -15,13 +15,16 @@ export interface FighterDataButtonProps {
 
 export default function FighterDataButtons({
   isTile,
-  isOwned,
   fighterId,
   handleFight,
   handleChallenge,
 }: FighterDataButtonProps) {
-  const { data: gymFighters = [] } = useGymFighters();
-  const { data: fighterChallenges, isLoading } = useFighterChallenges(fighterId);
+  const { selectedFighter } = useSelector((state: AppState) => state.organizationState);
+  const selectedFighterId: number = selectedFighter ? selectedFighter.fighterId : 0;
+
+  const { data: challengeState = ChallengeState.UNAVAILABLE } = useFighterChallengeState(selectedFighterId, fighterId);
+  console.log('Details Modal challengeState', challengeState, selectedFighterId, fighterId);
+  const { data: isOwned } = useOwnedFighter(fighterId);
 
   const challengeButtons = (
     <>
@@ -34,11 +37,7 @@ export default function FighterDataButtons({
         borderRadius="0"
         aria-label="Challenge"
         onClick={handleChallenge}
-        display={
-          !isOwned && ChallengeState.AVAILABLE === getChallengeState(fighterId, isOwned, gymFighters, fighterChallenges)
-            ? 'flex'
-            : 'none'
-        }
+        display={ChallengeState.AVAILABLE === challengeState ? 'flex' : 'none'}
       >
         Challenge
       </Button>
@@ -51,12 +50,7 @@ export default function FighterDataButtons({
         borderRadius="0"
         aria-label="Accept"
         onClick={handleChallenge}
-        display={
-          !isOwned &&
-          ChallengeState.CHALLENGING === getChallengeState(fighterId, isOwned, gymFighters, fighterChallenges)
-            ? 'flex'
-            : 'none'
-        }
+        display={ChallengeState.CHALLENGING === challengeState ? 'flex' : 'none'}
       >
         Accept
       </Button>
@@ -93,7 +87,7 @@ export default function FighterDataButtons({
         >
           Improve
         </Button>
-        {isLoading ? null : challengeButtons}
+        {challengeButtons}
       </Flex>
 
       {/* Mobile and Tile layout */}

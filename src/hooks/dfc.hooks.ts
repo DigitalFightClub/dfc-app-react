@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import { nftABI } from '../abi/dfcNft';
 import { fetchJsonMetaData } from '../api/dfc.api';
 import { ENV_CONFG } from '../config';
-import { AccountNFTResult, FighterInfo, FighterNFT } from '../types';
+import { AccountNFTResult, FighterInfo, FighterNFT, MoralisNFT } from '../types';
 import countryMap from '../utils/helpers/country-lookup';
 
 const ENV = ENV_CONFG();
@@ -103,7 +103,7 @@ const transformFighterMetadata = (fighters: FighterNFT[]): FighterInfo[] => {
       refinedFighter.stats.sambo = parseInt(_.get(fighter, ['attributes', '8', 'value']));
       refinedFighter.stats.taekwondo = parseInt(_.get(fighter, ['attributes', '9', 'value']));
       refinedFighter.stats.wrestling = parseInt(_.get(fighter, ['attributes', '10', 'value']));
-      
+
       // console.log('isOwned transform', fighter);
       return refinedFighter;
     });
@@ -134,13 +134,32 @@ export function useAccountDFCFighters() {
   });
 }
 
-export function useDFCFighters(select: any) {
+export function useOwnedFighter(fighterId: number) {
+  const { isInitialized, account: walletAddress } = useMoralis();
+  const Web3Api: Moralis.Web3API = useMoralisWeb3Api();
+
+  return useQuery<AccountNFTResult, Error, boolean>(
+    ['dfc', walletAddress],
+    () => getUserDFCNFTs(Web3Api, walletAddress),
+    {
+      enabled: isInitialized,
+      select: (data: AccountNFTResult) => {
+        const ownedNFTs: MoralisNFT[] = _.get(data, ['result'], []);
+        return (
+          _.findIndex(ownedNFTs, ({ token_id: ownedFighterId }) => fighterId === _.parseInt(ownedFighterId, 10)) >= 0
+        );
+      },
+    }
+  );
+}
+
+export function useDFCFighters(select: any, enabledConstraint: boolean) {
   const { data: totalSupply } = useTotalDFCSupply();
   return useQuery<FighterInfo[], Error, FighterInfo[]>(
     ['dfc', 'fighters'],
     () => getDFCFighters(totalSupply ? totalSupply : 0),
     {
-      enabled: !!totalSupply,
+      enabled: !!totalSupply && enabledConstraint,
       staleTime: Infinity,
       select,
     }

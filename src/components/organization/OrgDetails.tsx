@@ -24,7 +24,6 @@ import { FighterInfo, OrganizationInfo } from '../../types';
 import FighterModal from '../fighterModal/fighterModal';
 import DfcPagination from '../pagination/DfcPagination';
 import { useFighterChallenges, useGymFighters } from '../../hooks/fighter.hooks';
-import { getChallengeState } from '../../utils/helpers/fighter.helpers';
 import OrgFighterRow from './OrgFighterRow';
 import { useDFCFighters, useTotalDFCSupply } from '../../hooks/dfc.hooks';
 
@@ -64,7 +63,7 @@ export default function OrgDetails({
       }
     });
   };
-  const { data: dfcFighters = [] } = useDFCFighters(filterFunc);
+  const { data: dfcFighters = [] } = useDFCFighters(filterFunc, true);
 
   const [renderOrgFighters, setRenderOrgFighters] = useState<FighterInfo[]>([]);
   const [opponentFighter, setOpponentFighter] = useState<FighterInfo | null>(null);
@@ -254,17 +253,7 @@ export default function OrgDetails({
           {renderOrgFighters
             ? renderOrgFighters.map((fighter) => {
                 return (
-                  <OrgFighterRow
-                    key={fighter.fighterId}
-                    fighter={fighter}
-                    fighterChallengeState={getChallengeState(
-                      fighter.fighterId,
-                      fighter.isOwned,
-                      gymFighters,
-                      fighterChallenges
-                    )}
-                    handleOpponentClick={handleOpponentClick}
-                  />
+                  <OrgFighterRow key={fighter.fighterId} fighter={fighter} handleOpponentClick={handleOpponentClick} />
                 );
               })
             : null}

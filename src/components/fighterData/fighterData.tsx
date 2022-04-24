@@ -74,7 +74,6 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
         
         <FighterDataButtons
           isTile={isTile}
-          isOwned={fighterData.isOwned}
           fighterId={fighterData.fighterId}
           handleFight={handleFight}
           handleChallenge={handleChallenge}

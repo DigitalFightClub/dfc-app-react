@@ -3,10 +3,9 @@ import { useEffect, useState } from 'react';
 import { useMoralis } from 'react-moralis';
 import { useDispatch, useSelector } from 'react-redux';
 import { CLEAR_CHALLENGE_MSG, CLEAR_ERROR_MSG, SET_CHALLENGE_REQUEST } from '../../config/events';
-import { useFighterChallenges, useGymFighters } from '../../hooks/fighter.hooks';
+import { useFighterChallengeState } from '../../hooks/fighter.hooks';
 import { AppState, ChallengeState, FighterInfo } from '../../types';
 import { dfcAction } from '../../types/actions';
-import { getChallengeState } from '../../utils/helpers/fighter.helpers';
 import FighterVerticalDetails from './fighterVerticalDetails';
 
 export interface FighterChallengeModalProps {
@@ -23,8 +22,12 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
   );
   const dispatch = useDispatch();
 
-  const { data: gymFighters = [] } = useGymFighters();
-  const { data: fighterChallenges, isLoading } = useFighterChallenges(selectedFighter ? selectedFighter.fighterId : 0);
+  const selectedFighterId: number = selectedFighter ? selectedFighter.fighterId : 0;
+  const { data: challengeState = ChallengeState.UNAVAILABLE } = useFighterChallengeState(
+    selectedFighterId,
+    opponentData.fighterId
+  );
+  console.log('Challenge Modal challengeState', challengeState, selectedFighterId, opponentData);
 
   const [selectedStyle, setSelectedStyle] = useState<number>(-1);
 
@@ -102,7 +105,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
               <Text>Proving Grounds</Text>
               <Text>Middleweight Category</Text>
               <Text>3 Rounds</Text>
-              <Skeleton isLoaded={!challengeInProgress && !isLoading}>
+              <Skeleton isLoaded={!challengeInProgress}>
                 <Button
                   w="9rem"
                   h="2.2rem"
@@ -112,12 +115,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
                   borderRadius="0"
                   aria-label="Challenge"
                   onClick={handleChallenge}
-                  display={
-                    ChallengeState.AVAILABLE ===
-                    getChallengeState(opponentData.fighterId, false, gymFighters, fighterChallenges)
-                      ? 'flex'
-                      : 'none'
-                  }
+                  display={ChallengeState.AVAILABLE === challengeState ? 'flex' : 'none'}
                   disabled={selectedStyle < 0}
                 >
                   Challenge
@@ -131,12 +129,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
                   borderRadius="0"
                   aria-label="Accept"
                   onClick={handleChallenge}
-                  display={
-                    ChallengeState.CHALLENGING ===
-                    getChallengeState(opponentData.fighterId, false, gymFighters, fighterChallenges)
-                      ? 'flex'
-                      : 'none'
-                  }
+                  display={ChallengeState.CHALLENGING === challengeState ? 'flex' : 'none'}
                   disabled={selectedStyle < 0}
                 >
                   Accept

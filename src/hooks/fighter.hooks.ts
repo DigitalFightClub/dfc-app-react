@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import _ from 'lodash';
 import { useQuery } from 'react-query';
 import { ENV_CONFG } from '../config';
-import { Challenge, FighterInfo, FightRecord, FightRecordResponse, MoralisNFT } from '../types';
+import { Challenge, ChallengeState, FighterInfo, FightRecord, FightRecordResponse, MoralisNFT } from '../types';
 import { useAccountDFCFighters, useDFCFighter, useDFCFighters } from './dfc.hooks';
 
 const ENV = ENV_CONFG();
@@ -47,19 +47,81 @@ export function useFighterChallenges(fighterId: number) {
   return useQuery(['fighter', 'challenges', fighterId], () => getFighterChallenges(fighterId));
 }
 
+/**
+ *
+ * @param fighterId - owned fighter ID
+ * @param opponentNftId - other fighter ID
+ * @returns Challenge state between fighter and the opponent
+ */
+export function useFighterChallengeState(fighterId: number, opponentNftId: number) {
+  const { data: accountFighters } = useAccountDFCFighters();
+  return useQuery<Challenge[], Error, ChallengeState>(
+    ['fighter', 'challenges', fighterId],
+    () => getFighterChallenges(fighterId),
+    {
+      enabled: !!accountFighters,
+      select: (data: Challenge[]) => {
+        const ownedNFTs: MoralisNFT[] = _.get(accountFighters, ['result'], []);
+        if (
+          _.findIndex(ownedNFTs, ({ token_id: ownedFighterId }) => opponentNftId === _.parseInt(ownedFighterId, 10)) >=
+          0
+        ) {
+          // opponent is owned by the user
+          return ChallengeState.UNAVAILABLE;
+        }
+
+        if (data) {
+          // opponent is being challenged
+          if (_.findIndex(data, ({ opponentId }) => opponentNftId === opponentId) >= 0) {
+            return ChallengeState.CHALLENGED;
+          }
+
+          // opponent is challenging
+          if (_.findIndex(data, ({ nftId }) => opponentNftId === nftId) >= 0) {
+            return ChallengeState.CHALLENGING;
+          }
+        }
+        return ChallengeState.AVAILABLE;
+      },
+    }
+  );
+}
+
+/**
+ *
+ * @param fighterId - owned fighter ID
+ * @returns true if the fighter is being challenged
+ */
+export function useFighterChallenged(fighterId: number) {
+  return useQuery<Challenge[], Error, boolean>(
+    ['fighter', 'challenges', fighterId],
+    () => getFighterChallenges(fighterId),
+    {
+      select: (data: Challenge[]) => {
+        if (data) {
+          return _.findIndex(data, ({ opponentId }) => fighterId === opponentId) >= 0;
+        }
+        return false;
+      },
+    }
+  );
+}
+
 export function useGymFighters() {
   const { data: accountFighters } = useAccountDFCFighters();
-  return useDFCFighters((data: FighterInfo[]) =>
-    _.filter(data, ({ fighterId }) => {
-      const ownedNFTs: MoralisNFT[] = _.get(accountFighters, ['result'], []);
-      return (
-        _.findIndex(ownedNFTs, ({ token_id: ownedFighterId }) => {
-          return fighterId === _.parseInt(ownedFighterId, 10);
-        }) >= 0
-      );
-    }).map((gymFighter) => {
-      return { ...gymFighter, isOwned: true };
-    })
+  return useDFCFighters(
+    (data: FighterInfo[]) =>
+      _.filter(data, ({ fighterId }) => {
+        const ownedNFTs: MoralisNFT[] = _.get(accountFighters, ['result'], []);
+        return (
+          _.findIndex(ownedNFTs, ({ token_id: ownedFighterId }) => {
+            return fighterId === _.parseInt(ownedFighterId, 10);
+          }) >= 0
+        );
+      }).map((gymFighter) => {
+        return { ...gymFighter, isOwned: true };
+      }),
+    !!accountFighters
   );
 }
 

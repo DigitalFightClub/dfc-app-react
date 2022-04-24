@@ -23,7 +23,7 @@ export default function FighterHistory({ fighterId }: FighterHistoryProps) {
       total: fighterHistory.length,
       limits: {
         outer: 1,
-        inner: 2,
+        inner: 1,
       },
       initialState: { pageSize: 6, isDisabled: true, currentPage: 1 },
     }
