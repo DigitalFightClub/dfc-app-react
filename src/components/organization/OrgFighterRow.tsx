@@ -1,5 +1,6 @@
 import { chakra, Box, Flex, Text, VStack, Image, Spacer, Button } from '@chakra-ui/react';
 import _ from 'lodash';
+import { MouseEvent } from 'react';
 import { useSelector } from 'react-redux';
 import { ENV_CONFG } from '../../config';
 import { useAddressDFCFighters } from '../../hooks/dfc.hooks';
@@ -11,9 +12,14 @@ const ENV = ENV_CONFG();
 export interface OrgFighterRowProps {
   fighter: FighterInfo;
   handleOpponentClick: (fighterData: FighterInfo) => void;
+  handleOpponentChallengeClick: (event: MouseEvent<HTMLButtonElement>, fighterData: FighterInfo) => void;
 }
 
-export default function OrgFighterRow({ fighter, handleOpponentClick }: OrgFighterRowProps) {
+export default function OrgFighterRow({
+  fighter,
+  handleOpponentClick,
+  handleOpponentChallengeClick,
+}: OrgFighterRowProps) {
   const { selectedFighter } = useSelector((state: AppState) => state.organizationState);
   const selectedFighterId: number = selectedFighter ? selectedFighter.fighterId : 0;
 
@@ -27,7 +33,14 @@ export default function OrgFighterRow({ fighter, handleOpponentClick }: OrgFight
   );
 
   return (
-    <Flex key={fighter.fighterId} w="100%" h="146px" bgImage="/assets/background.svg" alignItems="center">
+    <Flex
+      key={fighter.fighterId}
+      w="100%"
+      h="146px"
+      bgImage="/assets/background.svg"
+      alignItems="center"
+      onClick={() => handleOpponentClick(fighter)}
+    >
       <Box
         maxH="145px"
         minH="145px"
@@ -79,7 +92,7 @@ export default function OrgFighterRow({ fighter, handleOpponentClick }: OrgFight
           mx="1.5rem"
           borderRadius="0"
           disabled={fighter.isOwned}
-          onClick={() => handleOpponentClick(fighter)}
+          onClick={(event: MouseEvent<HTMLButtonElement>) => handleOpponentChallengeClick(event, fighter)}
         >
           Challenge
         </Button>
@@ -93,7 +106,7 @@ export default function OrgFighterRow({ fighter, handleOpponentClick }: OrgFight
           mx="1.5rem"
           borderRadius="0"
           disabled={fighter.isOwned}
-          onClick={() => handleOpponentClick(fighter)}
+          onClick={(event: MouseEvent<HTMLButtonElement>) => handleOpponentChallengeClick(event, fighter)}
         >
           Accept
         </Button>
@@ -106,7 +119,7 @@ export default function OrgFighterRow({ fighter, handleOpponentClick }: OrgFight
           color="white"
           mx="1.5rem"
           borderRadius="0"
-          onClick={() => handleOpponentClick(fighter)}
+          disabled
         >
           Challenged
         </Button>

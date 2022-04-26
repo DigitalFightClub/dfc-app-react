@@ -8,12 +8,13 @@ const ENV = ENV_CONFG();
 
 const getFightHistory = async (fighterId: number): Promise<FightHistoryBrief[]> => {
   try {
+    console.log('call fighterhistory', fighterId);
     const response: AxiosResponse<any> = await axios.get(`${ENV.FIGHTER_API_URL}/fightHistory`, {
       params: {
         nftId: fighterId,
       },
     });
-    // console.log('history axios response', response.data);
+    console.log('history axios response', response.data);
 
     // transform results into fighthistorybrief type
     const fightHistory = _.get(response, ['data', 'fightHistory'], []);
@@ -94,6 +95,24 @@ const getFightHistory = async (fighterId: number): Promise<FightHistoryBrief[]> 
   return [];
 };
 
-export function useFightHistory(fighterId: number, options?: any) {
-  return useQuery(['history', 'fighter', fighterId], () => getFightHistory(fighterId), options);
+export function useFightHistory(fighterId: number) {
+  return useQuery<FightHistoryBrief[], Error>(['fighter', 'history', fighterId], () => getFightHistory(fighterId));
+}
+
+export function useFightResult(fighterId: number, matchId: string | null) {
+  return useQuery<FightHistoryBrief[], Error, FightHistoryBrief | undefined>(
+    ['fighter', 'history', fighterId],
+    () => getFightHistory(fighterId),
+    {
+      select: (data: FightHistoryBrief[]) => {
+        for (let i = 0; i < data.length; i++) {
+          const brief: FightHistoryBrief = data[i];
+          if (matchId === brief.matchId) {
+            return brief;
+          }
+        }
+        return data[0];
+      },
+    }
+  );
 }

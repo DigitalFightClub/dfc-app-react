@@ -5,29 +5,18 @@ import FighterDetailsModal from './fighterDetailsModal';
 import FighterChallengeModal from './fighterChallengeModal';
 import FighterResultModal from './fighterResultModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
 import { dfcAction } from '../../types/actions';
-import { CLEAR_CHALLENGE_MSG, CLEAR_ERROR_MSG, CLEAR_FIGHT_HISTORY, SET_FIGHTER_DETAILS } from '../../config/events';
+import { SET_FIGHTER_DETAILS } from '../../config/events';
 
 export default function FighterModal({ onClose, fighterData }: FighterModalProps) {
   const { fighterModalState } = useSelector((state: AppState) => state.fightHistoryState);
+  console.log('Open modal', fighterModalState);
   const dispatch = useDispatch();
 
-  const [isReset, setIsReset] = useState<boolean>(false);
-
-  useEffect(() => {
-    console.log('Reset modal', fighterModalState);
+  const handleClose = () => {
     dispatch(dfcAction(SET_FIGHTER_DETAILS, {}));
-    dispatch(dfcAction(CLEAR_FIGHT_HISTORY, {}));
-    dispatch(dfcAction(CLEAR_CHALLENGE_MSG, {}));
-    dispatch(dfcAction(CLEAR_ERROR_MSG, {}));
-  }, []);
-
-  useEffect(() => {
-    if (FighterModalState.DETAILS === fighterModalState) {
-      setIsReset(true);
-    }
-  }, [fighterModalState]);
+    onClose();
+  };
 
   let modalView: React.ReactElement | null = null;
   switch (fighterModalState) {
@@ -36,7 +25,7 @@ export default function FighterModal({ onClose, fighterData }: FighterModalProps
       break;
     case FighterModalState.CHALLENGE:
       if (fighterData) {
-        modalView = <FighterChallengeModal opponentData={fighterData} onClose={onClose} />;
+        modalView = <FighterChallengeModal opponentData={fighterData} onClose={handleClose} />;
       } else {
         modalView = (
           <Center>
@@ -70,11 +59,11 @@ export default function FighterModal({ onClose, fighterData }: FighterModalProps
         size="sm"
         p="0px"
         zIndex="200"
-        onClick={onClose}
+        onClick={handleClose}
       >
         <CloseIcon />
       </Button>
-      <Skeleton w="100%" isLoaded={isReset}>{modalView}</Skeleton>
+      {modalView}
     </Flex>
   );
 }

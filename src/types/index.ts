@@ -70,7 +70,7 @@ export enum ChallengeState {
   CHALLENGED = 'Challenged',
   CHALLENGING = 'Challenging',
   COOLDOWN = 'Cooldown',
-  UNAVAILABLE= 'Unavailable',
+  UNAVAILABLE = 'Unavailable',
 }
 
 export enum FighterModalState {
@@ -192,8 +192,19 @@ export type OrganizationState = {
   fightingStyles: FightingStyle[];
 };
 
+export type FighterResultModalState = {
+  matchId: string | null;
+  fighterId: number;
+};
+
+export type ChallengeFighterResponse = {
+  status: number;
+  message: string;
+  matchId: string | null;
+};
+
 export type FighterHistoryState = {
-  selectedFightHistoryBrief: FightHistoryBrief | null;
+  selectedFightResult: FighterResultModalState | null;
   fighterModalState: FighterModalState;
 };
 

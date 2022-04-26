@@ -1,16 +1,4 @@
-import { all } from 'redux-saga/effects';
 import { FightHistoryReducer } from './fight-history';
-import { organizationReducer, organizationWatchers } from './organization';
+import { organizationReducer } from './organization';
 
-/**
- * This index is aggregating and exposing all feature components,
- * as well as combining all feature React Saga action/event handlers
- */
-function* rootSagas() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const watchers: any = [...organizationWatchers];
-
-  yield all(watchers);
-}
-
-export { FightHistoryReducer, organizationReducer, rootSagas };
+export { FightHistoryReducer, organizationReducer };

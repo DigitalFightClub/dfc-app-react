@@ -1,5 +1,3 @@
-import { organizationWatchers } from './organization-watchers';
-import { organizationApi } from './organization-api';
 import { organizationReducer } from './organization-reducer';
 
 /**
@@ -9,4 +7,4 @@ import { organizationReducer } from './organization-reducer';
  *
  * All gym framework components are exposed by this index.
  */
-export { organizationApi, organizationWatchers, organizationReducer };
+export { organizationReducer };

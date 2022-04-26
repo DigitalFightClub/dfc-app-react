@@ -38,7 +38,6 @@ const getDFCFighters = async (totalSupply: number): Promise<FighterInfo[]> => {
   });
   // console.log('DFC figher metadata results', metadataList);
 
-  transformFighterMetadata(metadataList);
   const fighters: FighterInfo[] | null = transformFighterMetadata(metadataList);
   return fighters;
 };
@@ -107,7 +106,7 @@ const transformFighterMetadata = (fighters: FighterNFT[]): FighterInfo[] => {
       // console.log('isOwned transform', fighter);
       return refinedFighter;
     });
-    console.log('Transformed fighters', refinedFighters);
+    // console.log('Transformed fighters', refinedFighters);
     return refinedFighters;
   } catch (error) {
     console.error(error);
@@ -132,7 +131,7 @@ export function useAccountDFCFighters() {
   const Web3Api: Moralis.Web3API = useMoralisWeb3Api();
 
   return useQuery(['dfc', walletAddress], () => getUserDFCNFTs(Web3Api, walletAddress), {
-    enabled: !!isInitialized,
+    enabled: !!isInitialized && !!walletAddress,
   });
 }
 
@@ -141,7 +140,7 @@ export function useAddressDFCFighters(address: string) {
   const Web3Api: Moralis.Web3API = useMoralisWeb3Api();
 
   return useQuery(['dfc', address], () => getUserDFCNFTs(Web3Api, address), {
-    enabled: !!isInitialized,
+    enabled: !!isInitialized && !!address,
   });
 }
 
@@ -153,7 +152,7 @@ export function useOwnedFighter(fighterId: number) {
     ['dfc', walletAddress],
     () => getUserDFCNFTs(Web3Api, walletAddress),
     {
-      enabled: !!isInitialized,
+      enabled: !!isInitialized && !!walletAddress,
       select: (data: AccountNFTResult) => {
         const ownedNFTs: MoralisNFT[] = _.get(data, ['result'], []);
         return (

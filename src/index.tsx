@@ -6,7 +6,6 @@ import { MoralisProvider } from 'react-moralis';
 import { DAppProvider, Mumbai, Polygon, Mainnet } from '@usedapp/core';
 import { ENV_CONFG } from './config';
 import App from './App';
-import { rootSagas } from './modules';
 import { store } from './store';
 import { theme } from './styles/theme';
 import './index.css';
@@ -20,7 +19,7 @@ const ENV = ENV_CONFG();
 const queryClient: QueryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
       retry: false,
       staleTime: 30*1000, // may want to increase stale time to prevent refetch longer
     },
@@ -29,9 +28,6 @@ const queryClient: QueryClient = new QueryClient({
 
 // Create store for Redux state management
 const theStore = store();
-
-// Start Redux Saga event/action management
-theStore.runSaga(rootSagas);
 
 const config = {
   readOnlyChainId: ENV.TARGET_NET.chainId,

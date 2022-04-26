@@ -1,14 +1,9 @@
-import { AppAction, FighterHistoryState, FighterModalState, FightHistoryBrief } from '../../types';
+import { AppAction, FighterHistoryState, FighterModalState } from '../../types';
 import { Reducer } from 'redux';
-import _ from 'lodash';
-import {
-  SET_FIGHTER_CHALLENGE,
-  SET_FIGHTER_DETAILS,
-  SET_FIGHT_RESULTS,
-} from '../../config/events';
+import { SET_FIGHTER_CHALLENGE, SET_FIGHTER_DETAILS, SET_FIGHT_RESULTS } from '../../config/events';
 
 export const initFighterHistoryState: FighterHistoryState = {
-  selectedFightHistoryBrief: null,
+  selectedFightResult: null,
   fighterModalState: FighterModalState.DETAILS,
 };
 
@@ -16,29 +11,29 @@ export const initFighterHistoryState: FighterHistoryState = {
  * Reducer Handlers
  */
 function setFighterDetails(state: FighterHistoryState): FighterHistoryState {
+  console.log('Set fighter details MODAL STATE');
   return {
     ...state,
     fighterModalState: FighterModalState.DETAILS,
-    selectedFightHistoryBrief: null,
+    selectedFightResult: null,
   };
 }
 
 function setFighterChallenge(state: FighterHistoryState): FighterHistoryState {
+  console.log('Set fighter challenge MODAL STATE');
   return {
     ...state,
     fighterModalState: FighterModalState.CHALLENGE,
-    selectedFightHistoryBrief: null,
+    selectedFightResult: null,
   };
 }
 
 function setFightResults(state: FighterHistoryState, action: AppAction): FighterHistoryState {
   const { data } = action.payload;
-
-  const copyData: FightHistoryBrief = _.cloneDeep(data);
-
+  console.log('Set fighter results MODAL STATE', data);
   return {
     ...state,
-    selectedFightHistoryBrief: copyData,
+    selectedFightResult: { fighterId: data.challengerId, matchId: data.matchId },
     fighterModalState: FighterModalState.RESULTS,
   };
 }

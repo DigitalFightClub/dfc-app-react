@@ -23,7 +23,7 @@ export default function FighterDataButtons({
   const selectedFighterId: number = selectedFighter ? selectedFighter.fighterId : 0;
 
   const { data: challengeState = ChallengeState.UNAVAILABLE } = useFighterChallengeState(selectedFighterId, fighterId);
-  console.log('Details Modal challengeState', challengeState, selectedFighterId, fighterId);
+  // console.log('Details Modal challengeState', challengeState, selectedFighterId, fighterId);
   const { data: isOwned } = useOwnedFighter(fighterId);
 
   const challengeButtons = (

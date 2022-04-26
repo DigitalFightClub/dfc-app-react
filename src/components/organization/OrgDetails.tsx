@@ -19,13 +19,16 @@ import {
 } from '@chakra-ui/react';
 import _ from 'lodash';
 import { usePagination } from '@ajna/pagination';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { FighterInfo, OrganizationInfo } from '../../types';
 import FighterModal from '../fighterModal/fighterModal';
 import DfcPagination from '../pagination/DfcPagination';
 import { useFighterChallenges, useGymFighters } from '../../hooks/fighter.hooks';
 import OrgFighterRow from './OrgFighterRow';
 import { useDFCFighters, useTotalDFCSupply } from '../../hooks/dfc.hooks';
+import { useDispatch } from 'react-redux';
+import { dfcAction } from '../../types/actions';
+import { SET_FIGHTER_CHALLENGE, SET_FIGHTER_DETAILS } from '../../config/events';
 
 export interface OrgHeaderProps {
   orgData: OrganizationInfo;
@@ -84,6 +87,8 @@ export default function OrgDetails({
   const modalSize = useBreakpointValue({ base: 'xs', md: '2xl', lg: '5xl' });
   const centered = useBreakpointValue({ base: false, md: true });
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (dfcFighters) {
       // console.log('Got Org Fighters', dfcFighters, fighterChallenges);
@@ -122,6 +127,14 @@ export default function OrgDetails({
   };
 
   const handleOpponentClick = (fighterData: FighterInfo): void => {
+    dispatch(dfcAction(SET_FIGHTER_DETAILS, {}));
+    setOpponentFighter(fighterData);
+    onOpen();
+  };
+
+  const handleOpponentChallengeClick = (event: MouseEvent<HTMLButtonElement>, fighterData: FighterInfo): void => {
+    event.stopPropagation();
+    dispatch(dfcAction(SET_FIGHTER_CHALLENGE, {}));
     setOpponentFighter(fighterData);
     onOpen();
   };
@@ -253,7 +266,12 @@ export default function OrgDetails({
           {renderOrgFighters
             ? renderOrgFighters.map((fighter) => {
                 return (
-                  <OrgFighterRow key={fighter.fighterId} fighter={fighter} handleOpponentClick={handleOpponentClick} />
+                  <OrgFighterRow
+                    key={fighter.fighterId}
+                    fighter={fighter}
+                    handleOpponentClick={handleOpponentClick}
+                    handleOpponentChallengeClick={handleOpponentChallengeClick}
+                  />
                 );
               })
             : null}

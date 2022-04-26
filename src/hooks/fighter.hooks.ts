@@ -1,11 +1,18 @@
-import { useToast } from '@chakra-ui/react';
 import axios, { AxiosResponse } from 'axios';
 import _ from 'lodash';
 import Moralis from 'moralis/types';
 import { useMoralis } from 'react-moralis';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { ENV_CONFG } from '../config';
-import { Challenge, ChallengeState, FighterInfo, FightRecord, FightRecordResponse, MoralisNFT } from '../types';
+import {
+  Challenge,
+  ChallengeFighterResponse,
+  ChallengeState,
+  FighterInfo,
+  FightRecord,
+  FightRecordResponse,
+  MoralisNFT,
+} from '../types';
 import { useAccountDFCFighters, useDFCFighter, useDFCFighters } from './dfc.hooks';
 
 const ENV = ENV_CONFG();
@@ -47,7 +54,7 @@ const challengeFighter = async (
   opponentId: number,
   fightingStyle: number,
   Moralis: Moralis
-): Promise<{ status: number; message: string }> => {
+): Promise<ChallengeFighterResponse> => {
   const web3Provider = await Moralis.enableWeb3();
   const signer = web3Provider.getSigner();
   const msg = `nft_id: ${fighterId}\nfighting_style: ${fightingStyle}\nopponent_id: ${opponentId}`;
@@ -56,6 +63,7 @@ const challengeFighter = async (
   if (sig) {
     // console.log('appendJsonMetaData uri', nft.token_uri);
     const signerAddress: string = await signer.getAddress();
+    // const response: AxiosResponse<{ message: string; uuid: string }> = await axios.post(
     const response: AxiosResponse<string> = await axios.post(`${ENV.FIGHTER_API_URL}/challenges`, {
       nftId: fighterId,
       fightingStyle,
@@ -70,48 +78,30 @@ const challengeFighter = async (
     });
     console.log('challengeFighter response', response);
     if (response) {
-      return { status: response.status, message: response.data };
+      const uuid: string | null = _.get(response.data.split(' '), [2], null);
+      // return { status: response.status, message: response.data.message, matchId: response.data.uuid };
+      return { status: response.status, message: response.data, matchId: uuid };
     }
   } else {
     console.log('signature was cancelled or failed');
   }
-  return { status: 500, message: 'Something went wrong...' };
+  return { status: 500, message: 'Something went wrong...', matchId: null };
 };
 
-export function useChallengeFighter(fighterId: number, opponentId: number, fightingStyle: number) {
+export function useChallengeFighter() {
   const { Moralis } = useMoralis();
-  const toast = useToast();
   const queryClient = useQueryClient();
-  return useMutation(() => challengeFighter(fighterId, opponentId, fightingStyle, Moralis), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(['fighter']);
-      console.log('Toast challenge feedback', data);
-      if (data.status === 200) {
-        toast({
-          description: `${data.message}`,
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
+
+  return useMutation<ChallengeFighterResponse, Error, { fighterId: number; opponentId: number; fightingStyle: number }>(
+    ({ fighterId, opponentId, fightingStyle }) => challengeFighter(fighterId, opponentId, fightingStyle, Moralis),
+    {
+      onSuccess: () => {
+        return queryClient.invalidateQueries('fighter', {
+          refetchInactive: true,
         });
-      } else {
-        toast({
-          description: `${data.message}`,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-      }
-    },
-    onError: (error: Error) => {
-      console.log('Toast challenge feedback', error);
-      toast({
-        description: `${error.message}`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
-    },
-  });
+      },
+    }
+  );
 }
 
 export function useFighterRecord(fighterId?: number) {

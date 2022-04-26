@@ -8,13 +8,22 @@ import { AppState, MatchResult, Round } from '../../types';
 import { dfcAction } from '../../types/actions';
 import FighterVerticalDetails from './fighterVerticalDetails';
 import { useFighter } from '../../hooks/fighter.hooks';
+import { useFightResult } from '../../hooks/history.hooks';
 
 export default function FighterResultModal() {
-  const { selectedFightHistoryBrief } = useSelector((state: AppState) => state.fightHistoryState);
+  const { selectedFightResult } = useSelector((state: AppState) => state.fightHistoryState);
+  let fighterId = 0;
+  let matchId: string | null = null;
+  if (selectedFightResult) {
+    // console.log('selectedFightResult', selectedFightResult);
+    fighterId = selectedFightResult.fighterId;
+    matchId = selectedFightResult.matchId;
+  }
+  const { data: fightResult } = useFightResult(fighterId, matchId);
   const dispatch = useDispatch();
 
-  const { data: challengerFighter } = useFighter(_.get(selectedFightHistoryBrief, ['challengerId'], 0));
-  const { data: opponentFighter } = useFighter(_.get(selectedFightHistoryBrief, ['opponentId'], 0));
+  const { data: challengerFighter } = useFighter(_.get(fightResult, ['challengerId'], 0));
+  const { data: opponentFighter } = useFighter(_.get(fightResult, ['opponentId'], 0));
 
   const handleBack = () => {
     dispatch(dfcAction(SET_FIGHTER_DETAILS, {}));
@@ -46,8 +55,8 @@ export default function FighterResultModal() {
   };
 
   let winnerBanner: React.ReactElement | null = null;
-  if (selectedFightHistoryBrief) {
-    if (selectedFightHistoryBrief.winnerId === selectedFightHistoryBrief.challengerId) {
+  if (fightResult) {
+    if (fightResult.winnerId === fightResult.challengerId) {
       winnerBanner = (
         <Text
           textAlign={{
@@ -62,13 +71,10 @@ export default function FighterResultModal() {
           fontSize="24px"
         >
           <chakra.span display="inline" color="primary.500">
-            {selectedFightHistoryBrief.challengerName}
+            {fightResult.challengerName}
           </chakra.span>
-          {selectedFightHistoryBrief.challengerCountryCode ? (
-            <chakra.span
-              ml="10px"
-              className={`fi fi-${selectedFightHistoryBrief.challengerCountryCode.toLowerCase()}`}
-            />
+          {fightResult.challengerCountryCode ? (
+            <chakra.span ml="10px" className={`fi fi-${fightResult.challengerCountryCode.toLowerCase()}`} />
           ) : null}
         </Text>
       );
@@ -87,10 +93,10 @@ export default function FighterResultModal() {
           fontSize="24px"
         >
           <chakra.span display="inline" color="primary.500">
-            {selectedFightHistoryBrief.opponentName}
+            {fightResult.opponentName}
           </chakra.span>
-          {selectedFightHistoryBrief.opponentCountryCode ? (
-            <chakra.span ml="10px" className={`fi fi-${selectedFightHistoryBrief.opponentCountryCode.toLowerCase()}`} />
+          {fightResult.opponentCountryCode ? (
+            <chakra.span ml="10px" className={`fi fi-${fightResult.opponentCountryCode.toLowerCase()}`} />
           ) : null}
         </Text>
       );
@@ -99,12 +105,8 @@ export default function FighterResultModal() {
 
   // Build Rounds
   let roundElements: React.ReactElement[] | null = null;
-  if (
-    selectedFightHistoryBrief &&
-    selectedFightHistoryBrief.fightResults &&
-    selectedFightHistoryBrief.fightResults.rounds
-  ) {
-    roundElements = selectedFightHistoryBrief.fightResults.rounds.map((round: Round) => (
+  if (fightResult && fightResult.fightResults && fightResult.fightResults.rounds) {
+    roundElements = fightResult.fightResults.rounds.map((round: Round) => (
       <VStack key={round.roundNumber} alignItems="flex-start">
         <Text fontFamily="Sora" fontWeight="semibold" fontSize="20px">
           Round {round.roundNumber} {round.stoppage ? '- Stoppage' : ''}
@@ -125,7 +127,7 @@ export default function FighterResultModal() {
               </Text>
             </Flex>
           ) : (
-            buildRound(round, selectedFightHistoryBrief.challengerName, selectedFightHistoryBrief.opponentName)
+            buildRound(round, fightResult.challengerName, fightResult.opponentName)
           )}
         </VStack>
       </VStack>
@@ -134,7 +136,7 @@ export default function FighterResultModal() {
 
   return (
     <Box position="relative" overflow="hidden" w="1024px" h="733">
-      {selectedFightHistoryBrief?.matchResult === MatchResult.WIN ? (
+      {fightResult?.matchResult === MatchResult.WIN ? (
         <>
           <Image zIndex="-25" position="absolute" top="130px" right="325px" w="375px" src="/assets/win.svg" />
           <Box
@@ -194,28 +196,28 @@ export default function FighterResultModal() {
       >
         <ArrowBackIcon />
       </Center>
-      {selectedFightHistoryBrief ? (
+      {fightResult ? (
         <VStack>
           <HStack>
             <FighterVerticalDetails
-              fighterId={selectedFightHistoryBrief.challengerId}
-              fighterImage={selectedFightHistoryBrief.challengerImage}
-              fighterName={selectedFightHistoryBrief.challengerName}
-              fighterStyle={selectedFightHistoryBrief.challengerStyle}
+              fighterId={fightResult.challengerId}
+              fighterImage={fightResult.challengerImage}
+              fighterName={fightResult.challengerName}
+              fighterStyle={fightResult.challengerStyle}
               fighterCountryCode={_.get(challengerFighter, ['countryCode'], '')}
               isCentered={true}
             />
             <VStack alignContent="center" gap="1rem" w="17rem">
               {winnerBanner}
               <Text fontFamily="Sora" fontWeight="semibold" fontSize="18px">
-                Winner By {selectedFightHistoryBrief.fightResults.outcome}
+                Winner By {fightResult.fightResults.outcome}
               </Text>
             </VStack>
             <FighterVerticalDetails
-              fighterId={selectedFightHistoryBrief.opponentId}
-              fighterImage={selectedFightHistoryBrief.opponentImage}
-              fighterName={selectedFightHistoryBrief.opponentName}
-              fighterStyle={selectedFightHistoryBrief.opponentStyle}
+              fighterId={fightResult.opponentId}
+              fighterImage={fightResult.opponentImage}
+              fighterName={fightResult.opponentName}
+              fighterStyle={fightResult.opponentStyle}
               fighterCountryCode={_.get(opponentFighter, ['countryCode'], '')}
               isCentered={true}
             />

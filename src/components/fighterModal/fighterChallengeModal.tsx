@@ -1,10 +1,9 @@
-import { Box, Image, Text, VStack, HStack, Button, Tooltip, Wrap, useToast, Skeleton } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { useMoralis } from 'react-moralis';
+import { Box, Image, Text, VStack, HStack, Button, Tooltip, Wrap, Skeleton, useToast } from '@chakra-ui/react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CLEAR_CHALLENGE_MSG, CLEAR_ERROR_MSG, SET_CHALLENGE_REQUEST } from '../../config/events';
+import { SET_FIGHT_RESULTS } from '../../config/events';
 import { useChallengeFighter, useFighterChallengeState } from '../../hooks/fighter.hooks';
-import { AppState, ChallengeState, FighterInfo } from '../../types';
+import { AppState, ChallengeFighterResponse, ChallengeState, FighterInfo } from '../../types';
 import { dfcAction } from '../../types/actions';
 import FighterVerticalDetails from './fighterVerticalDetails';
 
@@ -14,17 +13,16 @@ export interface FighterChallengeModalProps {
 }
 
 export default function FighterChallengeModal({ opponentData, onClose }: FighterChallengeModalProps) {
-  // const { Moralis } = useMoralis();
+  const dispatch = useDispatch();
+  const toast = useToast();
 
   const [selectedStyle, setSelectedStyle] = useState<number>(-1);
 
   // redux hooks
-  const { selectedFighter, fightingStyles, challengeInProgress, challengeMsg, errorMsg } = useSelector(
-    (state: AppState) => state.organizationState
-  );
+  const { selectedFighter, fightingStyles } = useSelector((state: AppState) => state.organizationState);
 
   const selectedFighterId: number = selectedFighter ? selectedFighter.fighterId : 0;
-  const challengeFighter = useChallengeFighter(selectedFighterId, opponentData.fighterId, selectedStyle);
+  const challengeFighter = useChallengeFighter();
   const { data: challengeState = ChallengeState.UNAVAILABLE } = useFighterChallengeState(
     selectedFighterId,
     opponentData.fighterId
@@ -35,10 +33,54 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
     if (selectedStyle >= 0) {
       console.log(
         // eslint-disable-next-line max-len
-        `nft_id: ${selectedFighter?.fighterId}\nfighting_style: ${selectedStyle}\nopponent_id: ${opponentData.fighterId}`
+        `nft_id: ${selectedFighterId}\nfighting_style: ${selectedStyle}\nopponent_id: ${opponentData.fighterId}`
       );
 
-      challengeFighter.mutate();
+      const inputVars = {
+        fighterId: selectedFighterId,
+        opponentId: opponentData.fighterId,
+        fightingStyle: selectedStyle,
+      };
+      challengeFighter.mutate(inputVars, {
+        onSuccess: async (data: ChallengeFighterResponse) => {
+          console.log('Toast challenge feedback', data);
+          if (data.status === 200) {
+            toast({
+              description: `${data.message}`,
+              status: 'success',
+              duration: 5000,
+              isClosable: true,
+            });
+
+            if (data.matchId) {
+              dispatch(
+                dfcAction(SET_FIGHT_RESULTS, {
+                  data: { challengerId: selectedFighterId, matchId: data.matchId },
+                  msg: '',
+                })
+              );
+            } else {
+              onClose();
+            }
+          } else {
+            toast({
+              description: `${data.message}`,
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            });
+          }
+        },
+        onError: (error: Error) => {
+          console.log('Toast challenge feedback', error);
+          toast({
+            description: `${error.message}`,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        },
+      });
     }
   };
 
@@ -60,7 +102,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
               <Text>Proving Grounds</Text>
               <Text>Middleweight Category</Text>
               <Text>3 Rounds</Text>
-              <Skeleton isLoaded={!challengeInProgress}>
+              <Skeleton isLoaded={!challengeFighter.isLoading}>
                 <Button
                   w="9rem"
                   h="2.2rem"
@@ -100,7 +142,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
               isCentered={true}
             />
           </HStack>
-          <Skeleton isLoaded={!challengeInProgress}>
+          <Skeleton isLoaded={!challengeFighter.isLoading}>
             <Wrap pb="1rem" spacing="1rem" justify="center">
               {fightingStyles.map((fightingStyle) => (
                 <Tooltip
