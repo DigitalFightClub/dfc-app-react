@@ -18,7 +18,6 @@ import {
 } from '@chakra-ui/react';
 import { BellIcon, CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { verifyNetwork } from '../../utils/web3/connect';
-import { useTotalDFCSupply } from '../../hooks/dfc.hooks';
 
 const NavBar = (props: any) => {
   const [isOpen, setIsOpen] = React.useState(false);

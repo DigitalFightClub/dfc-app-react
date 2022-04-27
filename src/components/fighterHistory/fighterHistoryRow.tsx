@@ -24,8 +24,8 @@ export default function FighterHistoryRow({ fightHistoryBrief }: FighterHistoryR
   // console.log('Fight timestamp', fightHistoryBrief.timestamp);
   const fightDate: Date = new Date(fightHistoryBrief.timestamp * 1000);
   const formatted_fightDate: string = fightDate.toLocaleString('en-US', {
-    timeZoneName: 'short',
-    month: '2-digit',
+    // timeZoneName: 'short',
+    month: 'short',
     day: '2-digit',
     year: 'numeric',
     hour12: false,

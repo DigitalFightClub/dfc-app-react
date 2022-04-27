@@ -1,14 +1,14 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import _ from 'lodash';
 
-import { chakra, Box, Text, VStack, HStack, Wrap, Center, Flex, Image } from '@chakra-ui/react';
+import { chakra, Box, Text, VStack, HStack, Wrap, Center, Flex, Image, Progress } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_FIGHTER_DETAILS } from '../../config/events';
 import { AppState, MatchResult, Round } from '../../types';
 import { dfcAction } from '../../types/actions';
 import FighterVerticalDetails from './fighterVerticalDetails';
 import { useFighter } from '../../hooks/fighter.hooks';
-import { useFightResult } from '../../hooks/history.hooks';
+import { useSingleFightResult } from '../../hooks/history.hooks';
 
 export default function FighterResultModal() {
   const { selectedFightResult } = useSelector((state: AppState) => state.fightHistoryState);
@@ -19,7 +19,7 @@ export default function FighterResultModal() {
     fighterId = selectedFightResult.fighterId;
     matchId = selectedFightResult.matchId;
   }
-  const { data: fightResult } = useFightResult(fighterId, matchId);
+  const { data: fightResult, isLoading: singleFightResultLoading } = useSingleFightResult(fighterId, matchId);
   const dispatch = useDispatch();
 
   const { data: challengerFighter } = useFighter(_.get(fightResult, ['challengerId'], 0));
@@ -134,102 +134,127 @@ export default function FighterResultModal() {
     ));
   }
 
+  let formatted_fightDate: string | null = null;
+  if (fightResult) {
+    const fightDate: Date = new Date(fightResult.timestamp * 1000);
+    formatted_fightDate = fightDate.toLocaleString('en-US', {
+      timeZoneName: 'short',
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+
   return (
     <Box position="relative" overflow="hidden" w="1024px" h="733">
-      {fightResult?.matchResult === MatchResult.WIN ? (
-        <>
-          <Image zIndex="-25" position="absolute" top="130px" right="325px" w="375px" src="/assets/win.svg" />
-          <Box
-            position="absolute"
-            h="550px"
-            w="550px"
-            left="-400px"
-            top="203px"
-            bg="#2ABB75"
-            opacity="0.5"
-            filter="blur(404px)"
-          />
-          <Box
-            position="absolute"
-            h="550px"
-            w="550px"
-            left="1000px"
-            top="203px"
-            bg="#DF2151"
-            opacity="0.5"
-            filter="blur(404px)"
-          />
-        </>
-      ) : (
-        <>
-          <Image zIndex="-25" position="absolute" top="130px" right="310px" w="400px" src="/assets/lose.svg" />
-          <Box
-            position="absolute"
-            h="550px"
-            w="550px"
-            left="-400px"
-            top="203px"
-            bg="#DF2151"
-            opacity="0.5"
-            filter="blur(404px)"
-          />
-          <Box
-            position="absolute"
-            h="550px"
-            w="550px"
-            left="1000px"
-            top="203px"
-            bg="#2ABB75"
-            opacity="0.5"
-            filter="blur(404px)"
-          />
-        </>
-      )}
-      <Center
-        w="40px"
-        h="40px"
-        m="5px"
-        bg="white"
-        color="black"
-        _hover={{ color: 'white', bg: 'gray', cursor: 'pointer' }}
-        onClick={handleBack}
-      >
-        <ArrowBackIcon />
-      </Center>
-      {fightResult ? (
-        <VStack>
-          <HStack>
-            <FighterVerticalDetails
-              fighterId={fightResult.challengerId}
-              fighterImage={fightResult.challengerImage}
-              fighterName={fightResult.challengerName}
-              fighterStyle={fightResult.challengerStyle}
-              fighterCountryCode={_.get(challengerFighter, ['countryCode'], '')}
-              isCentered={true}
-            />
-            <VStack alignContent="center" gap="1rem" w="17rem">
-              {winnerBanner}
-              <Text fontFamily="Sora" fontWeight="semibold" fontSize="18px">
-                Winner By {fightResult.fightResults.outcome}
-              </Text>
-            </VStack>
-            <FighterVerticalDetails
-              fighterId={fightResult.opponentId}
-              fighterImage={fightResult.opponentImage}
-              fighterName={fightResult.opponentName}
-              fighterStyle={fightResult.opponentStyle}
-              fighterCountryCode={_.get(opponentFighter, ['countryCode'], '')}
-              isCentered={true}
-            />
-          </HStack>
-          <Wrap pb="1rem" spacing="1rem" justify="center">
-            {roundElements}
-          </Wrap>
-        </VStack>
-      ) : (
+      {singleFightResultLoading ? (
         <Center>
-          <p>Missing fight data</p>
+          <Progress w="300px" hasStripe size="xs" isIndeterminate colorScheme="green" />
         </Center>
+      ) : (
+        <>
+          {fightResult?.matchResult === MatchResult.WIN ? (
+            <>
+              <Image zIndex="-25" position="absolute" top="130px" right="325px" w="375px" src="/assets/win.svg" />
+              <Box
+                position="absolute"
+                h="550px"
+                w="550px"
+                left="-400px"
+                top="203px"
+                bg="#2ABB75"
+                opacity="0.5"
+                filter="blur(404px)"
+              />
+              <Box
+                position="absolute"
+                h="550px"
+                w="550px"
+                left="1000px"
+                top="203px"
+                bg="#DF2151"
+                opacity="0.5"
+                filter="blur(404px)"
+              />
+            </>
+          ) : (
+            <>
+              <Image zIndex="-25" position="absolute" top="130px" right="310px" w="400px" src="/assets/lose.svg" />
+              <Box
+                position="absolute"
+                h="550px"
+                w="550px"
+                left="-400px"
+                top="203px"
+                bg="#DF2151"
+                opacity="0.5"
+                filter="blur(404px)"
+              />
+              <Box
+                position="absolute"
+                h="550px"
+                w="550px"
+                left="1000px"
+                top="203px"
+                bg="#2ABB75"
+                opacity="0.5"
+                filter="blur(404px)"
+              />
+            </>
+          )}
+          <Center
+            w="40px"
+            h="40px"
+            m="5px"
+            bg="white"
+            color="black"
+            _hover={{ color: 'white', bg: 'gray', cursor: 'pointer' }}
+            onClick={handleBack}
+          >
+            <ArrowBackIcon />
+          </Center>
+          {fightResult ? (
+            <VStack>
+              <HStack>
+                <FighterVerticalDetails
+                  fighterId={fightResult.challengerId}
+                  fighterImage={fightResult.challengerImage}
+                  fighterName={fightResult.challengerName}
+                  fighterStyle={fightResult.challengerStyle}
+                  fighterCountryCode={_.get(challengerFighter, ['countryCode'], '')}
+                  isCentered={true}
+                />
+                <VStack alignContent="center" gap="1rem" w="17rem">
+                  {winnerBanner}
+                  <Text fontFamily="Sora" fontWeight="semibold" fontSize="18px">
+                    Winner By {fightResult.fightResults.outcome}
+                  </Text>
+                  <Text fontFamily="Sora" fontWeight="semibold" fontSize="18px">
+                    {formatted_fightDate}
+                  </Text>
+                </VStack>
+                <FighterVerticalDetails
+                  fighterId={fightResult.opponentId}
+                  fighterImage={fightResult.opponentImage}
+                  fighterName={fightResult.opponentName}
+                  fighterStyle={fightResult.opponentStyle}
+                  fighterCountryCode={_.get(opponentFighter, ['countryCode'], '')}
+                  isCentered={true}
+                />
+              </HStack>
+              <Wrap pb="1rem" spacing="1rem" justify="center">
+                {roundElements}
+              </Wrap>
+            </VStack>
+          ) : (
+            <Center>
+              <p>Missing fight data</p>
+            </Center>
+          )}
+        </>
       )}
     </Box>
   );

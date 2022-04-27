@@ -197,6 +197,11 @@ export type FighterResultModalState = {
   fighterId: number;
 };
 
+export type ChallengeAPIResponse = {
+  message: string;
+  uuid: string | null;
+};
+
 export type ChallengeFighterResponse = {
   status: number;
   message: string;

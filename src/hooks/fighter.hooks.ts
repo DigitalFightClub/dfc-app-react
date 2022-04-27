@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { ENV_CONFG } from '../config';
 import {
   Challenge,
+  ChallengeAPIResponse,
   ChallengeFighterResponse,
   ChallengeState,
   FighterInfo,
@@ -64,7 +65,7 @@ const challengeFighter = async (
     // console.log('appendJsonMetaData uri', nft.token_uri);
     const signerAddress: string = await signer.getAddress();
     // const response: AxiosResponse<{ message: string; uuid: string }> = await axios.post(
-    const response: AxiosResponse<string> = await axios.post(`${ENV.FIGHTER_API_URL}/challenges`, {
+    const response: AxiosResponse<ChallengeAPIResponse> = await axios.post(`${ENV.FIGHTER_API_URL}/challengesv2`, {
       nftId: fighterId,
       fightingStyle,
       opponentId,
@@ -78,9 +79,7 @@ const challengeFighter = async (
     });
     console.log('challengeFighter response', response);
     if (response) {
-      const uuid: string | null = _.get(response.data.split(' '), [2], null);
-      // return { status: response.status, message: response.data.message, matchId: response.data.uuid };
-      return { status: response.status, message: response.data, matchId: uuid };
+      return { status: response.status, message: response.data.message, matchId: response.data.uuid };
     }
   } else {
     console.log('signature was cancelled or failed');
@@ -95,8 +94,10 @@ export function useChallengeFighter() {
   return useMutation<ChallengeFighterResponse, Error, { fighterId: number; opponentId: number; fightingStyle: number }>(
     ({ fighterId, opponentId, fightingStyle }) => challengeFighter(fighterId, opponentId, fightingStyle, Moralis),
     {
-      onSuccess: () => {
-        return queryClient.invalidateQueries('fighter', {
+      onSuccess: async () => {
+        console.log('INVALIDATE FIGHTER');
+        await queryClient.invalidateQueries(['fighter'], {
+          refetchActive: true,
           refetchInactive: true,
         });
       },

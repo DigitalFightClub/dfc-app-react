@@ -19,7 +19,6 @@ const ENV = ENV_CONFG();
 const queryClient: QueryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: true,
       retry: false,
       staleTime: 30*1000, // may want to increase stale time to prevent refetch longer
     },
@@ -47,7 +46,6 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={theStore}>
       {' '}
-      {/* Rdux will be replaced */}
       <QueryClientProvider client={queryClient}>
         <DAppProvider config={config}>
           <MoralisProvider appId={ENV.MORALIS_APP_ID} serverUrl={ENV.MORALIS_URL} initializeOnMount={true}>

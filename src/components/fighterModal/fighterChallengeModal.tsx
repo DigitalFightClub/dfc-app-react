@@ -1,4 +1,17 @@
-import { Box, Image, Text, VStack, HStack, Button, Tooltip, Wrap, Skeleton, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Image,
+  Text,
+  VStack,
+  HStack,
+  Button,
+  Tooltip,
+  Wrap,
+  Skeleton,
+  useToast,
+  Center,
+  Progress,
+} from '@chakra-ui/react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_FIGHT_RESULTS } from '../../config/events';
@@ -60,6 +73,14 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
                 })
               );
             } else {
+              if (ChallengeState.AVAILABLE === challengeState) {
+                toast({
+                  description: 'Invalid fight uuid...',
+                  status: 'error',
+                  duration: 5000,
+                  isClosable: true,
+                });
+              }
               onClose();
             }
           } else {
@@ -102,36 +123,34 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
               <Text>Proving Grounds</Text>
               <Text>Middleweight Category</Text>
               <Text>3 Rounds</Text>
-              <Skeleton isLoaded={!challengeFighter.isLoading}>
-                <Button
-                  w="9rem"
-                  h="2.2rem"
-                  bg="#DF2151"
-                  color="white"
-                  mx=".5rem"
-                  borderRadius="0"
-                  aria-label="Challenge"
-                  onClick={handleChallenge}
-                  display={ChallengeState.AVAILABLE === challengeState ? 'flex' : 'none'}
-                  disabled={selectedStyle < 0 || !selectedFighter}
-                >
-                  Challenge
-                </Button>
-                <Button
-                  w="9rem"
-                  h="2.2rem"
-                  bg="#2ABB75"
-                  color="white"
-                  mx=".5rem"
-                  borderRadius="0"
-                  aria-label="Accept"
-                  onClick={handleChallenge}
-                  display={ChallengeState.CHALLENGING === challengeState ? 'flex' : 'none'}
-                  disabled={selectedStyle < 0 || !selectedFighter}
-                >
-                  Accept
-                </Button>
-              </Skeleton>
+              <Button
+                w="9rem"
+                h="2.2rem"
+                bg="#DF2151"
+                color="white"
+                mx=".5rem"
+                borderRadius="0"
+                aria-label="Challenge"
+                onClick={handleChallenge}
+                display={ChallengeState.AVAILABLE === challengeState ? 'flex' : 'none'}
+                disabled={selectedStyle < 0 || !selectedFighter || challengeFighter.isLoading}
+              >
+                Challenge
+              </Button>
+              <Button
+                w="9rem"
+                h="2.2rem"
+                bg="#2ABB75"
+                color="white"
+                mx=".5rem"
+                borderRadius="0"
+                aria-label="Accept"
+                onClick={handleChallenge}
+                display={ChallengeState.CHALLENGING === challengeState ? 'flex' : 'none'}
+                disabled={selectedStyle < 0 || !selectedFighter || challengeFighter.isLoading}
+              >
+                Accept
+              </Button>
             </VStack>
             <FighterVerticalDetails
               fighterId={opponentData.fighterId}
@@ -142,7 +161,11 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
               isCentered={true}
             />
           </HStack>
-          <Skeleton isLoaded={!challengeFighter.isLoading}>
+          {challengeFighter.isLoading ? (
+            <Center>
+              <Progress w="300px" hasStripe size="xs" isIndeterminate colorScheme="green" />
+            </Center>
+          ) : (
             <Wrap pb="1rem" spacing="1rem" justify="center">
               {fightingStyles.map((fightingStyle) => (
                 <Tooltip
@@ -169,7 +192,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
                 </Tooltip>
               ))}
             </Wrap>
-          </Skeleton>
+          )}
         </VStack>
       ) : null}
     </Box>
