@@ -42,7 +42,7 @@ function App() {
           )}
         </ScrollToTop>
       </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </div>
   );
 }
