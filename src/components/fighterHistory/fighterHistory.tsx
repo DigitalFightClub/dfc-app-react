@@ -1,30 +1,21 @@
 import { usePagination } from '@ajna/pagination';
 import { Box, Heading, Skeleton, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { GET_FIGHTER_HISTORY_REQUEST } from '../../config/events';
-import { AppState, FighterInfo, FightHistoryBrief } from '../../types';
-import { dfcAction } from '../../types/actions';
+import { useFightHistory } from '../../hooks/history.hooks';
+import { FightHistoryBrief } from '../../types';
 import DfcPagination from '../pagination/DfcPagination';
 import FighterHistoryRow from './fighterHistoryRow';
 
 export interface FighterHistoryProps {
-  fighterData: FighterInfo | null;
+  fighterId: number;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function FighterHistory({ fighterData }: FighterHistoryProps) {
-  // Redux Hooks
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { fighterHistory, loadingFighterHistory, getFighterHistoryError } = useSelector((state: AppState) => {
-    console.log(state);
-    return state.fightHistoryState;
-  });
-  const dispatch = useDispatch();
+export default function FighterHistory({ fighterId }: FighterHistoryProps) {
+  const { data: fighterHistory = [], isLoading: loadingFighterHistory } = useFightHistory(fighterId);
 
   // component state
   const [renderFighterHistory, setRenderFighterHistory] = useState<FightHistoryBrief[]>([]);
-  const [initialized, setInitialized] = useState<boolean>(false);
 
   // paging state
   const { currentPage, setCurrentPage, pagesCount, pages, setIsDisabled, isDisabled, pageSize, offset } = usePagination(
@@ -32,39 +23,19 @@ export default function FighterHistory({ fighterData }: FighterHistoryProps) {
       total: fighterHistory.length,
       limits: {
         outer: 1,
-        inner: 2,
+        inner: 1,
       },
       initialState: { pageSize: 6, isDisabled: true, currentPage: 1 },
     }
   );
 
   useEffect(() => {
-    (async function () {
-      console.log('Fetch fighter history', fighterData);
-      if (fighterData && !loadingFighterHistory && !initialized) {
-        dispatch(
-          dfcAction(GET_FIGHTER_HISTORY_REQUEST, {
-            data: { fighterData },
-          })
-        );
-        setInitialized(true);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
     if (fighterHistory) {
-      console.log('Got Fighter History', JSON.stringify(fighterHistory));
+      // console.log('Got Fighter History', JSON.stringify(fighterHistory));
       pageHistory(currentPage);
       setIsDisabled(false);
     }
-  }, [fighterHistory]);
-
-  useEffect(() => {
-    if (fighterHistory) {
-      pageHistory(currentPage);
-    }
-  }, [currentPage]);
+  }, [fighterHistory, currentPage]);
 
   // paging handlers
   const handlePageChange = (nextPage: number): void => {
@@ -99,7 +70,13 @@ export default function FighterHistory({ fighterData }: FighterHistoryProps) {
   }
 
   return (
-    <Box bg="rgba(0, 0, 0, 0.3)" py="24px" px={{ base: '0px', md: '40px' }} minH={{ base: '835px', md: '472px' }}>
+    <Box
+      bg="rgba(0, 0, 0, 0.3)"
+      py="24px"
+      px={{ base: '0px', md: '10px' }}
+      minH={{ base: '835px', md: '472px' }}
+      w="100%"
+    >
       <Heading textAlign="center" variant="header3" fontWeight="semibold">
         Fight History
       </Heading>

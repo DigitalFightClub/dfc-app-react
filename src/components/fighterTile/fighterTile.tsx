@@ -11,20 +11,22 @@ import {
   Skeleton,
   SkeletonText,
 } from '@chakra-ui/react';
-import { ChallengeState, FighterInfo, FighterStatus } from '../../types';
+import { useFighterChallenged } from '../../hooks/fighter.hooks';
+import { FighterInfo, FighterStatus } from '../../types';
 import { ChallengeIcon } from '../dfcIcons/ChallengeIcon';
 import FighterData from '../fighterData';
 import FighterModal from '../fighterModal/fighterModal';
 
 export interface FighterTileProps {
-  fighterData?: FighterInfo;
+  fighterData: FighterInfo;
   loadingGymFitghers?: boolean;
 }
 
-export default function FighterTile({ fighterData = {} as FighterInfo, loadingGymFitghers = false }: FighterTileProps) {
+export default function FighterTile({ fighterData, loadingGymFitghers = false }: FighterTileProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalSize = useBreakpointValue({ base: 'xs', md: '2xl', lg: '5xl' });
   const centered = useBreakpointValue({ base: false, md: true });
+  const { data: isChallenged = false } = useFighterChallenged(fighterData.fighterId);
 
   const activeHover = {
     cursor: 'pointer',
@@ -78,7 +80,7 @@ export default function FighterTile({ fighterData = {} as FighterInfo, loadingGy
           boxShadow="-10px 10px 40px -5px #DF2151"
           pr="0"
           zIndex="10"
-          display={ChallengeState.CHALLENGED === fighterData.challengeState ? 'flex' : 'none'}
+          display={isChallenged ? 'flex' : 'none'}
         >
           <ChallengeIcon w="2.1rem" h="2.1rem" />
         </Center>

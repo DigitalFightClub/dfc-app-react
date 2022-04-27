@@ -6,20 +6,27 @@ import { MoralisProvider } from 'react-moralis';
 import { DAppProvider, Mumbai, Polygon, Mainnet } from '@usedapp/core';
 import { ENV_CONFG } from './config';
 import App from './App';
-import { rootSagas } from './modules';
 import { store } from './store';
 import { theme } from './styles/theme';
 import './index.css';
 import '@fontsource/sora/variable.css';
 import '@fontsource/sora/400.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const ENV = ENV_CONFG();
 
+// Setup React Query client
+const queryClient: QueryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      staleTime: 30*1000, // may want to increase stale time to prevent refetch longer
+    },
+  },
+});
+
 // Create store for Redux state management
 const theStore = store();
-
-// Start Redux Saga event/action management
-theStore.runSaga(rootSagas);
 
 const config = {
   readOnlyChainId: ENV.TARGET_NET.chainId,
@@ -38,14 +45,17 @@ const config = {
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={theStore}>
-      <DAppProvider config={config}>
-        <MoralisProvider appId={ENV.MORALIS_APP_ID} serverUrl={ENV.MORALIS_URL} initializeOnMount={true}>
-          <ChakraProvider theme={theme}>
-            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-            <App />
-          </ChakraProvider>
-        </MoralisProvider>
-      </DAppProvider>
+      {' '}
+      <QueryClientProvider client={queryClient}>
+        <DAppProvider config={config}>
+          <MoralisProvider appId={ENV.MORALIS_APP_ID} serverUrl={ENV.MORALIS_URL} initializeOnMount={true}>
+            <ChakraProvider theme={theme}>
+              <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+              <App />
+            </ChakraProvider>
+          </MoralisProvider>
+        </DAppProvider>
+      </QueryClientProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
