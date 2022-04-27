@@ -68,7 +68,7 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
             if (data.matchId) {
               dispatch(
                 dfcAction(SET_FIGHT_RESULTS, {
-                  data: { challengerId: selectedFighterId, matchId: data.matchId },
+                  data: { challengerId: selectedFighterId, opponentId: opponentData.fighterId, matchId: data.matchId },
                   msg: '',
                 })
               );

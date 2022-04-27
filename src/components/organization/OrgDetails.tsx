@@ -100,8 +100,8 @@ export default function OrgDetails({
   // paging handlers
   const handlePageChange = (nextPage: number): void => {
     // -> request new data using the page number
-    setRenderOrgFighters([]);
-    setIsDisabled(true);
+    // setRenderOrgFighters([]);
+    // setIsDisabled(true);
     setCurrentPage(nextPage);
     console.log('request new data with ->', nextPage);
   };

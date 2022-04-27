@@ -195,6 +195,7 @@ export type OrganizationState = {
 export type FighterResultModalState = {
   matchId: string | null;
   fighterId: number;
+  opponentId: number;
 };
 
 export type ChallengeAPIResponse = {

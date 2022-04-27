@@ -33,7 +33,7 @@ function setFightResults(state: FighterHistoryState, action: AppAction): Fighter
   console.log('Set fighter results MODAL STATE', data);
   return {
     ...state,
-    selectedFightResult: { fighterId: data.challengerId, matchId: data.matchId },
+    selectedFightResult: { fighterId: data.challengerId, opponentId: data.opponentId, matchId: data.matchId },
     fighterModalState: FighterModalState.RESULTS,
   };
 }
