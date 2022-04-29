@@ -73,12 +73,12 @@ export default function FighterChallengeModal({ opponentData, onClose }: Fighter
               );
             } else {
               if (ChallengeState.AVAILABLE === challengeState) {
-                toast({
-                  description: 'Invalid fight uuid...',
-                  status: 'error',
-                  duration: 5000,
-                  isClosable: true,
-                });
+                // toast({
+                //   description: 'Invalid fight uuid...',
+                //   status: 'error',
+                //   duration: 5000,
+                //   isClosable: true,
+                // });
               }
               onClose();
             }
