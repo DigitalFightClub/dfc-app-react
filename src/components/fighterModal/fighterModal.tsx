@@ -1,4 +1,4 @@
-import { Flex, Button, Center, Skeleton } from '@chakra-ui/react';
+import { Flex, Button, Center } from '@chakra-ui/react';
 import { AppState, FighterModalProps, FighterModalState } from '../../types';
 import { CloseIcon } from '@chakra-ui/icons';
 import FighterDetailsModal from './fighterDetailsModal';

@@ -95,6 +95,7 @@ export default function OrgDetails({
       pageFighters();
       setIsDisabled(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dfcFighters, currentPage, pageSize]);
 
   // paging handlers

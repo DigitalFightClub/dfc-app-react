@@ -5,7 +5,7 @@ import './App.css';
 import Gym from './components/gym';
 import Organization from './components/organization';
 import ScrollToTop from './enhancers/scrollToTop';
-import { ReactQueryDevtools } from 'react-query/devtools';
+// import { ReactQueryDevtools } from 'react-query/devtools';
 import { useGymFighters } from './hooks/fighter.hooks';
 import { useEffect, useState } from 'react';
 import { Center, Progress } from '@chakra-ui/react';

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Grid, Stack, HStack, Button, Collapse } from '@chakra-ui/react';
+import { Grid, Stack, HStack, Button } from '@chakra-ui/react';
 import { FighterInfo } from '../../types';
 import FighterTile from '../fighterTile';
 

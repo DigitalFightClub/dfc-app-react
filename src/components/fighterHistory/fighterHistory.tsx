@@ -35,6 +35,7 @@ export default function FighterHistory({ fighterId }: FighterHistoryProps) {
       pageHistory(currentPage);
       setIsDisabled(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fighterHistory, currentPage]);
 
   // paging handlers
