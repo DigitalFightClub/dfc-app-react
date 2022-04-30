@@ -1,23 +1,76 @@
 import { Tooltip, IconButton, Button, Flex } from '@chakra-ui/react';
 import { PunchIcon } from '../dfcIcons/PunchIcon';
 import { FlexIcon } from '../dfcIcons/FlexIcon';
-import { ChallengeState } from '../../types';
+import { AppState, ChallengeState } from '../../types';
+import { useFighterChallengeState } from '../../hooks/fighter.hooks';
+import { useSelector } from 'react-redux';
+import { useOwnedFighter } from '../../hooks/dfc.hooks';
 
 export interface FighterDataButtonProps {
   isTile: boolean;
-  isOwned: boolean;
-  challengeState: ChallengeState | null;
+  fighterId: number;
   handleFight: () => void;
   handleChallenge?: () => void;
 }
 
 export default function FighterDataButtons({
   isTile,
-  isOwned,
-  challengeState,
+  fighterId,
   handleFight,
   handleChallenge,
 }: FighterDataButtonProps) {
+  const { selectedFighter } = useSelector((state: AppState) => state.organizationState);
+  const selectedFighterId: number = selectedFighter ? selectedFighter.fighterId : 0;
+
+  const { data: challengeState = ChallengeState.UNAVAILABLE } = useFighterChallengeState(selectedFighterId, fighterId);
+  // console.log('Details Modal challengeState', challengeState, selectedFighterId, fighterId);
+  const { data: isOwned } = useOwnedFighter(fighterId);
+
+  const challengeButtons = (
+    <>
+      <Button
+        w="9rem"
+        h="2.2rem"
+        bg="#DF2151"
+        color="white"
+        mx=".5rem"
+        borderRadius="0"
+        aria-label="Challenge"
+        onClick={handleChallenge}
+        display={ChallengeState.AVAILABLE === challengeState ? 'flex' : 'none'}
+      >
+        Challenge
+      </Button>
+      <Button
+        w="9rem"
+        h="2.2rem"
+        bg="#2ABB75"
+        color="white"
+        mx=".5rem"
+        borderRadius="0"
+        aria-label="Accept"
+        onClick={handleChallenge}
+        display={ChallengeState.CHALLENGING === challengeState ? 'flex' : 'none'}
+      >
+        Accept
+      </Button>
+      <Button
+        w="9rem"
+        h="2.2rem"
+        bg="gray.600"
+        color="white"
+        mx=".5rem"
+        borderRadius="0"
+        aria-label="Accept"
+        onClick={handleChallenge}
+        display={ChallengeState.CHALLENGED === challengeState ? 'flex' : 'none'}
+        disabled
+      >
+        Challenged
+      </Button>
+    </>
+  );
+
   return (
     <>
       {/* Tablet and up buttons */}
@@ -48,32 +101,7 @@ export default function FighterDataButtons({
         >
           Improve
         </Button>
-        <Button
-          w="9rem"
-          h="2.2rem"
-          bg="#DF2151"
-          color="white"
-          mx=".5rem"
-          borderRadius="0"
-          aria-label="Challenge"
-          onClick={handleChallenge}
-          display={!isOwned && ChallengeState.AVAILABLE === challengeState ? 'flex' : 'none'}
-        >
-          Challenge
-        </Button>
-        <Button
-          w="9rem"
-          h="2.2rem"
-          bg="#2ABB75"
-          color="white"
-          mx=".5rem"
-          borderRadius="0"
-          aria-label="Accept"
-          onClick={handleChallenge}
-          display={!isOwned && ChallengeState.CHALLENGING === challengeState ? 'flex' : 'none'}
-        >
-          Accept
-        </Button>
+        {challengeButtons}
       </Flex>
 
       {/* Mobile and Tile layout */}

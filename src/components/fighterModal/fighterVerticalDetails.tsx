@@ -1,28 +1,29 @@
-import { chakra, Box, Flex, Image, Text, VStack } from '@chakra-ui/react';
+import { chakra, Box, Flex, Image, Text, VStack, Skeleton } from '@chakra-ui/react';
+import { useFighterRecord } from '../../hooks/fighter.hooks';
 
 export interface FighterVerticalDetailsProps {
+  fighterId: number;
   fighterImage: string;
   fighterName: string;
   fighterStyle: string;
   fighterCountryCode: string;
-  fighterWins: string;
-  fighterLosses: string;
   fighterImageSize?: number;
   isCentered?: boolean;
 }
 
 export default function FighterVerticalDetails({
+  fighterId,
   fighterImage,
   fighterName,
   fighterStyle,
   fighterCountryCode,
-  fighterWins,
-  fighterLosses,
   fighterImageSize = 225,
   isCentered = false,
 }: FighterVerticalDetailsProps) {
+  const { data: fighterRecord, isLoading: isRecordLoading } = useFighterRecord(fighterId);
+
   return (
-    <VStack marginBottom="1.5rem">
+    <VStack>
       <Box
         maxH={fighterImageSize}
         minH={fighterImageSize}
@@ -55,48 +56,52 @@ export default function FighterVerticalDetails({
           ) : null}
         </Text>
 
-        <Flex direction="row" justify={{ base: 'center', md: 'left' }} mb="10px">
-          <Text
-            fontFamily="Sora"
-            fontWeight="normal"
-            fontSize="24px"
-            mr=".5rem"
-            textAlign={{
-              xl: 'left',
-              lg: 'left',
-              md: 'left',
-              sm: 'center',
-              base: 'center',
-            }}
-            whiteSpace="nowrap"
-          >
-            Record:
-            <chakra.span display="inline" color="primary.500">
-              &nbsp;
-              {fighterWins}
-            </chakra.span>
-            {'-'}
-            <chakra.span display="inline" color="secondary.500">
-              {fighterLosses}
-            </chakra.span>
-          </Text>
-        </Flex>
-        {fighterStyle && <Flex direction="row" justify={{ base: 'center', md: 'left' }} mb="10px">
-          <Text
-            textAlign={{
-              xl: 'left',
-              lg: 'left',
-              md: 'left',
-              sm: 'center',
-              base: 'center',
-            }}
-            fontFamily="Sora"
-            fontWeight="semibold"
-            fontSize="18px"
-          >
-            Style: {fighterStyle}
-          </Text>
-        </Flex> }
+        <Skeleton isLoaded={!isRecordLoading}>
+          <Flex direction="row" justify={{ base: 'center', md: 'left' }} mb="10px">
+            <Text
+              fontFamily="Sora"
+              fontWeight="normal"
+              fontSize="24px"
+              mr=".5rem"
+              textAlign={{
+                xl: 'left',
+                lg: 'left',
+                md: 'left',
+                sm: 'center',
+                base: 'center',
+              }}
+              whiteSpace="nowrap"
+            >
+              Record:
+              <chakra.span display="inline" color="primary.500">
+                &nbsp;
+                {fighterRecord ? fighterRecord.wins : 0}
+              </chakra.span>
+              {'-'}
+              <chakra.span display="inline" color="secondary.500">
+                {fighterRecord ? fighterRecord.losses : 0}
+              </chakra.span>
+            </Text>
+          </Flex>
+        </Skeleton>
+        {fighterStyle && (
+          <Flex direction="row" justify={{ base: 'center', md: 'left' }} mb="10px">
+            <Text
+              textAlign={{
+                xl: 'left',
+                lg: 'left',
+                md: 'left',
+                sm: 'center',
+                base: 'center',
+              }}
+              fontFamily="Sora"
+              fontWeight="semibold"
+              fontSize="18px"
+            >
+              Style: {fighterStyle}
+            </Text>
+          </Flex>
+        )}
       </Flex>
     </VStack>
   );

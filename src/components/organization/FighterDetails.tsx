@@ -14,35 +14,30 @@ export const FighterDetails = ({ fighterData }: FighterDetailsProps) => {
     <Box boxSizing="border-box" transition="ease-in-out 0.4s" w="100%" alignContent="center">
       <VStack marginBottom="30px" alignItems="flex-start">
         <FighterVerticalDetails
+          fighterId={fighterData.fighterId}
           fighterImage={fighterData.image}
           fighterCountryCode={fighterData.countryCode}
           fighterName={fighterData.name}
           fighterStyle={''}
-          fighterWins={fighterData.wins}
-          fighterLosses={fighterData.loses}
           fighterImageSize={312}
         />
-
+        1
         <Text variant="micro" fontFamily="Sora" fontWeight="normal" fontSize="18px">
           HEIGHT:&nbsp;&nbsp;
           <chakra.span display="inline">{fighterData.height}</chakra.span>
         </Text>
-
         <Text variant="micro" fontFamily="Sora" fontWeight="normal" fontSize="18px">
           WEIGHT:&nbsp;&nbsp;
           <chakra.span display="inline">{fighterData.weight}</chakra.span>
         </Text>
-
         <Text variant="micro" fontFamily="Sora" fontWeight="normal" fontSize="18px">
           GENDER:&nbsp;&nbsp;
           <chakra.span display="inline">{fighterData.gender}</chakra.span>
         </Text>
-
         <Text variant="micro" fontFamily="Sora" fontWeight="normal" fontSize="18px">
           RECRUITED:&nbsp;&nbsp;
           <chakra.span display="inline">{fighterData.recruited}</chakra.span>
         </Text>
-
         <Text variant="micro" fontFamily="Sora" fontWeight="normal" fontSize="18px">
           STATUS:&nbsp;&nbsp;
           <chakra.span

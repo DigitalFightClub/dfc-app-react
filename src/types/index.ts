@@ -46,8 +46,8 @@ export type FighterInfo = {
   name: string;
   country: string;
   countryCode: string;
-  wins: string;
-  loses: string;
+  // wins: string;
+  // loses: string;
   height: string;
   weight: string;
   gender: string;
@@ -56,7 +56,7 @@ export type FighterInfo = {
   image: string;
   stats: Record<string, number>;
   isOwned: boolean; // indicates is owned by current wallet
-  challengeState: ChallengeState;
+  // challengeState: ChallengeState;
 };
 
 export type Challenge = {
@@ -70,6 +70,7 @@ export enum ChallengeState {
   CHALLENGED = 'Challenged',
   CHALLENGING = 'Challenging',
   COOLDOWN = 'Cooldown',
+  UNAVAILABLE = 'Unavailable',
 }
 
 export enum FighterModalState {
@@ -80,11 +81,11 @@ export enum FighterModalState {
 
 export type FighterModalProps = {
   onClose: () => void;
-  fighterData: FighterInfo | null;
+  fighterData: FighterInfo;
 };
 
 export type FighterModalProps2 = {
-  fighterData: FighterInfo | null;
+  fighterData: FighterInfo;
   isHorizontal: boolean;
 };
 
@@ -92,7 +93,10 @@ export type FighterStats = {
   fighterStatistics: Stats[];
 };
 
-export type FighterStatistics = Stats[];
+export type FighterStatistics = {
+  wide: Stats[];
+  slim: Stats[];
+};
 
 export type FighterType = {
   fighterData: FighterInfo;
@@ -133,15 +137,11 @@ export type FightHistoryBrief = {
   challengerName: string;
   challengerImage: string;
   challengerCountryCode?: string;
-  challengerWins?: number;
-  challengerLoses?: number;
   challengerStyle: string;
   opponentId: number;
   opponentName: string;
   opponentImage: string;
   opponentCountryCode?: string;
-  opponentWins?: number;
-  opponentLoses?: number;
   opponentStyle: string;
   fightResults: FightResults;
   winnerId: number;
@@ -192,27 +192,30 @@ export type OrganizationState = {
   fightingStyles: FightingStyle[];
 };
 
-export type FighterHistoryState = {
-  fighterHistory: FightHistoryBrief[];
-  selectedFightHistoryBrief: FightHistoryBrief | null;
-  loadingFightResult: boolean;
-  loadingFighterHistory: boolean;
-  getFighterHistoryError: string | null;
-  fighterModalState: FighterModalState;
+export type FighterResultModalState = {
+  matchId: string | null;
+  fighterId: number;
+  opponentId: number;
 };
 
-export type GymState = {
-  gymFighters: FighterInfo[];
-  loadingGymFighters: boolean;
-  getGymFightersError: string | null;
-  tkoTotal: string;
-  loadingTotalTko: boolean;
-  getTotalTkoError: string | null;
+export type ChallengeAPIResponse = {
+  message: string;
+  uuid: string | null;
+};
+
+export type ChallengeFighterResponse = {
+  status: number;
+  message: string;
+  matchId: string | null;
+};
+
+export type FighterHistoryState = {
+  selectedFightResult: FighterResultModalState | null;
+  fighterModalState: FighterModalState;
 };
 
 // Global app state aggregated from the Redux reducers
 export interface AppState {
-  gymState: GymState;
   fightHistoryState: FighterHistoryState;
   organizationState: OrganizationState;
 }
