@@ -15,6 +15,7 @@ import {
   Image,
   Stack,
   MenuItem,
+  useToast,
 } from '@chakra-ui/react';
 import { BellIcon, CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { verifyNetwork } from '../../utils/web3/connect';
@@ -36,16 +37,17 @@ const NavBar = (props: any) => {
 };
 
 const WalletConnect = ({ base, md, ...props }: any) => {
-  const { activateBrowserWallet, deactivate, account, chainId, error } = useEthers();
+  const { activateBrowserWallet, deactivate, account, chainId, error, active } = useEthers();
   const [activateError, setActivateError] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
 
   const connectWallet = () => {
     // setActivateError('')
     // console.log('activateError: ', activateError)
     activateBrowserWallet();
-    console.log(account);
+    console.log(account, chainId, active);
     if (account) {
       console.log(account);
       verifyNetwork(chainId);
@@ -55,6 +57,14 @@ const WalletConnect = ({ base, md, ...props }: any) => {
   const disconnectWallet = () => {
     deactivate();
   };
+
+  useEffect(() => {
+    console.log('Wallet Active', active, account, chainId, error);
+    if (active && account) {
+      console.log(account);
+      verifyNetwork(chainId);
+    }
+  }, [active, account, chainId, error]);
 
   useEffect(() => {
     if (error) {
@@ -84,9 +94,19 @@ const WalletConnect = ({ base, md, ...props }: any) => {
         // addNetwork();
       }
 
-      console.log(JSON.stringify(error.message));
+      if (error.message === 'Already processing eth_requestAccounts. Please wait.') {
+        toast({
+          position: 'top',
+          description: 'Unlock Metamask from browser toolbar...',
+          status: 'info',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+
+      console.log(JSON.stringify(error.message), error);
     }
-  }, [error]);
+  }, [error, toast]);
 
   return (
     <Box display={{ base: base, md: md }}>
