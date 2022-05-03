@@ -95,6 +95,7 @@ const WalletConnect = ({ base, md, ...props }: any) => {
       }
 
       if (error.message === 'Already processing eth_requestAccounts. Please wait.') {
+        toast.closeAll();
         toast({
           position: 'top',
           description: 'Unlock Metamask from browser toolbar...',
