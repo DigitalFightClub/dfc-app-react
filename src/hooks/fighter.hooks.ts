@@ -128,16 +128,16 @@ export function useFighterChallengeState(fighterId: number, opponentNftId: numbe
     {
       enabled: !!accountFighters,
       select: (data: Challenge[]) => {
-        // disabled to allow fighters to fight themselves 
+        // disabled to allow fighters to fight themselves
         // const ownedNFTs: MoralisNFT[] = _.get(accountFighters, ['result'], []);
         // if (
         //   _.findIndex(ownedNFTs, ({ token_id: ownedFighterId }) => opponentNftId === _.parseInt(ownedFighterId, 10)) >=
         //   0
         // ) {
-        //   // opponent is owned by the user
-        //   return ChallengeState.AVAILABLE;
-        // }
-
+        if (fighterId === opponentNftId) {
+          // opponent is owned by the user
+          return ChallengeState.UNAVAILABLE;
+        }
         if (data) {
           // opponent is being challenged
           if (_.findIndex(data, ({ opponentId }) => opponentNftId === opponentId) >= 0) {
