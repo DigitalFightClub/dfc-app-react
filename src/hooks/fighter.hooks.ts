@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import axios, { AxiosResponse } from 'axios';
 import _ from 'lodash';
 import Moralis from 'moralis/types';
@@ -127,14 +128,15 @@ export function useFighterChallengeState(fighterId: number, opponentNftId: numbe
     {
       enabled: !!accountFighters,
       select: (data: Challenge[]) => {
-        const ownedNFTs: MoralisNFT[] = _.get(accountFighters, ['result'], []);
-        if (
-          _.findIndex(ownedNFTs, ({ token_id: ownedFighterId }) => opponentNftId === _.parseInt(ownedFighterId, 10)) >=
-          0
-        ) {
-          // opponent is owned by the user
-          return ChallengeState.UNAVAILABLE;
-        }
+        // disabled to allow fighters to fight themselves 
+        // const ownedNFTs: MoralisNFT[] = _.get(accountFighters, ['result'], []);
+        // if (
+        //   _.findIndex(ownedNFTs, ({ token_id: ownedFighterId }) => opponentNftId === _.parseInt(ownedFighterId, 10)) >=
+        //   0
+        // ) {
+        //   // opponent is owned by the user
+        //   return ChallengeState.AVAILABLE;
+        // }
 
         if (data) {
           // opponent is being challenged
