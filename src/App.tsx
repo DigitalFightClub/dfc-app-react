@@ -4,6 +4,7 @@ import { Home } from './components/home';
 import './App.css';
 import Gym from './components/gym';
 import Organization from './components/organization';
+import Minting from './components/minting';
 import ScrollToTop from './enhancers/scrollToTop';
 // import { ReactQueryDevtools } from 'react-query/devtools';
 import { useGymFighters } from './hooks/fighter.hooks';
@@ -37,6 +38,7 @@ function App() {
                 <Route path="/" component={Home} exact />
                 <Route path="/gym" component={Gym} />
                 <Route path="/orgs" component={Organization} />
+                <Route path="/minting" component={Minting} />
               </Switch>
             </>
           )}
