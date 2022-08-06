@@ -28,7 +28,7 @@ const NavBar = (props: any) => {
   return (
     <NavBarContainer {...props}>
       <Image h="3rem" display="inline" src="/assets/logo.svg"></Image>
-      <WalletConnect base="block" md="none" />
+      {/* <WalletConnect base="block" md="none" /> */}
       <MenuToggle toggle={toggle} isOpen={isOpen} />
       <MenuLinks isOpen={isOpen} />
       <WalletConnect base="none" md="block" />
@@ -158,6 +158,7 @@ const MenuLinks = ({ isOpen }: any) => {
         <NavButton to="/">Home</NavButton>
         <NavButton to="/gym">My Gym</NavButton>
         <NavButton to="/orgs">Organizations</NavButton>
+        <NavButton to="/minting">Mint New Fighters</NavButton>
       </Stack>
     </Box>
   );

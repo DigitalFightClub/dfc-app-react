@@ -140,6 +140,7 @@ const NavBar = (props: any) => {
           <NavButton to="/">Home</NavButton>
           <NavButton to="/gym">My Gym</NavButton>
           <NavButton to="/organizaions">Organizations</NavButton>
+          <NavButton onClick={onOpen}>Mint New Fighters</NavButton>
         </Flex>
       </Box>
 
