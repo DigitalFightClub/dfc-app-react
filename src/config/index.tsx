@@ -5,17 +5,22 @@ import { ethers } from 'ethers';
 export const MAINNET = Polygon;
 export const TESTNET = Mumbai;
 // export const TARGET_NET = MAINNET
-export const TARGET_NET = MAINNET;
+export const TARGET_NET = TESTNET;
 
 // Defaults
 export const PRICE = ethers.BigNumber.from('0050000000000000000'); //mainnet
+
+const POLYGON_URL = 'https://polygonscan.com/token/0x62ea8080b2fc7dc4c7337920866afd242a1443cb';
 
 // Loading Messages
 export const FIRST_MSG = '📝Awaiting User to Sign MetaTx via MetaMask...';
 export const SECOND_MSG = '🔃Submitting Signed MetaTx for Processing...(1/3)';
 export const THIRD_MSG = '⛓Awaiting MetaTx to Process...(2/3)';
 export const FOURTH_MSG = '⛓Awaiting Mint to Process...(3/3)';
-export const FINAL_MSG = '🚀Minting Complete. Drumroll...🥁';
+// eslint-disable-next-line max-len
+export const FINAL_MSG: string = '🚀Minting Complete. Drumroll...🥁 \n' 
+  + 'Check your OpenSea Account for your fighters or Polygonscan.com'; 
+  // + `<a href='${POLYGON_URL}'>Polygonscan.com</a>`;
 
 // ABI Fragments
 const NFT_TRANSFER_ABI = ['event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)'];
@@ -34,6 +39,7 @@ const DEFAULT_OBJ = {
   MORALIS_KEY: 'ekFBiVFWGaFaDv4JssjNXKA0v2YAvlras1lAcVHJa45fAZsAfvJ1IYxKT10S4N1Z',
   MORALIS_URL: 'https://0yf6eqq0a5xi.usemoralis.com:2053/server',
   MORALIS_APP_ID: 'yj3x1f4PFv1hTb5kbgy4er4B9RZr2R0CKGKLr5cR',
+  POLYGON_URL: POLYGON_URL
 };
 
 // Mainnet

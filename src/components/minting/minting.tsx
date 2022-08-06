@@ -20,13 +20,14 @@ import {
   Box,
   Center
 } from '@chakra-ui/react';
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import LoadingScreen from 'react-loading-screen';
 import { useEthers, useTokenBalance } from '@usedapp/core';
 import { ethers } from 'ethers';
 import { formatUnits } from '@ethersproject/units';
 import { PRICE, ENV_CONFG } from '../../config';
 import { wethABI } from '../../utils/web3/weth-abi';
+// import { verifyNetwork } from '../../utils/web3/connect';
 import axios from 'axios';
 
 const ENV = ENV_CONFG();
@@ -40,8 +41,118 @@ export default function Minting() {
   const [amount, setAmount] = useState(1);
   const [isSigning, setIsSigning] = useState(false);
   const [waitingMsg, setWaitingMsg] = useState(ENV.FIRST_MSG);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [txHash, setTxHash] = useState(null);
+  const [nftSc, setNftSc] = useState<ethers.Contract | null>();
+  const [wethSc, setWethSc] = useState<ethers.Contract>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [nftFilter, setNftFilter] = useState({});
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [wethFilter, setWethFilter] = useState({});
+  const [wethSingle, setWethSingle] = useState(0);
+  const [nftSingle, setNftSingle] = useState(0);
+  const [tokenIds, setTokenIds] = useState<string[]>([]);
 
+  useEffect(() => {
+    if (library && waitingMsg === ENV.THIRD_MSG) {
+      const weth_sc = new ethers.Contract(ENV.WETH, ENV.WETH_TRANSFER_ABI, library);
+      setWethSc(weth_sc);
+      const weth_filter = weth_sc.filters.Transfer(account, ENV.WETH_RECEIVER);
+      setWethFilter(weth_filter);
+
+      if (Object.keys(weth_sc).length != 0) {
+        if (wethSingle == 0) {
+          setWethSingle(1);
+          console.log('WETH SC: ', weth_sc);
+          console.log('Listening...WETH');
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          weth_sc.on(weth_filter, (from, to, value, event) => {
+            setWaitingMsg(ENV.FOURTH_MSG);
+            // console.log(`from: ${from}`);
+            // console.log(`to: ${to}`);
+            // console.log(`value: ${value.toString()}`)
+            // console.log(event.blockNumber);
+          });
+        }
+      }
+    }
+    return () => {
+      if (wethSc) {
+        if (Object.keys(wethSc).length != 0) {
+          // console.log('weth event listeners removed')
+          wethSc.removeAllListeners();
+        }
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [library, waitingMsg]);
+
+  useEffect(() => {
+    if (library && waitingMsg === ENV.THIRD_MSG) {
+      const nft_sc = new ethers.Contract(ENV.NFT_CONTRACT_ADDRESS, ENV.NFT_TRANSFER_ABI, library);
+      setNftSc(nft_sc);
+      const nft_filter = nft_sc.filters.Transfer(null, account);
+      setNftFilter(nft_filter);
+
+      if (Object.keys(nft_sc).length != 0) {
+        if (nftSingle == 0) {
+          setNftSingle(1);
+          console.log('NFT SC: ', nft_sc);
+          console.log('Listening...NFT');
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          nft_sc.on(nft_filter, (from: string, to: string, tokenId: string, event: ethers.Event) => {
+            // console.log(`from: ${from}`);
+            // console.log(`to: ${to}`);
+
+            if (tokenId) {
+              let tokenIds_existing: string[] = [];
+              tokenIds_existing = tokenIds;
+              tokenIds_existing.push(tokenId.toString());
+              setTokenIds(tokenIds_existing);
+            }
+
+            if (amount == tokenIds.length) {
+              setWaitingMsg(ENV.FINAL_MSG);
+              setTimeout(() => {
+                recordMintedFighters();
+              }, 7000);
+            }
+
+            // console.log(`tokenId: ${tokenId}`)
+            // console.log('included in block #: ', event.blockNumber);
+          });
+        }
+      }
+    }
+
+    const recordMintedFighters = async () => {
+      await window.localStorage.setItem('fighter_ids', JSON.stringify(tokenIds));
+      console.log('fighter ids: ', tokenIds);
+      console.log('localized fighter count: ', tokenIds.length);
+      // console.log('metatx hash: ', txHash)
+      // routeChange(txHash ? txHash : 'Error-0x3');
+      resetState();
+    };
+
+    return () => {
+      if (nftSc) {
+        if (Object.keys(nftSc).length != 0) {
+          // console.log('nft event listeners removed')
+          nftSc.removeAllListeners();
+        }
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [library, waitingMsg]);
+
+  const resetState = () => {
+    onClose();
+    setNftSingle(0);
+    setIsLoading(false);
+    setWaitingMsg(ENV.FIRST_MSG);
+    setNftSc(null);
+    setNftFilter({});
+  };
 
   const closeModal = () => setOpen(false);
 
@@ -77,33 +188,16 @@ export default function Minting() {
     }
   };
 
-  const isRightNetwork = () => {
-    // if (ENV.TARGET_NET == chainId) {
-    // eslint-disable-next-line no-constant-condition
-    if (true) {
-      return true;
-    }
-    return false;
-  };
-
-  const verifyNetwork = () => {
-    if (!isRightNetwork()) {
-      triggerPopup('Connect MetaMask to the Polygon mainnet network!');
-      return false;
-    }
-    return true;
-  };
-
   const triggerPopup = (content: SetStateAction<string>) => {
     setContent(content);
     setOpen(true);
   };
 
   const AlertPopup = () => (
-    <Modal isOpen={open} onClose={closeModal}>
+    <Modal isOpen={open} onClose={closeModal} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <div>{content}</div>
+        <Center>{content}</Center>
       </ModalContent>
     </Modal>
   );
@@ -132,15 +226,10 @@ export default function Minting() {
   };
 
   const generageMMSign = async () => {
-    if (verifyNetwork()) {
+    // eslint-disable-next-line no-constant-condition
+    if (true) {
       // mintFighter(txCost())
       // library.getSigner(account).signMessage('test')
-
-      // if(!canAfford) {
-      //     triggerPopup('You cannot afford this!')
-      //     setIsSigning(false)
-      //     return
-      // }
 
       const contract = new ethers.Contract(ENV.WETH, wethABI, library);
       const functionSignature = contract.interface.encodeFunctionData('transfer', [ENV.WETH_RECEIVER, txCost()]);
@@ -186,7 +275,7 @@ export default function Minting() {
         }
       };
 
-      await (window as any).ethereum.request({
+      const request = await (window as any).ethereum.request({
         method: 'eth_signTypedData_v3',
         params: [account, JSON.stringify(typedData)],
       }).then(async (result: any) => {
@@ -205,19 +294,20 @@ export default function Minting() {
           }
         };
 
-        // console.log(JSON.stringify(request, null, 2))
-        setWaitingMsg(ENV.SECOND_MSG);
-        await submitMetaTx(request, ENV.WEBOOK_AUTOTASK_PRIMARY, 1);
-        setIsSigning(false);
+        return request;
       }).catch((error: any) => {
         console.log('error: ', error); // catches cancelling the sign step of the metatx
         setIsSigning(false);
         setIsLoading(false);
       });
+
+      // console.log(request);
+      return request;
     } else {
       // addNetwork();
       setIsLoading(false);
     }
+    return null;
   };
 
   const submitMetaTx = (request: any, webhookURL: any, counter: any) => {
@@ -228,7 +318,7 @@ export default function Minting() {
       // }
 
       if (response.data.status == 'throttled') {
-        console.log('backup autotask triggered ', counter);
+        console.log('throttled', counter);
         // eslint-disable-next-line max-len
         triggerPopup('Apologies. Our services are currently being rate limited because of a DFC mint storm. Please try again in 30 minutes. Error 0x1');
       }
@@ -259,9 +349,8 @@ export default function Minting() {
   };
 
   const submit = async () => {
-    console.log('test');
-    console.log(calcCanAfford());
-    console.log(txCost().toString());
+    // console.log(calcCanAfford());
+    // console.log(txCost().toString());
 
     if (!calcCanAfford()) {
       triggerPopup('You cannot afford this!');
@@ -278,7 +367,17 @@ export default function Minting() {
       setIsSigning(true);
     }
 
-    await generageMMSign();
+    // generate message to sign, create request to send to API
+    const request = await generageMMSign();
+    console.log('generate await completed');
+
+    if (request) {
+      // console.log(JSON.stringify(request, null, 2))
+      setWaitingMsg(ENV.SECOND_MSG);
+      // submit signed request to the API
+      await submitMetaTx(request, ENV.WEBOOK_AUTOTASK_PRIMARY, 1);
+      setIsSigning(false);
+    } 
 
     setIsSigning(false);
   };
@@ -293,7 +392,7 @@ export default function Minting() {
     <>
       <Center>
         <Box>
-          <Image src='/images/fighters-hero-graphic-mint-popup2x-p-800.png' />
+          <Image src='/images/steep-pyramid.png' height='700px' />
         </Box>
       </Center>
 
@@ -309,7 +408,7 @@ export default function Minting() {
       
       <Button onClick={onOpen}>Mint Fighters</Button>
 
-      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Mint Your Fighters</ModalHeader>
@@ -363,7 +462,9 @@ export default function Minting() {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
       <AlertPopup />
+      
       <div style={{ display: !isLoading ? 'none' : 'block' }} className='loadingScreen'>
         <LoadingScreen
           loading={true}
@@ -372,7 +473,7 @@ export default function Minting() {
           textColor='#676767'
           logoSrc='images/logo.png'
           text={waitingMsg}
-        />
+        >&nbsp;</LoadingScreen>
       </div>
     </>
   );
