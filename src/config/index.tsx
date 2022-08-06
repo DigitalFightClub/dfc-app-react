@@ -19,7 +19,7 @@ export const THIRD_MSG = '⛓Awaiting MetaTx to Process...(2/3)';
 export const FOURTH_MSG = '⛓Awaiting Mint to Process...(3/3)';
 // eslint-disable-next-line max-len
 export const FINAL_MSG: string = '🚀Minting Complete. Drumroll...🥁 \n' 
-  + 'Check your OpenSea Account for your fighters or Polygonscan.com'; 
+  + 'Check your Gym, OpenSea.io, or Polygonscan.com'; 
   // + `<a href='${POLYGON_URL}'>Polygonscan.com</a>`;
 
 // ABI Fragments
