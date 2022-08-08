@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 export const MAINNET = Polygon;
 export const TESTNET = Mumbai;
 // export const TARGET_NET = MAINNET
-export const TARGET_NET = TESTNET;
+export const TARGET_NET = MAINNET;
 
 // Defaults
 export const PRICE = ethers.BigNumber.from('0050000000000000000'); //mainnet
@@ -97,7 +97,7 @@ export const ENV_CONFG = () => {
     case MAINNET:
       return {
         INFURA_NET_NAME: 'mainnet',
-        NET_NAME: 'matic',
+        NET_NAME: 'polygon',
         NFT_ADDY: '0x62ea8080b2fc7dc4c7337920866afd242a1443cb',
         TARGET_NET: MAINNET,
         FIGHTER_IMAGE_URL,
