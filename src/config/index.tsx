@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 export const MAINNET = Polygon;
 export const TESTNET = Mumbai;
 // export const TARGET_NET = MAINNET
-export const TARGET_NET = MAINNET;
+export const TARGET_NET = TESTNET;
 
 // Defaults
 export const PRICE = ethers.BigNumber.from('0050000000000000000'); //mainnet
