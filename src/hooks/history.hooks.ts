@@ -80,44 +80,41 @@ const getSingleFightHistory = async (
   fighterId: number,
   matchId: string | null
 ): Promise<FightHistoryBrief | undefined> => {
-  try {
-    let fightHistory = [];
-    let attempt = 0;
-    while (fightHistory.length === 0 && attempt < MAX_RETRIES && !!matchId) {
-      await delay(TIMEOUT_INTERVAL * 1000);
-      console.log('call fighterhistory', fighterId, matchId);
-      const response: AxiosResponse<any> = await axios.get(`${ENV.FIGHTER_API_URL}/fightHistory`, {
-        params: {
-          nftId: fighterId,
-          uuid: matchId,
-        },
-      });
-      console.log('single history axios response', response.data);
+  let fightHistory = [];
+  let attempt = 0;
+  while (fightHistory.length === 0 && attempt < MAX_RETRIES && !!matchId) {
+    await delay(TIMEOUT_INTERVAL * 1000);
+    console.log('call fighterhistory', fighterId, matchId);
+    const response: AxiosResponse<any> = await axios.get(`${ENV.FIGHTER_API_URL}/fightHistory`, {
+      params: {
+        nftId: fighterId,
+        uuid: matchId,
+      },
+    });
+    console.log('single history axios response', response.data);
 
-      // transform results into fighthistorybrief type
-      fightHistory = _.get(response, ['data', 'fightHistory'], []);
-      attempt++;
-    }
+    // transform results into fighthistorybrief type
+    fightHistory = _.get(response, ['data', 'fightHistory'], []);
+    attempt++;
+  }
 
-    if (fightHistory.length > 0) {
-      return createFightHistoryBrief(fightHistory[0], fighterId);
-    }
-  } catch (error) {
-    console.error('Failed request for fighter history', error);
+  if (fightHistory.length > 0) {
+    return createFightHistoryBrief(fightHistory[0], fighterId);
   }
   return undefined;
 };
 
 const getFightHistory = async (fighterId: number): Promise<FightHistoryBrief[]> => {
-  try {
-    console.log('call fighterhistory', fighterId);
-    const response: AxiosResponse<any> = await axios.get(`${ENV.FIGHTER_API_URL}/fightHistory`, {
-      params: {
-        nftId: fighterId,
-      },
-    });
-    console.log('history axios response', response.data);
+  // If axios throws an error then React Query will retry
+  console.log('call fighterhistory', fighterId);
+  const response: AxiosResponse<any> = await axios.get(`${ENV.FIGHTER_API_URL}/fightHistory`, {
+    params: {
+      nftId: fighterId,
+    },
+  });
+  console.log('history axios response', response.data);
 
+  try {
     // transform results into fighthistorybrief type
     const fightHistory = _.get(response, ['data', 'fightHistory'], []);
     const briefs: FightHistoryBrief[] = fightHistory.map((historyRecord: any) =>
@@ -146,6 +143,7 @@ export function useFightResult(fighterId: number, matchId: string | null) {
     ['fighter', 'history', fighterId],
     () => getFightHistory(fighterId),
     {
+      retry: 6,
       select: (data: FightHistoryBrief[]) => {
         for (let i = 0; i < data.length; i++) {
           const brief: FightHistoryBrief = data[i];
@@ -166,6 +164,7 @@ export function useSingleFightResult(fighterId: number, matchId: string | null) 
     ['fighter', 'history', fighterId, matchId],
     () => getSingleFightHistory(fighterId, matchId),
     {
+      retry: 10,
       onSuccess: () => {
         console.log('INVALIDATE FIGHTER RECORDS');
         return queryClient.invalidateQueries(['fighter', 'record'], {

@@ -29,6 +29,15 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
     history.push('/orgs');
   };
 
+  const handleImprove = () => {
+    dispatch(
+      dfcAction(SET_SELECTED_FIGHTER, {
+        data: { fighterData },
+      })
+    );
+    history.push('/improve');
+  };
+
   return (
     <Grid templateRows="repeat(3, 30px)" textAlign="left" minH="180px" gap="11px">
       <Heading
@@ -47,7 +56,7 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
         ) : null}
       </Heading>
 
-      <Flex direction="row" justify={{ base: 'center', md: 'left' }}>
+      <Flex justify={{ base: 'center', md: 'left' }}>
         <Heading
           variant="header4"
           mr=".5rem"
@@ -76,6 +85,7 @@ export default function FighterData({ isTile = false, fighterInfo: fighterData, 
           isTile={isTile}
           fighterId={fighterData.fighterId}
           handleFight={handleFight}
+          handleImprove={handleImprove}
           handleChallenge={handleChallenge}
         />
       </Flex>

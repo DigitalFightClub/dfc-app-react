@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
-import { MoralisProvider } from 'react-moralis';
 import { DAppProvider, Mumbai, Polygon, Mainnet } from '@usedapp/core';
 import { ENV_CONFG } from './config';
 import App from './App';
@@ -15,12 +14,18 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 const ENV = ENV_CONFG();
 
+declare global {
+  interface Window {
+      web3:any;
+  }
+}
+
 // Setup React Query client
 const queryClient: QueryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
-      staleTime: 30*1000, // may want to increase stale time to prevent refetch longer
+      staleTime: 30 * 1000, // may want to increase stale time to prevent refetch longer
     },
   },
 });
@@ -48,12 +53,10 @@ ReactDOM.render(
       {' '}
       <QueryClientProvider client={queryClient}>
         <DAppProvider config={config}>
-          <MoralisProvider appId={ENV.MORALIS_APP_ID} serverUrl={ENV.MORALIS_URL} initializeOnMount={true}>
-            <ChakraProvider theme={theme}>
-              <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-              <App />
-            </ChakraProvider>
-          </MoralisProvider>
+          <ChakraProvider theme={theme}>
+            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+            <App />
+          </ChakraProvider>
         </DAppProvider>
       </QueryClientProvider>
     </Provider>

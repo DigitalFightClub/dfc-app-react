@@ -1,19 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import { Grid, Container, Stack, VStack, Box, Skeleton } from '@chakra-ui/react';
-import { useMoralisWeb3Api, useMoralis } from 'react-moralis';
 
 import GymTile from '../gymTile';
 import GymHeader from '../gymHeader';
 import FighterSelection from '../fighterSelection';
-import Moralis from 'moralis/types';
 import { useTKOBalance } from '../../hooks/tko.hooks';
 import { useGymFighters } from '../../hooks/fighter.hooks';
 
 export default function Gym() {
-  const { isInitializing, account: userAccount } = useMoralis();
-  const Web3Api: Moralis.Web3API = useMoralisWeb3Api();
-
   const [retiredFighters, setRetiredFighters] = useState(0);
   const [activeFightRecord, setActiveFightRecord] = useState('0-0');
   const [overallFightRecord, setOverallFightRecord] = useState('0-0');
@@ -25,7 +20,7 @@ export default function Gym() {
 
   return (
     <Box>
-      <div style={{ display: isInitializing ? 'none' : 'block' }} className="loadingScreen">
+      <div className="loadingScreen">
         <Container maxW={{ xl: '100ch', lg: '80ch', md: '80ch', sm: '60ch' }} my="1rem">
           <Stack justifyContent="flex-start" my="40px">
             <GymHeader />

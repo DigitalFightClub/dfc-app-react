@@ -24,7 +24,7 @@ export type MoralisNFT = BaseMoralisNFT & {
 export type FighterNFT = {
   name: string;
   image: string;
-  attributes: [];
+  attributes: Array<any>;
 };
 
 export type AccountNFTResult = {

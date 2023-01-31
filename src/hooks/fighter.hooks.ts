@@ -1,8 +1,7 @@
 /* eslint-disable max-len */
 import axios, { AxiosResponse } from 'axios';
 import _ from 'lodash';
-import Moralis from 'moralis/types';
-import { useMoralis } from 'react-moralis';
+import { JsonRpcSigner } from '@ethersproject/providers';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { ENV_CONFG } from '../config';
 import {
@@ -16,6 +15,7 @@ import {
   MoralisNFT,
 } from '../types';
 import { useAccountDFCFighters, useDFCFighter, useDFCFighters } from './dfc.hooks';
+import { useSigner } from './useSigner';
 
 const ENV = ENV_CONFG();
 
@@ -55,46 +55,50 @@ const challengeFighter = async (
   fighterId: number,
   opponentId: number,
   fightingStyle: number,
-  Moralis: Moralis
+  signer: JsonRpcSigner | undefined
 ): Promise<ChallengeFighterResponse> => {
-  const web3Provider = await Moralis.enableWeb3();
-  const signer = web3Provider.getSigner();
-  const msg = `nft_id: ${fighterId}\nfighting_style: ${fightingStyle}\nopponent_id: ${opponentId}`;
-  const sig = await signer.signMessage(msg);
-  console.log('Challenge sig', sig);
-  if (sig) {
-    // console.log('appendJsonMetaData uri', nft.token_uri);
-    const signerAddress: string = await signer.getAddress();
-    // const response: AxiosResponse<{ message: string; uuid: string }> = await axios.post(
-    const response: AxiosResponse<ChallengeAPIResponse> = await axios.post(`${ENV.FIGHTER_API_URL}/challengesv2`, {
-      nftId: fighterId,
-      fightingStyle,
-      opponentId,
-      signedMessage: {
-        address: signerAddress,
-        msg,
-        sig,
-        version: '3',
-        signer: 'MEW',
-      },
-    });
-    console.log('challengeFighter response', response);
-    if (response) {
-      return { status: response.status, message: response.data.message, matchId: response.data.uuid };
+  if (signer) {
+    const msg = `nft_id: ${fighterId}\nfighting_style: ${fightingStyle}\nopponent_id: ${opponentId}`;
+    const sig = await signer.signMessage(msg);
+    console.log('Challenge sig', sig);
+
+    if (sig) {
+      // console.log('appendJsonMetaData uri', nft.token_uri);
+      const signerAddress: string = await signer.getAddress();
+      // const response: AxiosResponse<{ message: string; uuid: string }> = await axios.post(
+      const response: AxiosResponse<ChallengeAPIResponse> = await axios.post(`${ENV.FIGHTER_API_URL}/challengesv2`, {
+        nftId: fighterId,
+        fightingStyle,
+        opponentId,
+        signedMessage: {
+          address: signerAddress,
+          msg,
+          sig,
+          version: '3',
+          signer: 'MEW',
+        },
+      });
+      console.log('challengeFighter response', response);
+      if (response) {
+        return { status: response.status, message: response.data.message, matchId: response.data.uuid };
+      }
+    } else {
+      console.log('signature was cancelled or failed');
     }
+    return { status: 500, message: 'Something went wrong...', matchId: null };
   } else {
-    console.log('signature was cancelled or failed');
+    return { status: 500, message: 'Wallet not connected...', matchId: null };
   }
-  return { status: 500, message: 'Something went wrong...', matchId: null };
 };
 
 export function useChallengeFighter() {
-  const { Moralis } = useMoralis();
+  const signer: JsonRpcSigner | undefined = useSigner();
   const queryClient = useQueryClient();
 
   return useMutation<ChallengeFighterResponse, Error, { fighterId: number; opponentId: number; fightingStyle: number }>(
-    ({ fighterId, opponentId, fightingStyle }) => challengeFighter(fighterId, opponentId, fightingStyle, Moralis),
+    ({ fighterId, opponentId, fightingStyle }) => challengeFighter(fighterId, opponentId, fightingStyle, signer),
     {
+      retry: 6,
       onSuccess: async () => {
         console.log('INVALIDATE FIGHTER');
         await queryClient.invalidateQueries(['fighter'], {
@@ -177,6 +181,7 @@ export function useFighterChallenged(fighterId: number) {
 
 export function useGymFighters() {
   const { data: accountFighters } = useAccountDFCFighters();
+  console.log('useGymFighters: got DFC Fighters', accountFighters);
   return useDFCFighters(
     (data: FighterInfo[]) =>
       _.filter(data, ({ fighterId }) => {

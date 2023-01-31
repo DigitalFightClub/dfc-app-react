@@ -4,8 +4,8 @@ import { ethers } from 'ethers';
 // Set net target here
 export const MAINNET = Polygon;
 export const TESTNET = Mumbai;
-// export const TARGET_NET = MAINNET
-export const TARGET_NET = TESTNET;
+export const TARGET_NET = MAINNET;
+// export const TARGET_NET = TESTNET;
 
 // Defaults
 export const PRICE = ethers.BigNumber.from('0050000000000000000'); //mainnet
@@ -64,8 +64,6 @@ const MAINNET_OBJ = {
   NFT_CONTRACT_ADDRESS: NFT_CONTRACT_ADDRESS,
   TKO_CONTRACT_ADDRESS: TKO_CONTRACT_ADDRESS,
   'WEBOOK_AUTOTASK_PRIMARY': WEBOOK_AUTOTASK_PRIMARY,
-  MORALIS_URL: 'https://61llnzpusajk.usemoralis.com:2053/server',
-  MORALIS_APP_ID: 'Erauyvo8nCUx1yS6YIokvwe7uZadSS2eeaBoOvW1',
 };
 
 // Testnet
@@ -88,8 +86,6 @@ const TESTNET_OBJ = {
   NFT_CONTRACT_ADDRESS: TEST_NFT_CONTRACT_ADDRESS,
   TKO_CONTRACT_ADDRESS: TEST_TKO_CONTRACT_ADDRESS,
   'WEBOOK_AUTOTASK_PRIMARY': TEST_MUMBAI_WEBOOK_AUTOTASK_PRIMARY,
-  MORALIS_URL: 'https://tonivpkyl9dn.usemoralis.com:2053/server',
-  MORALIS_APP_ID: '4uiN8tGxxZ2nA67JG5GxcjcwmqhFdk3Ki5rcJM7C',
 };
 
 export const ENV_CONFG = () => {

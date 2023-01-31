@@ -24,7 +24,7 @@ export interface FighterTileProps {
 
 export default function FighterTile({ fighterData, loadingGymFitghers = false }: FighterTileProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const modalSize = useBreakpointValue({ base: 'xs', md: '2xl', lg: '5xl' });
+  const modalSize = useBreakpointValue({ base: 'xs', md: '5xl', lg: '5xl' });
   const centered = useBreakpointValue({ base: false, md: true });
   const { data: isChallenged = false } = useFighterChallenged(fighterData.fighterId);
 

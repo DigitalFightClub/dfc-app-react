@@ -10,6 +10,7 @@ export interface FighterDataButtonProps {
   isTile: boolean;
   fighterId: number;
   handleFight: () => void;
+  handleImprove: () => void;
   handleChallenge?: () => void;
 }
 
@@ -17,6 +18,7 @@ export default function FighterDataButtons({
   isTile,
   fighterId,
   handleFight,
+  handleImprove,
   handleChallenge,
 }: FighterDataButtonProps) {
   const { selectedFighter } = useSelector((state: AppState) => state.organizationState);
@@ -31,6 +33,7 @@ export default function FighterDataButtons({
       <Button
         w="9rem"
         h="2.2rem"
+        mt="1rem"
         bg="#DF2151"
         color="white"
         mx=".5rem"
@@ -44,6 +47,7 @@ export default function FighterDataButtons({
       <Button
         w="9rem"
         h="2.2rem"
+        mt="1rem"
         bg="#2ABB75"
         color="white"
         mx=".5rem"
@@ -57,6 +61,7 @@ export default function FighterDataButtons({
       <Button
         w="9rem"
         h="2.2rem"
+        mt="1rem"
         bg="gray.600"
         color="white"
         mx=".5rem"
@@ -74,7 +79,7 @@ export default function FighterDataButtons({
   return (
     <>
       {/* Tablet and up buttons */}
-      <Flex justify="left" display={isTile ? 'none' : { base: 'none', md: 'flex' }}>
+      <Flex minW='15rem' justify="left" wrap='wrap' display={isTile ? 'none' : { base: 'none', md: 'flex' }}>
         <Button
           w="6rem"
           h="2.375rem"
@@ -96,7 +101,7 @@ export default function FighterDataButtons({
           mx=".5rem"
           aria-label="Improve"
           borderRadius="0"
-          isDisabled
+          onClick={handleImprove}
           display={isOwned ? 'flex' : 'none'}
         >
           Improve
@@ -129,7 +134,7 @@ export default function FighterDataButtons({
             mx=".5rem"
             aria-label="Improve"
             borderRadius="0"
-            isDisabled
+            onClick={handleImprove}
           >
             <FlexIcon w="1.5rem" h="1.5rem" />
           </IconButton>

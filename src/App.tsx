@@ -10,6 +10,7 @@ import ScrollToTop from './enhancers/scrollToTop';
 import { useGymFighters } from './hooks/fighter.hooks';
 import { useEffect, useState } from 'react';
 import { Center, Progress } from '@chakra-ui/react';
+import Improve from './components/improve';
 
 function App() {
   // console.log(`TOTAL DFC SUPPLY: ${totalSupply}`);
@@ -37,6 +38,7 @@ function App() {
               <Switch>
                 <Route path="/" component={Home} exact />
                 <Route path="/gym" component={Gym} />
+                <Route path="/improve" component={Improve} />
                 <Route path="/orgs" component={Organization} />
                 <Route path="/minting" component={Minting} />
               </Switch>
