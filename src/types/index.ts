@@ -89,6 +89,12 @@ export type FighterModalProps2 = {
   isHorizontal: boolean;
 };
 
+export type TrainModalProps = {
+  fighterData: FighterInfo | null;
+  fightingTraits: FightingTrait[];
+  onClose: () => void;
+};
+
 export type FighterStats = {
   fighterStatistics: Stats[];
 };

@@ -318,12 +318,14 @@ export function useAccountDFCFighters() {
 
   return useQuery(['dfc', walletAddress], () => getUserDFCNFTs(walletAddress), {
     enabled: !!walletAddress,
+    retry: 6,
   });
 }
 
 export function useAddressDFCFighters(address: string) {
   return useQuery(['dfc', address], () => getUserDFCNFTs(address), {
     enabled: !!address,
+    retry: 6,
   });
 }
 
@@ -338,6 +340,7 @@ export function useOwnedFighter(fighterId: number) {
         _.findIndex(ownedNFTs, ({ token_id: ownedFighterId }) => fighterId === _.parseInt(ownedFighterId, 10)) >= 0
       );
     },
+    retry: 6,
   });
 }
 
@@ -351,6 +354,7 @@ export function useDFCFighters(select: any, enabledConstraint: boolean) {
       enabled: !!totalSupply && enabledConstraint,
       staleTime: Infinity,
       select,
+      retry: 6,
     }
   );
 }
@@ -364,6 +368,7 @@ export function useDFCFighter(select: any) {
       enabled: !!totalSupply,
       staleTime: Infinity,
       select,
+      retry: 6,
     }
   );
 }

@@ -16,8 +16,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  Wrap,
-  Tooltip,
   // Progress,
 } from '@chakra-ui/react';
 
@@ -29,8 +27,7 @@ import FighterStatList from '../fighterStats/fighterStats';
 import getFighterStatistics from '../fighterStatistics/fighterStatistics';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { CloseIcon } from '@chakra-ui/icons';
-import FighterVerticalDetails from '../fighterModal/fighterVerticalDetails';
+import TrainModal from './trainModal';
 
 export default function Improve() {
   // Redux Hooks
@@ -58,90 +55,7 @@ export default function Improve() {
         >
           <ModalOverlay />
           <ModalContent>
-            <Flex
-              bgImage="/assets/background.svg"
-              bgRepeat={{ base: 'repeat-y', lg: 'repeat-x' }}
-              h={{ base: '1400px', md: '100%' }}
-              w="100%"
-            >
-              <Button
-                w="0px"
-                justifySelf="end"
-                bg="white"
-                color="black"
-                borderRadius="18px"
-                _hover={{ color: 'white', bg: 'gray' }}
-                transition="0.5s"
-                position="absolute"
-                top="-10px"
-                right="-10px"
-                size="sm"
-                p="0px"
-                zIndex="200"
-                onClick={handleClose}
-              >
-                <CloseIcon />
-              </Button>
-              <Box position="relative" overflow="hidden" w="1024px" h="500px">
-                {selectedFighter ? (
-                  <VStack gap="2rem">
-                    <HStack gap="5rem">
-                      <FighterVerticalDetails
-                        fighterId={selectedFighter.fighterId}
-                        fighterImage={selectedFighter.image}
-                        fighterName={selectedFighter.name}
-                        fighterStyle={''}
-                        fighterCountryCode={selectedFighter.countryCode}
-                        isCentered={true}
-                        showRecord={false}
-                      />
-                      <VStack alignContent="center" gap="1.5rem" w="17rem">
-                        <Text>Proving Grounds</Text>
-                        <Text>Middleweight Category</Text>
-                        <Text>3 Rounds</Text>
-                        <Button
-                          w="9rem"
-                          h="2.2rem"
-                          bg="#2ABB75"
-                          color="white"
-                          mx=".5rem"
-                          borderRadius="0"
-                          aria-label="Accept"
-                        >
-                          Accept
-                        </Button>
-                      </VStack>
-                      <Image src="/images/Punching_bag.png" height="312px" />
-                    </HStack>
-                    {/* {1 === 0 ? (
-                      <Center>
-                        <Progress w="300px" hasStripe size="xs" isIndeterminate colorScheme="green" />
-                      </Center>
-                    ) : ( */}
-                    <Wrap pb="1rem" spacing="1rem" justify="center">
-                      {fightingTraits.map((fightingTrait) => (
-                        <Button
-                          key={fightingTrait.traitId}
-                          w="13rem"
-                          h="2.8rem"
-                          bg="gray.600"
-                          color="white"
-                          mx="1.5rem"
-                          borderRadius="0"
-                          _hover={{ bg: '#F26322' }}
-                          _active={{ bg: '#F26322' }}
-                          // isActive={selectedStyle === fightingStyle.styleId}
-                          // onClick={() => setSelectedStyle(fightingStyle.styleId)}
-                        >
-                          {fightingTrait.trait}
-                        </Button>
-                      ))}
-                    </Wrap>
-                    {/* )} */}
-                  </VStack>
-                ) : null}
-              </Box>
-            </Flex>
+            <TrainModal fighterData={selectedFighter} fightingTraits={fightingTraits} onClose={handleClose} />
           </ModalContent>
         </Modal>
       )}
