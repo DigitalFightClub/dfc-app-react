@@ -109,6 +109,11 @@ export type FightingStyle = {
   description: string;
 };
 
+export type FightingTrait = {
+  traitId: number;
+  trait: string;
+};
+
 export enum FighterStatus {
   ACTIVE = 'Active',
   RETIRED = 'Retired',
@@ -189,6 +194,7 @@ export type OrganizationState = {
   challengeMsg?: string;
   challengeInProgress: boolean;
   errorMsg?: string;
+  fightingTraits: FightingTrait[];
   fightingStyles: FightingStyle[];
 };
 

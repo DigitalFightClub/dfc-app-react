@@ -8,42 +8,27 @@ import Minting from './components/minting';
 import ScrollToTop from './enhancers/scrollToTop';
 // import { ReactQueryDevtools } from 'react-query/devtools';
 import { useGymFighters } from './hooks/fighter.hooks';
-import { useEffect, useState } from 'react';
-import { Center, Progress } from '@chakra-ui/react';
 import Improve from './components/improve';
+import { useEthers } from '@usedapp/core';
 
 function App() {
   // console.log(`TOTAL DFC SUPPLY: ${totalSupply}`);
-  const [fightersLoaded, setFightersLoaded] = useState<boolean>(false);
-  const { data, isLoading } = useGymFighters();
+  const { account } = useEthers();
+  const { isLoading } = useGymFighters();
   // console.log('DFC fighters', fighters);
-
-  useEffect(() => {
-    if (data) {
-      setFightersLoaded(true);
-    }
-  }, [data]);
 
   return (
     <div className="App">
       <BrowserRouter>
         <NavBar />
         <ScrollToTop>
-          {isLoading || !fightersLoaded ? (
-            <Center>
-              <Progress w="300px" hasStripe size="xs" isIndeterminate colorScheme="green" />
-            </Center>
-          ) : (
-            <>
-              <Switch>
-                <Route path="/" component={Home} exact />
-                <Route path="/gym" component={Gym} />
-                <Route path="/improve" component={Improve} />
-                <Route path="/orgs" component={Organization} />
-                <Route path="/minting" component={Minting} />
-              </Switch>
-            </>
-          )}
+          <Switch>
+            <Route path="/" component={Home} exact />
+            {!isLoading && account ? <Route path="/gym" component={Gym} /> : null}
+            {!isLoading && account ? <Route path="/improve" component={Improve} /> : null}
+            {!isLoading && account ? <Route path="/orgs" component={Organization} /> : null}
+            {!isLoading && account ? <Route path="/minting" component={Minting} /> : null}
+          </Switch>
         </ScrollToTop>
       </BrowserRouter>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}

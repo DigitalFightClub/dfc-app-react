@@ -19,6 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { BellIcon, CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { verifyNetwork } from '../../utils/web3/connect';
+import { useGymFighters } from '../../hooks/fighter.hooks';
 
 const NavBar = (props: any) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -146,20 +147,25 @@ const NavButton = ({ children, isLast, to = '/', ...rest }: any) => {
 };
 
 const MenuLinks = ({ isOpen }: any) => {
+  const { account } = useEthers();
+
+  console.log(`isOpen=${isOpen} account=${account}`);
   return (
     <Box display={{ base: isOpen ? 'block' : 'none', md: 'block' }} flexBasis={{ base: '100%', md: 'auto' }}>
-      <Stack
-        spacing={8}
-        align="center"
-        justify={['center', 'space-between', 'flex-end', 'flex-end']}
-        direction={['column', 'row', 'row', 'row']}
-        pt={[4, 4, 0, 0]}
-      >
-        <NavButton to="/">Home</NavButton>
-        <NavButton to="/gym">My Gym</NavButton>
-        <NavButton to="/orgs">Organizations</NavButton>
-        <NavButton to="/minting">Mint New Fighters</NavButton>
-      </Stack>
+      { account ? (
+        <Stack
+          spacing={8}
+          align="center"
+          justify={['center', 'space-between', 'flex-end', 'flex-end']}
+          direction={['column', 'row', 'row', 'row']}
+          pt={[4, 4, 0, 0]}
+        >
+          <NavButton to="/">Home</NavButton>
+          <NavButton to="/gym">My Gym</NavButton>
+          <NavButton to="/orgs">Organizations</NavButton>
+          <NavButton to="/minting">Mint New Fighters</NavButton>
+        </Stack>
+      ) : null}
     </Box>
   );
 };

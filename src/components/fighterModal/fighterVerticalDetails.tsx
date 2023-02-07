@@ -9,6 +9,7 @@ export interface FighterVerticalDetailsProps {
   fighterCountryCode: string;
   fighterImageSize?: number;
   isCentered?: boolean;
+  showRecord?: boolean;
 }
 
 export default function FighterVerticalDetails({
@@ -19,6 +20,7 @@ export default function FighterVerticalDetails({
   fighterCountryCode,
   fighterImageSize = 225,
   isCentered = false,
+  showRecord = true,
 }: FighterVerticalDetailsProps) {
   const { data: fighterRecord, isLoading: isRecordLoading } = useFighterRecord(fighterId);
 
@@ -58,30 +60,32 @@ export default function FighterVerticalDetails({
 
         <Skeleton isLoaded={!isRecordLoading}>
           <Flex direction="row" justify={{ base: 'center', md: 'left' }} mb="10px">
-            <Text
-              fontFamily="Sora"
-              fontWeight="normal"
-              fontSize="24px"
-              mr=".5rem"
-              textAlign={{
-                xl: 'left',
-                lg: 'left',
-                md: 'left',
-                sm: 'center',
-                base: 'center',
-              }}
-              whiteSpace="nowrap"
-            >
-              Record:
-              <chakra.span display="inline" color="primary.500">
-                &nbsp;
-                {fighterRecord ? fighterRecord.wins : 0}
-              </chakra.span>
-              {'-'}
-              <chakra.span display="inline" color="secondary.500">
-                {fighterRecord ? fighterRecord.losses : 0}
-              </chakra.span>
-            </Text>
+            {showRecord ? (
+              <Text
+                fontFamily="Sora"
+                fontWeight="normal"
+                fontSize="24px"
+                mr=".5rem"
+                textAlign={{
+                  xl: 'left',
+                  lg: 'left',
+                  md: 'left',
+                  sm: 'center',
+                  base: 'center',
+                }}
+                whiteSpace="nowrap"
+              >
+                Record:
+                <chakra.span display="inline" color="primary.500">
+                  &nbsp;
+                  {fighterRecord ? fighterRecord.wins : 0}
+                </chakra.span>
+                {'-'}
+                <chakra.span display="inline" color="secondary.500">
+                  {fighterRecord ? fighterRecord.losses : 0}
+                </chakra.span>
+              </Text>
+            ) : null}
           </Flex>
         </Skeleton>
         {fighterStyle && (

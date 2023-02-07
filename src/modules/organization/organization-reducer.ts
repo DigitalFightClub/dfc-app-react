@@ -19,12 +19,46 @@ export const initOrganizationState: OrganizationState = {
   challengeMsg: undefined,
   challengeInProgress: false,
   errorMsg: undefined,
+  fightingTraits: [
+    {
+      traitId: 0,
+      trait: 'Power',
+    },
+    {
+      traitId: 1,
+      trait: 'Strength',
+    },
+    {
+      traitId: 2,
+      trait: 'Speed',
+    },
+    {
+      traitId: 3,
+      trait: 'Flexibility',
+    },
+    {
+      traitId: 4,
+      trait: 'Conditioning',
+    },
+    {
+      traitId: 5,
+      trait: 'Balance',
+    },
+    {
+      traitId: 6,
+      trait: 'Reflex',
+    },
+    {
+      traitId: 7,
+      trait: 'Footwork',
+    },
+  ],
   fightingStyles: [
     {
       styleId: 0,
       style: 'Choose Your Destiny',
-      // eslint-disable-next-line max-len
-      description: 'You\'ve got the option for powerful kicks or find the perfect defensive submission from the ground.',
+      // eslint-disable-next-line max-len, quotes
+      description: "You've got the option for powerful kicks or find the perfect defensive submission from the ground.",
     },
     {
       styleId: 1,
@@ -35,8 +69,8 @@ export const initOrganizationState: OrganizationState = {
       styleId: 2,
       style: 'Contact Overload',
       description:
-        // eslint-disable-next-line max-len
-        'You\'re twice as deadly when every limb is twice as dangerous. Overload on contact by using your knees and elbows.',
+        // eslint-disable-next-line max-len, quotes
+        "You're twice as deadly when every limb is twice as dangerous. Overload on contact by using your knees and elbows.",
     },
     {
       styleId: 3,
@@ -53,8 +87,8 @@ export const initOrganizationState: OrganizationState = {
       styleId: 5,
       style: 'Fists of Fury',
       description:
-        // eslint-disable-next-line max-len
-        'You\'ve got hands like cinderblocks. They\'re heavy and they hurt. You put everything you have into your punches.',
+        // eslint-disable-next-line max-len, quotes
+        "You've got hands like cinderblocks. They're heavy and they hurt. You put everything you have into your punches.",
     },
     {
       styleId: 6,
@@ -69,7 +103,8 @@ export const initOrganizationState: OrganizationState = {
     {
       styleId: 8,
       style: 'Go On & Slam',
-      description: 'You\'re bigger, you\'re stronger and you\'re going to slam your opponent senseless.',
+      // eslint-disable-next-line quotes
+      description: "You're bigger, you're stronger and you're going to slam your opponent senseless.",
     },
     {
       styleId: 9,
@@ -84,7 +119,8 @@ export const initOrganizationState: OrganizationState = {
     {
       styleId: 11,
       style: 'Lay & Pray',
-      description: 'Take the fight to the ground and stall for a decision. It\'s not glamorous but it works.',
+      // eslint-disable-next-line quotes
+      description: "Take the fight to the ground and stall for a decision. It's not glamorous but it works.",
     },
     {
       styleId: 12,
@@ -100,19 +136,21 @@ export const initOrganizationState: OrganizationState = {
       styleId: 14,
       style: 'MMA Specialist',
       description:
-        'You\'re a balanced fighter and can utilize different styles as needed. However, you\'re a master of none.',
+        // eslint-disable-next-line quotes
+        "You're a balanced fighter and can utilize different styles as needed. However, you're a master of none.",
     },
     {
       styleId: 15,
       style: 'Pull Guard',
       description:
-        // eslint-disable-next-line max-len
-        'Pull your opponents to the ground and land in the guard position. Fighting from your back is dangerous but you\'re a submission master. You can do it.',
+        // eslint-disable-next-line max-len, quotes
+        "Pull your opponents to the ground and land in the guard position. Fighting from your back is dangerous but you're a submission master. You can do it.",
     },
     {
       styleId: 16,
       style: 'RKO',
-      description: 'Utilize extravagant pin attempts. It\'s unorthodox but damn does it look good.',
+      // eslint-disable-next-line quotes
+      description: "Utilize extravagant pin attempts. It's unorthodox but damn does it look good.",
     },
     {
       styleId: 17,
@@ -125,7 +163,8 @@ export const initOrganizationState: OrganizationState = {
       styleId: 18,
       style: 'Stick & Move',
       description:
-        'You\'ve got quick hands and quicker feet. Land as many punches as possible and move to the next position.',
+        // eslint-disable-next-line quotes
+        "You've got quick hands and quicker feet. Land as many punches as possible and move to the next position.",
     },
     {
       styleId: 19,
@@ -141,7 +180,8 @@ export const initOrganizationState: OrganizationState = {
       styleId: 21,
       style: 'Tasmanian Whirlwind',
       description:
-        'Maintain a breakneck grappling pace that will exhaust your opponent. Let\'s hope you don\'t get tired first.',
+        // eslint-disable-next-line quotes
+        "Maintain a breakneck grappling pace that will exhaust your opponent. Let's hope you don't get tired first.",
     },
     {
       styleId: 22,
