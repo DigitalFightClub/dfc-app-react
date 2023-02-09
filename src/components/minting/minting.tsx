@@ -18,7 +18,8 @@ import {
   StatGroup,
   Image,
   Box,
-  Center
+  Center,
+  Text,
 } from '@chakra-ui/react';
 import { SetStateAction, useEffect, useState } from 'react';
 import LoadingScreen from 'react-loading-screen';
@@ -204,9 +205,7 @@ export default function Minting() {
 
   const getSignatureParameters = (signature: any) => {
     if (!ethers.utils.isHexString(signature)) {
-      throw new Error(
-        'Given value "'.concat(signature, '" is not a valid hex string.')
-      );
+      throw new Error('Given value "'.concat(signature, '" is not a valid hex string.'));
     }
 
     const r = signature.slice(0, 66);
@@ -221,7 +220,7 @@ export default function Minting() {
     return {
       r: r,
       s: s,
-      v: v
+      v: v,
     };
   };
 
@@ -237,7 +236,7 @@ export default function Minting() {
       // console.log('account nonce: ', accountNonce.toString())
       // console.log(`functionSignature: ${functionSignature}`)
 
-      const salt = ethers.utils.hexZeroPad((ethers.BigNumber.from(chainId)).toHexString(), 32);
+      const salt = ethers.utils.hexZeroPad(ethers.BigNumber.from(chainId).toHexString(), 32);
       // console.log(`salt: ${salt}`)
 
       const typedData = {
@@ -251,55 +250,58 @@ export default function Minting() {
           MetaTransaction: [
             { name: 'nonce', type: 'uint256' },
             { name: 'from', type: 'address' },
-            { name: 'functionSignature', type: 'bytes' }
-          ]
+            { name: 'functionSignature', type: 'bytes' },
+          ],
         },
         primaryType: 'MetaTransaction',
         // struct EIP712Domain {
         //  string name;
         //  string version;
         //  address verifyingContract;
-        //  bytes32 salt; 
+        //  bytes32 salt;
         // }
         domain: {
           name: 'Wrapped Ether',
           version: '1',
           verifyingContract: ENV.WETH,
-          salt: salt
+          salt: salt,
         },
         // "MetaTransaction(uint256 nonce,address from,bytes functionSignature)"
         message: {
-          'nonce': accountNonce.toNumber(),
-          'from': account,
-          'functionSignature': functionSignature
-        }
+          nonce: accountNonce.toNumber(),
+          from: account,
+          functionSignature: functionSignature,
+        },
       };
 
-      const request = await (window as any).ethereum.request({
-        method: 'eth_signTypedData_v3',
-        params: [account, JSON.stringify(typedData)],
-      }).then(async (result: any) => {
-        // console.log('result: ', result)
+      const request = await (window as any).ethereum
+        .request({
+          method: 'eth_signTypedData_v3',
+          params: [account, JSON.stringify(typedData)],
+        })
+        .then(async (result: any) => {
+          // console.log('result: ', result)
 
-        const { r, s, v } = getSignatureParameters(result);
-        const request = {
-          signature: result,
-          request: {
-            to: ENV.WETH,
-            from: account,
-            data: functionSignature,
-            r: r,
-            s: s,
-            v: v,
-          }
-        };
+          const { r, s, v } = getSignatureParameters(result);
+          const request = {
+            signature: result,
+            request: {
+              to: ENV.WETH,
+              from: account,
+              data: functionSignature,
+              r: r,
+              s: s,
+              v: v,
+            },
+          };
 
-        return request;
-      }).catch((error: any) => {
-        console.log('error: ', error); // catches cancelling the sign step of the metatx
-        setIsSigning(false);
-        setIsLoading(false);
-      });
+          return request;
+        })
+        .catch((error: any) => {
+          console.log('error: ', error); // catches cancelling the sign step of the metatx
+          setIsSigning(false);
+          setIsLoading(false);
+        });
 
       // console.log(request);
       return request;
@@ -311,41 +313,48 @@ export default function Minting() {
   };
 
   const submitMetaTx = (request: any, webhookURL: any, counter: any) => {
-    axios.post(webhookURL, request).then(function (response) {
-      // console.log('response: ', response.data)
-      // if (!response.data.status == 'error') {
-      //   console.log('txHash: ', JSON.parse(response.data.result));
-      // }
+    axios
+      .post(webhookURL, request)
+      .then(function (response) {
+        // console.log('response: ', response.data)
+        // if (!response.data.status == 'error') {
+        //   console.log('txHash: ', JSON.parse(response.data.result));
+        // }
 
-      if (response.data.status == 'throttled') {
-        console.log('throttled', counter);
-        // eslint-disable-next-line max-len
-        triggerPopup('Apologies. Our services are currently being rate limited because of a DFC mint storm. Please try again in 30 minutes. Error 0x1');
-      }
+        if (response.data.status == 'throttled') {
+          console.log('throttled', counter);
+          triggerPopup(
+            // eslint-disable-next-line max-len
+            'Apologies. Our services are currently being rate limited because of a DFC mint storm. Please try again in 30 minutes. Error 0x1'
+          );
+        }
 
-      if (response.data.status == 'success' && response.data.result.includes('Invalid amount')) {
-        triggerPopup('Price mismatch. Please alert the team in Discord');
-        setIsSigning(false);
-        setIsLoading(false);
-        return;
-      }
+        if (response.data.status == 'success' && response.data.result.includes('Invalid amount')) {
+          triggerPopup('Price mismatch. Please alert the team in Discord');
+          setIsSigning(false);
+          setIsLoading(false);
+          return;
+        }
 
-      if (response.data.status == 'success' && response.data.result.includes('error')) {
-        // eslint-disable-next-line max-len
-        triggerPopup('Apologies. Our services are currently being rate limited because of a DFC mint storm. Please try again in 30 minutes. Error 0x2');
-      }
+        if (response.data.status == 'success' && response.data.result.includes('error')) {
+          triggerPopup(
+            // eslint-disable-next-line max-len
+            'Apologies. Our services are currently being rate limited because of a DFC mint storm. Please try again in 30 minutes. Error 0x2'
+          );
+        }
 
-      if (response.data.status == 'success' && !response.data.result.includes('error')) {
-        const txHash = JSON.parse(response.data.result).txHash;
-        setTxHash(txHash);
-        console.log('tx hash: ', txHash);
-        setWaitingMsg(ENV.THIRD_MSG);
-        // routeChange(JSON.parse(response.data.result).txHash)
-        // window.open(`/fighterReveal?txHash=${JSON.parse(response.data.result).txHash}`)
-      }
-    }).catch(function (error) {
-      console.log('error: ', error);
-    });
+        if (response.data.status == 'success' && !response.data.result.includes('error')) {
+          const txHash = JSON.parse(response.data.result).txHash;
+          setTxHash(txHash);
+          console.log('tx hash: ', txHash);
+          setWaitingMsg(ENV.THIRD_MSG);
+          // routeChange(JSON.parse(response.data.result).txHash)
+          // window.open(`/fighterReveal?txHash=${JSON.parse(response.data.result).txHash}`)
+        }
+      })
+      .catch(function (error) {
+        console.log('error: ', error);
+      });
   };
 
   const submit = async () => {
@@ -377,7 +386,7 @@ export default function Minting() {
       // submit signed request to the API
       await submitMetaTx(request, ENV.WEBOOK_AUTOTASK_PRIMARY, 1);
       setIsSigning(false);
-    } 
+    }
 
     setIsSigning(false);
   };
@@ -392,20 +401,20 @@ export default function Minting() {
     <>
       <Center>
         <Box>
-          <Image src='/images/steep-pyramid.png' height='700px' />
+          <Image src="/images/steep-pyramid.png" height="700px" />
         </Box>
       </Center>
 
       <Box hidden>
-        <Image src='/images/fight-stage-1600.png' />
+        <Image src="/images/fight-stage-1600.png" />
       </Box>
       <Box hidden>
-        <Image src='/images/spotlight-1600.png' />
+        <Image src="/images/spotlight-1600.png" />
       </Box>
       <Box hidden>
-        <Image src='/images/reveal.gif' />
+        <Image src="/images/reveal.gif" />
       </Box>
-      
+
       <Button onClick={onOpen}>Mint Fighters</Button>
 
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} isCentered>
@@ -414,8 +423,9 @@ export default function Minting() {
           <ModalHeader>Mint Your Fighters</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <Stack>
-              <StatGroup>
+            <Stack align="cneter">
+              <Text fontFamily="Sora" fontWeight="semibold" fontSize="26px">Coming Soon...</Text>
+              {/* <StatGroup>
                 <Stat>
                   <StatLabel>Cost per Fighter</StatLabel>
                   <StatNumber>0.05 wETH</StatNumber>
@@ -424,14 +434,14 @@ export default function Minting() {
                   <StatLabel>Current Balance</StatLabel>
                   <StatNumber>{(tokenBalance ? truncateUnits(tokenBalance): '0.00')} wETH</StatNumber>
                 </Stat>
-              </StatGroup>
+              </StatGroup> */}
             </Stack>
 
-            <Stack align='center'>
-              <Image src='/images/fighter_silhouette_guys.png' width='200px' alt='silhouette fighter' />
+            <Stack align="center">
+              <Image src="/images/fighter_silhouette_guys.png" width="200px" alt="silhouette fighter" />
             </Stack>
 
-            <Stack align='center'>
+            {/* <Stack align='center'>
               <Stat>
                 <StatLabel>Total Cost</StatLabel>
                 <StatNumber>{formatUnits(txCost(), 18).toString()} wETH</StatNumber>
@@ -451,29 +461,31 @@ export default function Minting() {
               <Button colorScheme='red' variant='solid' onClick={increment}>
                 +
               </Button>
-            </Stack>
+            </Stack> */}
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={submit} colorScheme='green' mr={3}>
+            {/* <Button onClick={submit} colorScheme='green' mr={3}>
               Submit & Sign TX
-            </Button>
+            </Button> */}
             <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
 
       <AlertPopup />
-      
-      <div style={{ display: !isLoading ? 'none' : 'block' }} className='loadingScreen'>
+
+      <div style={{ display: !isLoading ? 'none' : 'block' }} className="loadingScreen">
         <LoadingScreen
           loading={true}
-          bgColor='#000000'
-          spinnerColor='#FF0000'
-          textColor='#676767'
-          logoSrc='images/logo.png'
+          bgColor="#000000"
+          spinnerColor="#FF0000"
+          textColor="#676767"
+          logoSrc="images/logo.png"
           text={waitingMsg}
-        >&nbsp;</LoadingScreen>
+        >
+          &nbsp;
+        </LoadingScreen>
       </div>
     </>
   );
