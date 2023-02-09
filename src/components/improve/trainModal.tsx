@@ -18,9 +18,39 @@ import {
 import { FightingTrait, TrainModalProps } from '../../types';
 import FighterVerticalDetails from '../fighterModal/fighterVerticalDetails';
 
+export type SuccessRate = 'Red' | 'Orange' | 'Yellow' | 'LightGreen' | 'Green';
+
 export default function TrainModal({ fighterData, fightingTraits, onClose }: TrainModalProps) {
   const [selectedTrait, setSelectedTrait] = useState<FightingTrait>(fightingTraits[0]);
-  const [sliderValue, setSliderValue] = useState(1);
+  const [tkoValue, setTkoValue] = useState(1);
+  const [meterImage, setMeterImage] = useState<string>('/images/RedMeter.png');
+
+  const successRate = (traitValue: number, tko: number): SuccessRate => {
+    const groupA = [81, 61, 41, 21, 1];
+    const groupB = [401, 301, 201, 101, 1];
+
+    const resultLookup: SuccessRate[][] = [
+      ['LightGreen', 'LightGreen', 'LightGreen', 'Green', 'Green'],
+      ['Yellow', 'Yellow', 'LightGreen', 'LightGreen', 'Green'],
+      ['Orange', 'Yellow', 'Yellow', 'LightGreen', 'LightGreen'],
+      ['Red', 'Orange', 'Orange', 'Yellow', 'Yellow'],
+      ['Red', 'Red', 'Red', 'Orange', 'Yellow'],
+    ];
+
+    const groupIndexA = 4 - groupA.findIndex((groupValue) => traitValue >= groupValue);
+    const groupIndexB =  4 - groupB.findIndex((groupValue) => tko >= groupValue);
+    console.log(groupIndexA, groupIndexB);
+    console.log(resultLookup[groupIndexA]);
+    console.log(resultLookup[groupIndexA][groupIndexB]);
+    return resultLookup[groupIndexA][groupIndexB];
+  };
+
+  const updateMeter = (trait: FightingTrait, traitValue: number, tko: number) => {
+    setSelectedTrait(trait);
+    setTkoValue(tko);
+    const color: string = successRate(traitValue, tko).toString();
+    setMeterImage(`/images/${color}Meter.png`);
+  };
 
   return (
     <Flex
@@ -62,25 +92,40 @@ export default function TrainModal({ fighterData, fightingTraits, onClose }: Tra
                   showRecord={false}
                 />
               </Box>
-              <VStack alignContent="center" gap="2rem" w="17rem">
-                <Image src="/images/RedMeter.png" height="100px" />
-                <Button w="12rem" h="2.2rem" bg="#2ABB75" color="white" mx=".5rem" borderRadius="0" aria-label="Accept">
-                  Train
-                </Button>
+              <VStack alignContent="center" gap="4rem" w="17rem">
+                <VStack alignContent="center" w="17rem">
+                  <Text textAlign="center" fontFamily="Sora" fontWeight="semibold" fontSize="20px">
+                    Success Rate
+                  </Text>
+                  <Image src={meterImage} height="100px" />
+                  <Button
+                    w="12rem"
+                    h="2.2rem"
+                    bg="#2ABB75"
+                    color="white"
+                    mx=".5rem"
+                    borderRadius="0"
+                    aria-label="Accept"
+                  >
+                    Train
+                  </Button>
+                </VStack>
                 <Slider
                   aria-label="slider-ex-6"
                   min={1}
                   max={500}
                   defaultValue={1}
-                  onChange={(val) => setSliderValue(val)}
+                  onChange={(val) =>
+                    updateMeter(selectedTrait, fighterData.stats[selectedTrait.trait.toLowerCase()], val)
+                  }
                 >
                   <SliderMark mt="5px" value={1}>
                     <Text textAlign="center" fontFamily="Sora" fontWeight="semibold" fontSize="16px">
                       1
                     </Text>
                   </SliderMark>
-                  <SliderMark mt="5px" value={230}>
-                    <Text textAlign="center" fontFamily="Sora" fontWeight="semibold" fontSize="16px">
+                  <SliderMark mt="5px" value={220}>
+                    <Text textAlign="center" fontFamily="Sora" fontWeight="semibold" fontSize="18px">
                       TKO
                     </Text>
                   </SliderMark>
@@ -89,16 +134,8 @@ export default function TrainModal({ fighterData, fightingTraits, onClose }: Tra
                       500
                     </Text>
                   </SliderMark>
-                  <SliderMark
-                    value={sliderValue}
-                    textAlign="center"
-                    bg="blue.500"
-                    color="white"
-                    mt="-10"
-                    ml="-5"
-                    w="10"
-                  >
-                    {sliderValue}
+                  <SliderMark value={tkoValue} textAlign="center" bg="gray.600" color="white" mt="-10" ml="-5" w="10">
+                    {tkoValue}
                   </SliderMark>
                   <SliderTrack>
                     <SliderFilledTrack />
@@ -131,7 +168,9 @@ export default function TrainModal({ fighterData, fightingTraits, onClose }: Tra
                   _hover={{ bg: '#F26322' }}
                   _active={{ bg: '#F26322' }}
                   isActive={selectedTrait?.traitId === fightingTrait.traitId}
-                  onClick={() => setSelectedTrait(fightingTrait)}
+                  onClick={() =>
+                    updateMeter(fightingTrait, fighterData.stats[fightingTrait.trait.toLowerCase()], tkoValue)
+                  }
                 >
                   {fightingTrait.trait} ({fighterData.stats[fightingTrait.trait.toLowerCase()]})
                 </Button>
