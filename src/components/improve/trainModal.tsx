@@ -20,7 +20,10 @@ import FighterVerticalDetails from '../fighterModal/fighterVerticalDetails';
 
 export type SuccessRate = 'Red' | 'Orange' | 'Yellow' | 'LightGreen' | 'Green';
 
+export type TraitModalState = 'TRAIT_SELECT' | 'TRAIT_PROGRESS' | 'TRAIT_RESULT';
+
 export default function TrainModal({ fighterData, fightingTraits, onClose }: TrainModalProps) {
+  const [modalState, setModalState] = useState<TraitModalState>('TRAIT_SELECT');
   const [selectedTrait, setSelectedTrait] = useState<FightingTrait>(fightingTraits[0]);
   const [tkoValue, setTkoValue] = useState(1);
   const [meterImage, setMeterImage] = useState<string>('/images/RedMeter.png');
@@ -38,7 +41,7 @@ export default function TrainModal({ fighterData, fightingTraits, onClose }: Tra
     ];
 
     const groupIndexA = 4 - groupA.findIndex((groupValue) => traitValue >= groupValue);
-    const groupIndexB =  4 - groupB.findIndex((groupValue) => tko >= groupValue);
+    const groupIndexB = 4 - groupB.findIndex((groupValue) => tko >= groupValue);
     console.log(groupIndexA, groupIndexB);
     console.log(resultLookup[groupIndexA]);
     console.log(resultLookup[groupIndexA][groupIndexB]);
@@ -50,6 +53,10 @@ export default function TrainModal({ fighterData, fightingTraits, onClose }: Tra
     setTkoValue(tko);
     const color: string = successRate(traitValue, tko).toString();
     setMeterImage(`/images/${color}Meter.png`);
+  };
+
+  const submitTrain = (trait: FightingTrait, tko: number) => {
+    setModalState('TRAIT_PROGRESS');
   };
 
   return (
@@ -81,7 +88,11 @@ export default function TrainModal({ fighterData, fightingTraits, onClose }: Tra
         {fighterData ? (
           <VStack gap="0">
             <HStack gap="5rem" mb="1rem">
-              <Box mt="2.5rem">
+              <Box
+                mt="2.5rem"
+                transform={'TRAIT_SELECT' !== modalState ? 'translateX(12rem)' : ''}
+                transition="transform 0.5s ease-in-out"
+              >
                 <FighterVerticalDetails
                   fighterId={fighterData.fighterId}
                   fighterImage={fighterData.image}
@@ -92,7 +103,14 @@ export default function TrainModal({ fighterData, fightingTraits, onClose }: Tra
                   showRecord={false}
                 />
               </Box>
-              <VStack alignContent="center" gap="4rem" w="17rem">
+              <VStack
+                alignContent="center"
+                gap="4rem"
+                w="17rem"
+                // display={'TRAIT_SELECT' !== modalState ? 'none' : 'flex'}
+                opacity={'TRAIT_SELECT' === modalState ? 1 : 0}
+                transition="opacity 0.5s"
+              >
                 <VStack alignContent="center" w="17rem">
                   <Text textAlign="center" fontFamily="Sora" fontWeight="semibold" fontSize="20px">
                     Success Rate
@@ -106,6 +124,7 @@ export default function TrainModal({ fighterData, fightingTraits, onClose }: Tra
                     mx=".5rem"
                     borderRadius="0"
                     aria-label="Accept"
+                    onClick={() => submitTrain(selectedTrait, tkoValue)}
                   >
                     Train
                   </Button>
@@ -143,19 +162,24 @@ export default function TrainModal({ fighterData, fightingTraits, onClose }: Tra
                   <SliderThumb />
                 </Slider>
               </VStack>
-              <VStack w="8rem">
+              <VStack
+                w="8rem"
+                transform={'TRAIT_SELECT' !== modalState ? 'translateX(-12rem)' : ''}
+                transition="transform 0.5s ease-in-out"
+              >
                 <Image src="/images/Punching_bag.png" height="275px" />
                 <Text textAlign="center" fontFamily="Sora" fontWeight="semibold" fontSize="24px">
                   {selectedTrait?.trait}
                 </Text>
               </VStack>
             </HStack>
-            {/* {1 === 0 ? (
-                    <Center>
-                      <Progress w="300px" hasStripe size="xs" isIndeterminate colorScheme="green" />
-                    </Center>
-                  ) : ( */}
-            <Wrap pb="1rem" spacing="1rem" justify="center">
+            <Wrap
+              pb="1rem"
+              spacing="1rem"
+              justify="center"
+              opacity={'TRAIT_SELECT' === modalState ? 1 : 0}
+              transition="opacity 0.5s"
+            >
               {fightingTraits.map((fightingTrait) => (
                 <Button
                   key={fightingTrait.traitId}
@@ -176,7 +200,6 @@ export default function TrainModal({ fighterData, fightingTraits, onClose }: Tra
                 </Button>
               ))}
             </Wrap>
-            {/* )} */}
           </VStack>
         ) : null}
       </Box>
