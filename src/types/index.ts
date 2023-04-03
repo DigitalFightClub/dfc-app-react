@@ -95,6 +95,17 @@ export type TrainModalProps = {
   onClose: () => void;
 };
 
+export type TrainingResult = {
+  status: TrainingResultStatus;
+  trait: FightingTrait;
+  improvement: number;
+};
+
+export enum TrainingResultStatus {
+  SUCCESS = 'SUCCESS',
+  FAILURE = 'FAILURE',
+}
+
 export type FighterStats = {
   fighterStatistics: Stats[];
 };
